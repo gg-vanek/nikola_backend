@@ -6,3 +6,5 @@ py-version = 3.11
 load-plugins = pylint_django
 
 django-settings-module = project.settings
+
+disable = C0114
