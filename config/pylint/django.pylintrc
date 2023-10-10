@@ -7,4 +7,7 @@ load-plugins = pylint_django
 
 django-settings-module = project.settings
 
-disable = C0114 # Ошибка связанная с отсутствием docstring в модулях
+disable =
+    C0114, # Ошибка связанная с отсутствием docstring в модулях
+    C0115, # Ошибка связанная с отсутствием docstring в классах
+    C0116, # Ошибка связанная с отсутствием docstring в методах
