@@ -6,26 +6,54 @@ on:
   pull_request:
     branches: [ "main" ]
 
+
 jobs:
   build:
+
+    env:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
 
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.11]
+        python-version: [ 3.11 ]
+
+    services:
+      database:
+        env:
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        image: postgres
+        ports:
+          - 5432:5432 # очень хотел написать ${{ env.POSTGRES_PORT }}:5432 но не получилось
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run Django Tests
-      run: |
-        python manage.py test
+      - name: Wait for Database
+        run: |
+          chmod +x ./config/scripts/wait_for_database.sh
+          /bin/bash ./config/scripts/wait_for_database.sh
+
+      - name: Run Django Tests
+        run: |
+          python manage.py test
