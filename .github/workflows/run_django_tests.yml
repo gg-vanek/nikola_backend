@@ -51,8 +51,7 @@ jobs:
 
       - name: Wait for Database
         run: |
-          chmod +x ./config/scripts/wait_for_database.sh
-          /bin/bash ./config/scripts/wait_for_database.sh
+          python manage.py wait_for_db
 
       - name: Run Django Tests
         run: |
