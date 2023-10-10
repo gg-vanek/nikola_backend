@@ -19,7 +19,7 @@ class CommandTests(TestCase):
     # by default, we ll have sleep function to wait for 1s if database is not available
     # we dont want this sleep to wait for this test
     @patch('time.sleep', return_value=True)
-    def test_wait_for_db(self):
+    def test_wait_for_db(self, *args, **kwargs):
         with patch('django.db.utils.ConnectionHandler.__getitem__') as get_item:
             # make the patch return error for first five calls
             # and return true on sixth call
