@@ -10,19 +10,19 @@ class CommandTests(TestCase):
 
     # check if the command works when db is available
     def test_wait_for_db_ready(self):
-        with patch('django.db.utils.ConnectionHandler.__getitem__') as gi:
-            gi.return_value = True
+        with patch('django.db.utils.ConnectionHandler.__getitem__') as get_item:
+            get_item.return_value = True
             call_command('wait_for_db')
-            self.assertEqual(gi.call_count, 1)
+            self.assertEqual(get_item.call_count, 1)
 
     # check if command works when db is not connected
     # by default, we ll have sleep function to wait for 1s if database is not available
     # we dont want this sleep to wait for this test
     @patch('time.sleep', return_value=True)
-    def test_wait_for_db(self, ts):
-        with patch('django.db.utils.ConnectionHandler.__getitem__') as gi:
+    def test_wait_for_db(self):
+        with patch('django.db.utils.ConnectionHandler.__getitem__') as get_item:
             # make the patch return error for first five calls
             # and return true on sixth call
-            gi.side_effect = [OperationalError]*5 + [True]
+            get_item.side_effect = [OperationalError]*5 + [True]
             call_command('wait_for_db')
-            self.assertEqual(gi.call_count, 6)
+            self.assertEqual(get_item.call_count, 6)
