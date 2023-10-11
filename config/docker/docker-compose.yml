@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  backend:
+    build: 
+      context: ../../.
+      dockerfile: config/docker/Dockerfile
+    ports:
+      - '${BACKEND_PORT}:8000'
+    volumes:
+      - ../../.:/app/backend
+    depends_on:
+      - db
+    links:
+      - db:db
+    env_file:
+      - ../env/.env
+
+  db:
+    image: postgres
+    env_file: ../env/.env
