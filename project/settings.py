@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # local
     'core',
     'houses',
+    'clients',
 
     # 3-rd party
     'rest_framework',

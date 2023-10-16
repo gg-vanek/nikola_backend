@@ -29,8 +29,8 @@ class House(models.Model):
                               message=f"Множитель в выходные дни должен быть не меньше, чем {MIN_HOLIDAYS_MULTIPLIER}"),
         ])
 
-    created_at = models.DateTimeField("Время создания", auto_now_add=True)
-    updated_at = models.DateTimeField("Время последнего изменения", auto_now=True)
+    created_at = models.DateTimeField("Время создания домика", auto_now_add=True)
+    updated_at = models.DateTimeField("Время последнего изменения домика", auto_now=True)
 
     class Meta:
         verbose_name = "Домик"

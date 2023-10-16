@@ -46,8 +46,8 @@ class TaskModelTest(TestCase):
             'description': "Описание домика",
             'base_price': "Базовая цена",
             'holidays_multiplier': "Множитель в выходные и праздники",
-            'created_at': "Время создания",
-            'updated_at': "Время последнего изменения",
+            'created_at': "Время создания домика",
+            'updated_at': "Время последнего изменения домика",
         }
 
         for field, expected_value in field_verboses.items():
