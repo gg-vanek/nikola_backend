@@ -1,6 +1,8 @@
 [MAIN]
 
 ignore=manage.py
+ignore-paths=.*/migrations
+
 py-version = 3.11
 
 load-plugins = pylint_django
