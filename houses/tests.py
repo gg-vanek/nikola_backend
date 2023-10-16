@@ -16,6 +16,27 @@ class TaskModelTest(TestCase):
             holidays_multiplier=2,
         )
 
+    def test_unique_house_name(self):
+        try:
+            house1 = House.objects.create(
+                name='Тестовый домик1',
+                description='Тестовое описание1',
+                base_price=10000,
+                holidays_multiplier=2,
+            )
+            house2 = House.objects.create(
+                name=house1.name,
+                description='Тестовое описание2',
+                base_price=10000,
+                holidays_multiplier=2,
+            )
+        except ValidationError:
+            house1.delete()
+        else:
+            house1.delete()
+            house2.delete()
+            assert False, "Создано 2 домика с одинаковыми именами"
+
     def test_verbose_name(self):
         """verbose_name в полях совпадает с ожидаемым."""
         house = TaskModelTest.house
@@ -35,9 +56,7 @@ class TaskModelTest(TestCase):
                     house._meta.get_field(field).verbose_name, expected_value)
 
     def test_base_price_validators(self):
-        min_base_price_value = 1000
-
-        for base_price_test_value in [-100, -1, 0, 1, 100, min_base_price_value - 1]:
+        for base_price_test_value in [-100, -1, 0, 1, 100, House.MIN_BASE_PRICE - 1]:
             try:
                 house = House.objects.create(
                     name='Тестовый домик 1',
@@ -50,7 +69,7 @@ class TaskModelTest(TestCase):
             else:
                 house.delete()
                 assert False, f"Создан домик с базовой ценой {base_price_test_value}, " \
-                              f"при минимальной {min_base_price_value}"
+                              f"при минимальной {House.MIN_BASE_PRICE}"
 
         # проверка, что можно создать домик с минимальной ценой
         try:
@@ -58,11 +77,11 @@ class TaskModelTest(TestCase):
                 name='Тестовый домик 1',
                 description='Тестовое описание 1',
                 holidays_multiplier=1,
-                base_price=min_base_price_value,
+                base_price=House.MIN_BASE_PRICE,
             )
         except ValidationError:
             assert False, f"Не удалось создать домик с базовой ценой {base_price_test_value}, " \
-                          f"при минимальной {min_base_price_value}"
+                          f"при минимальной {House.MIN_BASE_PRICE}"
         else:
             house.delete()
 
@@ -76,13 +95,12 @@ class TaskModelTest(TestCase):
         house.delete()
 
     def test_holidays_multiplier_validators(self):
-        min_holiday_multiplier_value = 1
         base_price_test_value = 100000
 
-        assert min_holiday_multiplier_value >= 1, \
+        assert House.MIN_HOLIDAYS_MULTIPLIER >= 1, \
             "Множитель должен увеличивать базовую цену в выходные дни"
 
-        for holiday_multiplier_test_value in [-100, -1, 0, min_holiday_multiplier_value - 0.0001]:
+        for holiday_multiplier_test_value in [-100, -1, 0, House.MIN_HOLIDAYS_MULTIPLIER - 0.0001]:
             try:
                 house = House.objects.create(
                     name='Тестовый домик 1',
@@ -95,19 +113,19 @@ class TaskModelTest(TestCase):
             else:
                 house.delete()
                 assert False, f"Создан домик с множителем {holiday_multiplier_test_value}, " \
-                              f"при минимальной {min_holiday_multiplier_value}"
+                              f"при минимальной {House.MIN_HOLIDAYS_MULTIPLIER}"
 
         # проверка, что можно создать домик с минимальной ценой
         try:
             house = House.objects.create(
                 name='Тестовый домик 1',
                 description='Тестовое описание 1',
-                holidays_multiplier=min_holiday_multiplier_value,
+                holidays_multiplier=House.MIN_HOLIDAYS_MULTIPLIER,
                 base_price=base_price_test_value,
             )
         except ValidationError:
             assert False, \
-                f"Не удалось создать домик с множителем {min_holiday_multiplier_value}, " \
-                f"при минимальной {min_holiday_multiplier_value}"
+                f"Не удалось создать домик с множителем {House.MIN_HOLIDAYS_MULTIPLIER}, " \
+                f"при минимальной {House.MIN_HOLIDAYS_MULTIPLIER}"
         else:
             house.delete()

@@ -9,12 +9,25 @@ def generate_house_picture_filename(instance, filename):
 
 
 class House(models.Model):
+    MIN_BASE_PRICE = 1000
+    MIN_HOLIDAYS_MULTIPLIER = 1
+
     name = models.CharField("Название домика", max_length=255, unique=True)
     description = models.TextField("Описание домика")
 
-    base_price = models.IntegerField("Базовая цена", validators=[MinValueValidator(1000), ])
-    holidays_multiplier = models.FloatField("Множитель в выходные и праздники", default=1,
-                                            validators=[MinValueValidator(1), ])
+    base_price = models.IntegerField(
+        "Базовая цена",
+        validators=[
+            MinValueValidator(MIN_BASE_PRICE,
+                              message=f"Базовая цена домика должна быть не меньше, чем {MIN_BASE_PRICE}"),
+        ])
+    holidays_multiplier = models.FloatField(
+        "Множитель в выходные и праздники",
+        default=1,
+        validators=[
+            MinValueValidator(MIN_HOLIDAYS_MULTIPLIER,
+                              message=f"Множитель в выходные дни должен быть не меньше, чем {MIN_HOLIDAYS_MULTIPLIER}"),
+        ])
 
     created_at = models.DateTimeField("Время создания", auto_now_add=True)
     updated_at = models.DateTimeField("Время последнего изменения", auto_now=True)
