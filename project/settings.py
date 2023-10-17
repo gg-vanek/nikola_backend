@@ -181,7 +181,7 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'handlers': ['console'],
         }
     }
