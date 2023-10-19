@@ -13,5 +13,8 @@ disable =
     C0114, # Ошибка связанная с отсутствием docstring в модулях
     C0115, # Ошибка связанная с отсутствием docstring в классах
     C0116, # Ошибка связанная с отсутствием docstring в методах
+    W0223, # Ошибка связанная с отсутствием методов в дочерних классов от абстрактных классов
+    R0903, # Too few public methods (1/2) (too-few-public-methods)
+    W1203, # Use lazy % formatting in logging functions (logging-fstring-interpolation)
 
 max-line-length = 120

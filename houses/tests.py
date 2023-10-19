@@ -23,7 +23,7 @@ class HouseModelTest(TestCase):
     def test_unique_house_name(self):
         try:
             house1 = House.objects.create(
-                name='Тестовый домик1',
+                name='Домик',
                 description='Тестовое описание1',
             )
             House.objects.create(
@@ -59,8 +59,8 @@ class HouseModelTest(TestCase):
         for base_price_test_value in [-100, -1, 0, 1, 100, Pricing.MIN_HOUSE_BASE_PRICE - 1]:
             try:
                 house = House.objects.create(
-                    name='Тестовый домик 1',
-                    description='Тестовое описание 1',
+                    name='Домик',
+                    description='Тестовое описание',
                     holidays_multiplier=1,
                     base_price=base_price_test_value,
                 )
@@ -74,8 +74,8 @@ class HouseModelTest(TestCase):
         # проверка, что можно создать домик с минимальной ценой
         try:
             house = House.objects.create(
-                name='Тестовый домик 1',
-                description='Тестовое описание 1',
+                name='Домик',
+                description='Тестовое описание',
                 holidays_multiplier=1,
                 base_price=Pricing.MIN_HOUSE_BASE_PRICE,
             )
@@ -85,8 +85,8 @@ class HouseModelTest(TestCase):
 
     def test_holidays_multiplier_default_value(self):
         house = House.objects.create(
-            name='Тестовый домик 2',
-            description='Тестовое описание 2',
+            name='Домик',
+            description='Тестовое описание',
         )
 
         self.assertEqual(house.holidays_multiplier, 2)
@@ -94,7 +94,7 @@ class HouseModelTest(TestCase):
     def test_holidays_base_price_default_value(self):
         house = House.objects.create(
             name='Тестовый домик 2',
-            description='Тестовое описание 2',
+            description='Тестовое описание',
         )
 
         self.assertEqual(house.base_price, 10000)
@@ -106,8 +106,8 @@ class HouseModelTest(TestCase):
         for holiday_multiplier_test_value in [-100, -1, 0, Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER - 0.0001]:
             try:
                 house = House.objects.create(
-                    name='Тестовый домик 1',
-                    description='Тестовое описание 1',
+                    name='Домик',
+                    description='Тестовое описание',
                     holidays_multiplier=holiday_multiplier_test_value,
                 )
             except ValidationError:
@@ -120,8 +120,8 @@ class HouseModelTest(TestCase):
         # проверка, что можно создать домик с минимальной ценой
         try:
             house = House.objects.create(
-                name='Тестовый домик 1',
-                description='Тестовое описание 1',
+                name='Домик',
+                description='Тестовое описание',
                 holidays_multiplier=Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER,
             )
         except ValidationError:
@@ -137,7 +137,7 @@ class HouseReservationModelTest(TestCase):
         # Создаём тестовую запись в БД
         # и сохраняем созданную запись в качестве переменной класса
         cls.house = House.objects.create(
-            name='Тестовый домик',
+            name='Домик',
             description='Тестовое описание',
         )
         cls.client = Client.objects.create(

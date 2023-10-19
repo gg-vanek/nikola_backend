@@ -141,7 +141,8 @@ class HouseReservation(models.Model):
 
     def save(self, *args, **kwargs):
         self.check_datetime_fields()
-
+        # вызывать эту функцию выше следует именно до full_clean
+        # Чтобы если она не проходит, возникала именно ValidationError, а не какая-то другая
         self.full_clean()
         return super().save(*args, **kwargs)
 
