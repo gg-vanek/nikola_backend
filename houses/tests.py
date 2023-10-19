@@ -42,6 +42,7 @@ class HouseModelTest(TestCase):
         field_verboses = {
             'name': "Название домика",
             'description': "Описание домика",
+            'features': "Плюшки",
             "max_occupancy": "Максимальное количество человек для проживания в домике",
             'base_price': "Базовая цена",
             'holidays_multiplier': "Множитель в выходные и праздники",
@@ -205,5 +206,9 @@ class HouseReservationModelTest(TestCase):
                               f"И заканчивающееся через {check_out_delta} дней (test_correct_date_range)"
 
     # def test_exclude_reservations_overlapping(self):
+    # TODO
+    #     raise ZeroDivisionError
+
+    # def test_price_generations(self):
     # TODO
     #     raise ZeroDivisionError

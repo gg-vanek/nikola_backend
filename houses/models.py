@@ -15,7 +15,6 @@ from core.models import Pricing
 from clients.models import Client
 from houses.services.price_calculators import calculate_reservation_price
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -29,9 +28,16 @@ def generate_house_picture_filename(instance, filename):
     return path
 
 
+def generate_house_feature_icon_filename(instance, filename: str):
+    path = os.path.join('houses_features', 'icons', str(instance.name) + '.' + filename.split('.')[-1])
+    return path
+
+
 class House(models.Model):
     name = models.CharField("Название домика", max_length=255, unique=True)
     description = models.TextField("Описание домика")
+
+    features = models.ManyToManyField("HouseFeature", verbose_name="Плюшки", related_name='houses')
 
     max_occupancy = models.IntegerField("Максимальное количество человек для проживания в домике", default=3)
 
@@ -82,8 +88,20 @@ class HousePicture(models.Model):
         return self.picture.name
 
 
+class HouseFeature(models.Model):
+    name = models.CharField("Название", max_length=127, unique=True)
+    icon = models.ImageField("Иконка", upload_to=generate_house_feature_icon_filename)
+
+    class Meta:
+        verbose_name = "Фича домика"
+        verbose_name_plural = 'Фичи домиков'
+
+    def __str__(self):
+        return self.name
+
+
 class HouseReservation(models.Model):
-    house = models.ForeignKey(House,verbose_name="Домик", on_delete=models.SET_NULL,
+    house = models.ForeignKey(House, verbose_name="Домик", on_delete=models.SET_NULL,
                               null=True, related_name='reservations')
     client = models.ForeignKey(Client, verbose_name="Клиент", on_delete=models.SET_NULL,
                                null=True, related_name='reservations')

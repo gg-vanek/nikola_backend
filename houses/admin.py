@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from houses.models import House, HousePicture, HouseReservation
+from houses.models import House, HousePicture, HouseReservation, HouseFeature
 
 
 class HousePictureAdminInline(admin.TabularInline):
@@ -23,5 +23,11 @@ class HouseReservationAdmin(admin.ModelAdmin):
                     'created_at', 'updated_at',)
 
 
+class HouseFeatureAdmin(admin.ModelAdmin):
+    model = HouseFeature
+    list_display = ('name', 'icon')
+
+
 admin.site.register(House, HouseAdmin)
 admin.site.register(HouseReservation, HouseReservationAdmin)
+admin.site.register(HouseFeature, HouseFeatureAdmin)
