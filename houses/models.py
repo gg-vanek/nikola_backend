@@ -39,16 +39,13 @@ class House(models.Model):
 
     features = models.ManyToManyField("HouseFeature", verbose_name="Плюшки", related_name='houses')
 
-    max_occupancy = models.IntegerField("Максимальное количество человек для проживания в домике", default=3)
-
     base_price = models.IntegerField(
         "Базовая цена",
         default=10000,
         validators=[
             MinValueValidator(Pricing.MIN_HOUSE_BASE_PRICE,
                               message=f"Базовая цена домика должна быть не меньше, "
-                                      f"чем {Pricing.MIN_HOUSE_BASE_PRICE}"),
-        ])
+                                      f"чем {Pricing.MIN_HOUSE_BASE_PRICE}"), ])
     holidays_multiplier = models.FloatField(
         "Множитель в выходные и праздники",
         default=2,
@@ -57,6 +54,10 @@ class House(models.Model):
                               message=f"Множитель в выходные дни должен быть не меньше, "
                                       f"чем {Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER}"),
         ])
+
+    base_persons_amount = models.IntegerField("Базовое количество человек для проживания в домике", default=2)
+    max_persons_amount = models.IntegerField("Максимальное количество человек для проживания в домике", default=3)
+    price_per_extra_person = models.IntegerField("Цена за дополнительного человека", default=2000)
 
     created_at = models.DateTimeField("Время создания домика", auto_now_add=True)
     updated_at = models.DateTimeField("Время последнего изменения домика", auto_now=True)
@@ -108,6 +109,8 @@ class HouseReservation(models.Model):
 
     check_in_datetime = models.DateTimeField("Дата и время заезда")
     check_out_datetime = models.DateTimeField("Дата и время выезда")
+    extra_persons_amount = models.IntegerField("Дополнительное количество человек для проживания в домике",
+                                               default=0)
 
     price = models.IntegerField("Стоимость", blank=True)
 
@@ -149,7 +152,18 @@ class HouseReservation(models.Model):
     def clean(self, *args, **kwargs):
         # если все хорошо, то высчитать цену
         if not self.price:
-            self.price = calculate_reservation_price(self)
+            self.price = calculate_reservation_price(house=self.house,
+                                                     check_in_datetime=self.check_in_datetime,
+                                                     check_out_datetime=self.check_out_datetime,
+                                                     extra_persons_amount=self.extra_persons_amount,
+                                                     )
+
+    def clean_extra_persons_amount(self):
+        if self.house.base_persons_amount + self.extra_persons_amount > self.house.max_persons_amount:
+            raise ValidationError(f"Невозможно заселить столько человек в домик: \n"
+                                  f"Базовое количество человек: {self.house.base_persons_amount}\n"
+                                  f"Дополнительно количество человек: {self.extra_persons_amount}\n"
+                                  f"Максимальное количество человек: {self.house.max_persons_amount}")
 
     def clean_check_in_datetime(self):
         if self.check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
