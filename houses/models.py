@@ -34,8 +34,8 @@ def generate_house_feature_icon_filename(instance, filename: str):
 
 class House(models.Model):
     name = models.CharField("Название домика", max_length=255, unique=True)
-    description = models.TextField("Описание домика")
 
+    description = models.TextField("Описание домика")
     features = models.ManyToManyField("HouseFeature", verbose_name="Плюшки", related_name='houses')
 
     base_price = models.IntegerField(
@@ -108,8 +108,12 @@ class HouseReservation(models.Model):
 
     check_in_datetime = models.DateTimeField("Дата и время заезда")
     check_out_datetime = models.DateTimeField("Дата и время выезда")
-    extra_persons_amount = models.IntegerField("Дополнительное количество человек для проживания в домике",
-                                               default=0)
+    extra_persons_amount = models.IntegerField(
+        "Дополнительное количество человек для проживания в домике",
+        default=0,
+        validators=[
+            MinValueValidator(0, message=f"В бронировании нельзя указывать отрицательное количество человек"),
+        ])
 
     price = models.IntegerField("Стоимость", blank=True)
 

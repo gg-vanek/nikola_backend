@@ -29,11 +29,10 @@ class TaskModelTest(TestCase):
 
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
-                self.assertEqual(
-                    client._meta.get_field(field).verbose_name, expected_value)
+                self.assertEqual(client._meta.get_field(field).verbose_name, expected_value)
 
     def test_unique_client_email(self):
-        try:
+        with self.assertRaises(ValidationError, msg="Создано 2 клиента с одинаковыми почтами"):
             client1 = Client.objects.create(
                 email="unique_email@test.ru",
                 first_name="Иван",
@@ -44,40 +43,28 @@ class TaskModelTest(TestCase):
                 first_name="Иван",
                 last_name="Иванов",
             )
-        except ValidationError:
-            client1.delete()
-        else:
-            client1.delete()
-            client2.delete()
-            assert False, "Создано 2 клиента с одинаковыми почтами"
 
     def test_first_name_validators(self):
         for first_name_test_value in ["", "/\\+!@#$%^&*(){}[];:|`~\"\n\t"]:
-            try:
+            with self.assertRaises(ValidationError, msg=f'Создан клиент с именем "{first_name_test_value}"'):
                 client = Client.objects.create(
                     email="testuser1@test.ru",
                     first_name=first_name_test_value,
                     last_name='Иванов'
                 )
-            except ValidationError:
-                continue
-            else:
+                # вот тут возникает ошибка по замыслу
                 client.delete()
-                assert False, f'Создан клиент с именем "{first_name_test_value}"'
 
     def test_last_name_validators(self):
         for last_name_test_value in ["", "/\\+!@#$%^&*(){}[];:|`~\"\n\t"]:
-            try:
+            with self.assertRaises(ValidationError, msg=f'Создан клиент с фамилией "{last_name_test_value}"'):
                 client = Client.objects.create(
                     email="testuser1@test.ru",
                     first_name="Иван",
                     last_name=last_name_test_value
                 )
-            except ValidationError:
-                continue
-            else:
+                # вот тут возникает ошибка по замыслу
                 client.delete()
-                assert False, f'Создан клиент с фамилией "{last_name_test_value}"'
 
     def test_names_strip(self):
         client = Client.objects.create(
