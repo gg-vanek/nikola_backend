@@ -13,7 +13,6 @@ from django.utils.timezone import now
 from core.models import Pricing
 
 from clients.models import Client
-from houses.services.price_calculators import calculate_reservation_price
 
 logger = logging.getLogger(__name__)
 
@@ -150,6 +149,11 @@ class HouseReservation(models.Model):
         return super().save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
+        self.clean_check_in_datetime()
+        self.clean_check_out_datetime()
+        self.clean_extra_persons_amount()
+
+        from houses.services.price_calculators import calculate_reservation_price
         # если все хорошо, то высчитать цену
         if not self.price:
             self.price = calculate_reservation_price(house=self.house,
@@ -183,4 +187,4 @@ class HouseReservation(models.Model):
             raise ValidationError("Дата и время заезда должны быть строго меньше даты и времени выезда")
 
     def __str__(self):
-        return f'{self.house.name} {self.check_in_datetime}-{self.check_out_datetime}'
+        return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})-({self.check_out_datetime.strftime("%d.%m %H:%M")})'

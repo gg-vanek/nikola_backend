@@ -2,6 +2,7 @@ import logging
 from datetime import date as Date, datetime as Datetime, timedelta
 
 from core.models import Pricing
+from events.models import Event
 from houses.models import House
 
 logger = logging.getLogger(__name__)
@@ -11,6 +12,9 @@ class CheckPosition:
     def __init__(self, name, price):
         self.name = name
         self.price = price
+
+    def __str__(self):
+        return f"{self.name} - {self.price}"
 
 
 class Check:
@@ -23,15 +27,25 @@ class Check:
             self.positions.append(position)
             self.total += position.price
 
+    def full_check_str(self):
+        return '\n'.join([str(position) for position in self.positions] + [str(self)])
+
+    def __str__(self):
+        return f'---{self.total}---'
+
 
 def calculate_reservation_price(house: House | int,
                                 check_in_datetime: Datetime, check_out_datetime: Datetime,
                                 extra_persons_amount: int,
                                 ) -> int:
-    return calculate_reservation_price_check(house,
-                                             check_in_datetime, check_out_datetime,
-                                             extra_persons_amount,
-                                             ).total
+    check = calculate_reservation_price_check(house,
+                                              check_in_datetime, check_out_datetime,
+                                              extra_persons_amount,
+                                              )
+    logger.debug('\n------------------------------------------\n' +
+                 check.full_check_str() +
+                 '\n------------------------------------------\n')
+    return check.total
 
 
 def calculate_reservation_price_check(house: House | int,
@@ -88,13 +102,16 @@ def calculate_reservation_price_check(house: House | int,
 
 def calculate_house_price_by_day(house, day: Date) -> int:
     price = house.base_price
-    # event = Event.filter()
+    events = Event.objects.filter(start_date__lte=day, end_date__gte=day)
 
     if is_holiday(day):
         price *= house.holidays_multiplier
+
+    for event in events:
+        price *= event.multiplier
 
     return round(price, -2)
 
 
 def is_holiday(day: Date):
-    return day.weekday() in [4, 5, 6]
+    return day.weekday() in [5, 6]

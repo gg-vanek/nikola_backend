@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'houses',
     'clients',
+    'events',
 
     # 3-rd party
     'rest_framework',
