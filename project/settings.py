@@ -147,6 +147,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# создание файла для записи логов, если его не существует
+if not os.path.exists(os.path.join(BASE_DIR, "logs", "log.log")):
+    if not os.path.exists(os.path.join(BASE_DIR, "logs")):
+        os.mkdir(os.path.join(BASE_DIR, "logs"))
+    with open(os.path.join(BASE_DIR, "logs", "log.log"), 'w'):
+        pass
+
 LOGGING = {
     'version': 1,
     "disable_existing_loggers": False,
