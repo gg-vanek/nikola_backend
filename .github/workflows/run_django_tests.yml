@@ -2,7 +2,7 @@ name: Run Django Tests
 
 on:
   push:
-    branches: [ "main", "dev"]
+    branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main", "dev" ]
 
@@ -21,7 +21,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [ 3.11 ]
+        python-version: [ 3.12 ]
 
     services:
       database:

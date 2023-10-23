@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'houses',
     'clients',
+    'events',
 
     # 3-rd party
     'rest_framework',
@@ -146,6 +147,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# создание файла для записи логов, если его не существует
+if not os.path.exists(os.path.join(BASE_DIR, "logs", "log.log")):
+    if not os.path.exists(os.path.join(BASE_DIR, "logs")):
+        os.mkdir(os.path.join(BASE_DIR, "logs"))
+    with open(os.path.join(BASE_DIR, "logs", "log.log"), 'w', encoding='utf-8'):
+        pass
+
 LOGGING = {
     'version': 1,
     "disable_existing_loggers": False,
@@ -181,7 +189,7 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'handlers': ['console'],
         }
     }
