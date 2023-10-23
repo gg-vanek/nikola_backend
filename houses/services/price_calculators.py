@@ -19,8 +19,7 @@ class ReceiptPosition:
     def __eq__(self, other):
         if other.__class__ == self.__class__:
             return other.name == self.name and other.price == self.price
-        else:
-            raise NotImplemented
+        return NotImplemented
 
 
 class Receipt:
@@ -46,10 +45,7 @@ class Receipt:
     def __eq__(self, other):
         if other.__class__ == self.__class__:
             return other.total == self.total and other.positions == self.positions
-        elif other.__class__ == dict:
-            pass
-        else:
-            raise NotImplemented
+        return NotImplemented
 
 
 def calculate_reservation_price(house: House | int,
@@ -59,8 +55,8 @@ def calculate_reservation_price(house: House | int,
     receipt = calculate_reservation_price_receipt(house,
                                                   check_in_datetime, check_out_datetime,
                                                   extra_persons_amount, )
-    logger.debug('\n------------------------------------------\n' +
-                 receipt.full_receipt_str() +
+    logger.debug('\n------------------------------------------\n'
+                 f"{receipt.full_receipt_str()}"
                  '\n------------------------------------------\n')
     return receipt.total
 
@@ -69,15 +65,17 @@ def calculate_reservation_price_receipt(house: House | int,
                                         check_in_datetime: Datetime, check_out_datetime: Datetime,
                                         extra_persons_amount: int,
                                         ) -> Receipt:
-    if type(house) == int:
+    if isinstance(house, int):
         house = House.objects.get(pk=house)
 
-    # TODO защита от
-    #  1) отрицательного количество extra_persons_amount
-    #  2) дата выезда меньше даты въезда
-    #  3) некорректное время въезда или выезда
     if extra_persons_amount < 0:
-        extra_persons_amount = 0
+        raise ValueError("Отрицательное количество людей в заявке")
+    if check_in_datetime >= check_out_datetime:
+        raise ValueError("Некорректные дата и время въезда и выезда (въезд позже выезда)")
+    if check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
+        raise ValueError("Некорректное время въезда")
+    if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
+        raise ValueError("Некорректное время выезда")
 
     check_in_date = check_in_datetime.date()
     check_in_time = check_in_datetime.time()

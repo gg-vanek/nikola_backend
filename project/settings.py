@@ -151,7 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 if not os.path.exists(os.path.join(BASE_DIR, "logs", "log.log")):
     if not os.path.exists(os.path.join(BASE_DIR, "logs")):
         os.mkdir(os.path.join(BASE_DIR, "logs"))
-    with open(os.path.join(BASE_DIR, "logs", "log.log"), 'w'):
+    with open(os.path.join(BASE_DIR, "logs", "log.log"), 'w', encoding='utf-8'):
         pass
 
 LOGGING = {

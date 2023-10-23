@@ -38,7 +38,7 @@ class TaskModelTest(TestCase):
                 first_name="Иван",
                 last_name="Иванов",
             )
-            client2 = Client.objects.create(
+            Client.objects.create(
                 email=client1.email,
                 first_name="Иван",
                 last_name="Иванов",

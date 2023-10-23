@@ -112,7 +112,7 @@ class HouseReservation(models.Model):
         "Дополнительное количество человек для проживания в домике",
         default=0,
         validators=[
-            MinValueValidator(0, message=f"В бронировании нельзя указывать отрицательное количество человек"),
+            MinValueValidator(0, message="В бронировании нельзя указывать отрицательное количество человек"),
         ])
 
     price = models.IntegerField("Стоимость", blank=True)
@@ -191,4 +191,5 @@ class HouseReservation(models.Model):
             raise ValidationError("Дата и время заезда должны быть строго меньше даты и времени выезда")
 
     def __str__(self):
-        return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
+        return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
+                                f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'

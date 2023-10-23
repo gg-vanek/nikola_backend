@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from datetime import datetime as Datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils.timezone import now
@@ -7,7 +8,6 @@ from django.utils.timezone import now
 from clients.models import Client
 from events.models import Event
 from houses.models import House, HouseReservation
-from datetime import datetime as Datetime
 
 from houses.services.price_calculators import calculate_reservation_price
 
