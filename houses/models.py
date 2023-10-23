@@ -157,8 +157,8 @@ class HouseReservation(models.Model):
         self.clean_check_out_datetime()
         self.clean_extra_persons_amount()
 
-        from houses.services.price_calculators import calculate_reservation_price
         # если все хорошо, то высчитать цену
+        from houses.services.price_calculators import calculate_reservation_price
         if not self.price:
             self.price = calculate_reservation_price(house=self.house,
                                                      check_in_datetime=self.check_in_datetime,
@@ -167,6 +167,8 @@ class HouseReservation(models.Model):
                                                      )
 
     def clean_extra_persons_amount(self):
+        if self.extra_persons_amount < 0:
+            raise ValidationError("Невозможно заселить отрицательное количество человек в домик")
         if self.house.base_persons_amount + self.extra_persons_amount > self.house.max_persons_amount:
             raise ValidationError(f"Невозможно заселить столько человек в домик: \n"
                                   f"Базовое количество человек: {self.house.base_persons_amount}\n"
