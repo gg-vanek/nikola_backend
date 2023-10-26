@@ -9,7 +9,7 @@ from clients.models import Client
 from events.models import Event
 from houses.models import House, HouseReservation
 
-from houses.services.price_calculators import calculate_reservation_price
+from houses.services.price_calculators import calculate_reservation_receipt
 
 
 class HouseReservationModelTest(TestCase):
@@ -676,7 +676,7 @@ class HouseReservationModelTest(TestCase):
                 **test_params,
             )
             self.assertEqual(reservation.price,
-                             calculate_reservation_price(house=HouseReservationModelTest.house,
-                                                         **test_params))
+                             calculate_reservation_receipt(house=HouseReservationModelTest.house,
+                                                           **test_params).total)
             reservation.delete()
         event.delete()
