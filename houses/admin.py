@@ -21,6 +21,7 @@ class HouseReservationAdmin(admin.ModelAdmin):
                     'check_in_datetime', 'check_out_datetime',
                     'price', 'cancelled',
                     'created_at', 'updated_at',)
+    ordering = ("cancelled", "house", "check_in_datetime")
 
 
 class HouseFeatureAdmin(admin.ModelAdmin):
