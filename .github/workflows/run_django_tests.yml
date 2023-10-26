@@ -16,6 +16,8 @@ jobs:
       POSTGRES_PASSWORD: postgres
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
 
     runs-on: ubuntu-latest
     strategy:
@@ -37,7 +39,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
+      redis:
+        image: library/redis:5.0-alpine
+        ports:
+          - 6379:6379 # очень хотел написать ${{ env.REDIS_PORT }}:5432 но не получилось
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}

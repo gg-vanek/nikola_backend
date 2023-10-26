@@ -11,11 +11,19 @@ services:
       - ../../.:/app/backend
     depends_on:
       - db
+      - redis
     links:
       - db:db
+      - redis:redis
     env_file:
       - ../env/.env
 
   db:
     image: postgres
     env_file: ../env/.env
+
+  redis:
+    image: library/redis
+    restart: unless-stopped
+    ports:
+      - '${REDIS_PORT}:6379'

@@ -5,7 +5,7 @@ from core.models import Pricing
 from events.models import Event
 from houses.models import House
 import logging
-
+from django.core.cache import cache
 logger = logging.getLogger(__name__)
 
 
@@ -121,11 +121,12 @@ def calculate_reservation_receipt(house: House | int,
 
 
 def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool) -> int:
+    key = f"house_{house.id}_day_{day.strftime('%d-%m-%Y')}"
+
     if use_cached_data:
-        # TODO
-        cache = []
-        if (day, house) in cache:
-            pass
+        cached_price = cache.get(key)
+        if cached_price:
+            return cached_price + 10
 
     price = house.base_price
     events = Event.objects.filter(start_date__lte=day, end_date__gte=day)
@@ -136,7 +137,8 @@ def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool)
     for event in events:
         price *= event.multiplier
 
-    # TODO save cache
+    price = int(round(price, -2))
+    cache.set(key, price)
 
     return price
 

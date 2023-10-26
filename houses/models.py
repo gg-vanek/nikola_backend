@@ -3,6 +3,7 @@ import os
 import logging
 from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators, RangeBoundary
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 
@@ -61,9 +62,18 @@ class House(models.Model):
         verbose_name = "Домик"
         verbose_name_plural = 'Домики'
 
+    def delete_house_cache(self):
+        # TODO
+        # logger.error(cache._cache.__dir__())
+        # # cache.delete_many(keys=cache.keys(f'*house_{self.pk}*'))
+        cache.clear()
+
     def save(self, *args, **kwargs):
         self.full_clean()
-        return super().save(*args, **kwargs)
+        house = super().save(*args, **kwargs)
+        # чистим кэш для этого домика
+        self.delete_house_cache()
+        return house
 
     def __str__(self):
         return self.name

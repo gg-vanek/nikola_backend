@@ -1,6 +1,4 @@
-from datetime import datetime as Datetime, timedelta
-
-from django.utils.timezone import now
+from datetime import datetime as Datetime
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -8,13 +6,11 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from core.mixins import ByActionMixin
-from core.models import Pricing
 from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter, FeaturesHousesFilter
 
-from houses.models import House, HouseFeature, HouseReservation
+from houses.models import House, HouseFeature
 from houses.serializers import HouseFeatureListSerializer, HouseListSerializer
 from houses.services.calendar_calculator import calculate_calendar
-from houses.services.price_calculators import calculate_house_price_by_day
 
 
 class HouseViewSet(ByActionMixin,

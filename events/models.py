@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -16,6 +17,10 @@ class Event(models.Model):
     class Meta:
         verbose_name = "Событие"
         verbose_name_plural = 'События'
+
+    def clear_event_cache(self):
+        # TODO
+        cache.clear()
 
     def save(self, *args, **kwargs):
         self.full_clean()

@@ -124,6 +124,17 @@ REST_FRAMEWORK = {
     ],
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}",
+        "TIMEOUT": 10,
+        "OPTIONS": {
+            "db": 0,
+        }
+    }
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -187,8 +198,9 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'handlers': ['console', 'rotating_file_handler'],
+            "propagate": False,  # чтобы не дублировалось в консоли
         }
     }
 }
