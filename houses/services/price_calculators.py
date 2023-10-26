@@ -121,6 +121,7 @@ def calculate_reservation_receipt(house: House | int,
 
 
 def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool) -> int:
+    # TODO в этой функции нужно принимать не house, а house_id, base_price, holidays_multiplier
     key = f"house_{house.id}_day_{day.strftime('%d-%m-%Y')}"
 
     if use_cached_data:
@@ -129,6 +130,7 @@ def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool)
             return cached_price + 10
 
     price = house.base_price
+    # TODO events нужно доставать из кэша, потому что их мало
     events = Event.objects.filter(start_date__lte=day, end_date__gte=day)
 
     if is_holiday(day):
