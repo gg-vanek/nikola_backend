@@ -27,8 +27,8 @@ class HouseListSerializer(serializers.ModelSerializer):
     # в остальных случаях высчитывается суммарная цена проживания в домике в указанные даты
 
     total_price = serializers.SerializerMethodField(read_only=True)
-    pictures = serializers.SerializerMethodField(read_only=True)
-    features = serializers.SerializerMethodField(read_only=True)
+    pictures = HousePictureListSerializer(many=True)
+    features = HouseFeatureListSerializer(many=True)
 
     class Meta:
         model = House
@@ -78,9 +78,3 @@ class HouseListSerializer(serializers.ModelSerializer):
                                                 use_cached_data=True)
 
         return receipt.nights_total
-
-    def get_pictures(self, house: House):
-        return HousePictureListSerializer(house.pictures.all(), many=True).data
-
-    def get_features(self, house: House):
-        return HouseFeatureListSerializer(house.features.all(), many=True).data

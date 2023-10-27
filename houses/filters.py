@@ -62,8 +62,8 @@ class AvailableByDateHousesFilter(BaseFilterBackend):
             check_in_datetime = Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['default'])
             check_out_datetime = Datetime.combine(check_out_date, Pricing.ALLOWED_CHECK_OUT_TIMES['default'])
 
-            q1 = Q(reservations__check_out_datetime__lt=check_in_datetime)
-            q2 = Q(reservations__check_in_datetime__gt=check_out_datetime)
+            q1 = Q(reservations__check_out_datetime__lt=check_in_datetime, reservations__canceled=False)
+            q2 = Q(reservations__check_in_datetime__gt=check_out_datetime, reservations__canceled=False)
             # два условия выше - условия, что очередное бронирование не пересекается с выбранными датами
             # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
             # не равно общему количеству бронирований
