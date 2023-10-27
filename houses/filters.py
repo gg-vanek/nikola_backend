@@ -68,6 +68,7 @@ class AvailableByDateHousesFilter(BaseFilterBackend):
             # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
             # не равно общему количеству бронирований
 
+            # TODO есть queryset.extra позволяющий делать запуск raw SQL
             queryset = queryset.annotate(
                 booked_before=Coalesce(
                     Sum("reservations", filter=Q(q1), distinct=True),
@@ -92,4 +93,4 @@ class AvailableByDateHousesFilter(BaseFilterBackend):
             # также если проблема с порядком дат "now < in < out" попадаем сюда же
             query = Q()
 
-        return queryset.filter(query)
+        return queryset

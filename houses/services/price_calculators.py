@@ -65,20 +65,22 @@ def calculate_reservation_receipt(house: House | int,
                                   check_in_datetime: Datetime, check_out_datetime: Datetime,
                                   extra_persons_amount: int,
                                   use_cached_data: bool = False) -> Receipt:
+    if isinstance(house, int):
+        try:
+            house = House.objects.get(pk=house)
+        except House.DoesNotExist:
+            raise ValueError(f"Некорректный id домика = {house}")
+
     if extra_persons_amount < 0:
         raise ValueError("Отрицательное количество людей в заявке")
+    if extra_persons_amount + house.base_persons_amount > house.max_persons_amount:
+        raise ValueError("Слишком много дополнительных людей в заявке")
     if check_in_datetime >= check_out_datetime:
         raise ValueError("Некорректные дата и время въезда и выезда (въезд позже выезда)")
     if check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
         raise ValueError("Некорректное время въезда")
     if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
         raise ValueError("Некорректное время выезда")
-
-    if isinstance(house, int):
-        try:
-            house = House.objects.get(pk=house)
-        except House.DoesNotExist:
-            raise ValueError(f"Некорректный id домика = {house}")
 
     check_in_date = check_in_datetime.date()
     check_in_time = check_in_datetime.time()

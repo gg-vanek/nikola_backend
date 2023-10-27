@@ -83,7 +83,7 @@ class HouseViewSet(ByActionMixin,
         calendar_start_date = Datetime.strptime(self.request.query_params.get("calendar_start_date"), "%d-%m-%Y").date()
         calendar_end_date = Datetime.strptime(self.request.query_params.get("calendar_end_date"), "%d-%m-%Y").date()
 
-        house = self.filter_queryset(self.get_queryset()).filter(id=self.kwargs['pk'])
+        house = self.queryset.filter(id=self.kwargs['pk'])
 
         return Response({"calendar": calculate_calendar(houses=house,
                                                         calendar_start_date=calendar_start_date,

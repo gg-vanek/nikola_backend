@@ -1,11 +1,7 @@
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.db import models
 
-name_validator = RegexValidator(regex="^[0-9a-zA-Zа-яА-Я ,.'-_]+$",
-                                message='Имя и фамилия должны состоять из только из цифр, "\
-                                        "строчных и заглавных букв русского "\
-                                        "и английского алфавитов, пробелов, а также из символов ",.\'-_")')
+from core.validators import name_validator
 
 
 class Client(models.Model):

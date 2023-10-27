@@ -24,5 +24,17 @@ class Pricing:
 
     ONE_ADULT_EQUAL_X_CHILDREN = 1.5
 
+    @staticmethod
+    def serializable_times_dict(d: dict):
+        serializable_d = {}
+        for k, v in d.items():
+            if isinstance(k, Time):
+                k = k.strftime("%H:%M")
+            if isinstance(v, Time):
+                v = v.strftime("%H:%M")
+            serializable_d[k] = v
+
+        return serializable_d
+
     def __str__(self):
         return "Configuration"
