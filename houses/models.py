@@ -76,7 +76,7 @@ class House(models.Model):
         return house
 
     def __str__(self):
-        return self.name
+        return f"({self.id}) {self.name}"
 
 
 class HousePicture(models.Model):
@@ -152,6 +152,9 @@ class HouseReservation(models.Model):
         verbose_name_plural = 'Брони домиков'
 
     def save(self, *args, **kwargs):
+        # TODO из-за того, что оно (check_datetime_fields) находится здесь (до full_clean) в админке
+        #  при создании неправильного бронирования вместо
+        #  небольшой красной плашки вылетает желтая страница с ошибкой
         self.check_datetime_fields()
         # вызывать эту функцию выше следует именно до full_clean
         # Чтобы если она не проходит, возникала именно ValidationError, а не какая-то другая

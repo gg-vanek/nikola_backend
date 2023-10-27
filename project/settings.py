@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     # 3-rd party
     'rest_framework',
+    'django_admin_listfilter_dropdown',
 ]
 
 MIDDLEWARE = [
