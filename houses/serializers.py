@@ -1,10 +1,20 @@
+from django.core.validators import MinValueValidator
+from django.utils.timezone import now
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from core.models import Pricing
+from django.db.models import Value, IntegerField, Q, F, Count
+from django.db.models.functions import Coalesce
 from houses.models import House, HouseFeature, HousePicture
-from datetime import datetime as Datetime, timedelta
+from datetime import datetime as Datetime
+
+import logging
 
 from houses.services.price_calculators import calculate_reservation_receipt
+from project import settings
+
+logger = logging.getLogger(__name__)
 
 
 class HousePictureListSerializer(serializers.ModelSerializer):
@@ -78,3 +88,71 @@ class HouseListSerializer(serializers.ModelSerializer):
                                                 use_cached_data=True)
 
         return receipt.nights_total
+
+class ReservationPriceParametersSerializer(serializers.Serializer):
+    check_in_datetime = serializers.DateTimeField(input_formats=settings.DATETIME_INPUT_FORMATS,
+                                                  format="%d-%m-%Y %H:%M", required=True)
+    check_out_datetime = serializers.DateTimeField(input_formats=settings.DATETIME_INPUT_FORMATS,
+                                                   format="%d-%m-%Y %H:%M", required=True)
+    extra_persons_amount = serializers.IntegerField(validators=[
+        MinValueValidator(0, message="В бронировании нельзя указывать отрицательное количество человек"),
+    ], required=True)
+
+    class Meta:
+        fields = ('id',
+                  'check_in_datetime',
+                  'check_out_datetime',
+                  'extra_persons_amount',
+                  )
+
+    def validate(self, data):
+        house = self.instance
+
+        check_in_datetime = data["check_in_datetime"]
+        check_out_datetime = data["check_out_datetime"]
+
+        if check_in_datetime >= check_out_datetime:
+            raise ValidationError("Дата заезда должна быть меньше даты выезда")
+        if now().date() >= check_in_datetime.date():
+            raise ValidationError("Дата заезда должна быть больше сегодняшней даты")
+        if check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
+            raise ValidationError("Некорректное время въезда")
+        if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
+            raise ValidationError("Некорректное время выезда")
+
+        q1 = Q(check_out_datetime__lt=check_in_datetime, cancelled=False)
+        q2 = Q(check_in_datetime__gt=check_out_datetime, cancelled=False)
+
+        if house.reservations.annotate(
+                booked_before=Coalesce(
+                    Count("id", filter=Q(q1), distinct=True),
+                    Value(0),
+                    output_field=IntegerField()
+                ),
+                booked_after=Coalesce(
+                    Count("id", filter=Q(q2), distinct=True),
+                    Value(0),
+                    output_field=IntegerField()
+                ),
+                booked_total=Coalesce(
+                    Count("id", distinct=True),
+                    Value(0),
+                    output_field=IntegerField()
+                ),
+                overlapping_reservations=F("booked_total") - F("booked_before") - F("booked_after")
+        ).exclude(overlapping_reservations=0).exists():
+            raise ValidationError("Выбранное время бронирования недоступно. "
+                                  "Попробуйте поставить другое время заезда/выезда, "
+                                  "если дни заезда и выезда в календаре отмечены, как свободные.", )
+
+        try:
+            extra_persons_amount = data["extra_persons_amount"]
+            assert extra_persons_amount >= 0
+        except (ValueError, AssertionError):
+            raise ValidationError("Некорректное extra_persons_amount - "
+                                  "это должно быть целое неотрицательное число")
+        except KeyError:
+            raise ValidationError("Отсутствует extra_persons_amount")
+
+        return data
+

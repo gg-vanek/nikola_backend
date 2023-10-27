@@ -6,11 +6,14 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from core.mixins import ByActionMixin
+from core.models import Pricing
 from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter, FeaturesHousesFilter
 
 from houses.models import House, HouseFeature
-from houses.serializers import HouseFeatureListSerializer, HouseListSerializer
+from houses.serializers import HouseFeatureListSerializer, HouseListSerializer, ReservationPriceParametersSerializer
 from houses.services.calendar_calculator import calculate_calendar
+
+from houses.services.price_calculators import calculate_reservation_receipt
 
 
 class HouseViewSet(ByActionMixin,
@@ -20,6 +23,7 @@ class HouseViewSet(ByActionMixin,
         "default": None,
         "list": HouseListSerializer,
         "calendar": None,
+        "reservation_price": ReservationPriceParametersSerializer,
     }
     queryset = House.objects.all()
 
@@ -88,6 +92,41 @@ class HouseViewSet(ByActionMixin,
         return Response({"calendar": calculate_calendar(houses=house,
                                                         calendar_start_date=calendar_start_date,
                                                         calendar_end_date=calendar_end_date)})
+
+    @action(methods=['get'], url_path='reservation_options', detail=True)
+    def reservation_options(self, request: Request, *args, **kwargs):
+        house = self.queryset.get(id=self.kwargs['pk'])
+
+        return Response({
+            "base_persons_amount": house.base_persons_amount,
+            "max_persons_amount": house.max_persons_amount,
+            "price_per_extra_person": house.price_per_extra_person,
+            "check_in_times": Pricing.serializable_times_dict(d=Pricing.ALLOWED_CHECK_IN_TIMES),
+            "check_out_times": Pricing.serializable_times_dict(d=Pricing.ALLOWED_CHECK_OUT_TIMES),
+        }, status=status.HTTP_200_OK)
+
+    @action(methods=['put'], url_path='reservation_price', detail=True)
+    def reservation_price(self, request: Request, *args, **kwargs):
+        # serializer = self.get_serializer_class()(data=request.data)
+        # serializer.is_valid()
+        # return Response(serializer.validated_data,
+        #                 status=status.HTTP_200_OK)
+
+        house = self.queryset.get(id=self.kwargs['pk'])
+        serializer = self.get_serializer(house, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        receipt = calculate_reservation_receipt(house=house,
+                                                **serializer.validated_data,
+                                                use_cached_data=False)
+        return Response({"receipt": asdict(receipt),
+                         "total": receipt.total,
+                         "house_id": self.kwargs['pk'],
+                         **serializer.validated_data},
+                        status=status.HTTP_200_OK)
+
+    @action(methods=['post'], url_path='new_reservation', detail=True)
+    def new_reservation(self, request: Request, *args, **kwargs):
+        pass
 
 
 class HouseFeatureViewSet(ByActionMixin,
