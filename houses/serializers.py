@@ -89,7 +89,8 @@ class HouseListSerializer(serializers.ModelSerializer):
 
         return receipt.nights_total
 
-class ReservationPriceParametersSerializer(serializers.Serializer):
+
+class HouseReservationParametersSerializer(serializers.Serializer):
     check_in_datetime = serializers.DateTimeField(input_formats=settings.DATETIME_INPUT_FORMATS,
                                                   format="%d-%m-%Y %H:%M", required=True)
     check_out_datetime = serializers.DateTimeField(input_formats=settings.DATETIME_INPUT_FORMATS,
@@ -155,4 +156,3 @@ class ReservationPriceParametersSerializer(serializers.Serializer):
             raise ValidationError("Отсутствует extra_persons_amount")
 
         return data
-

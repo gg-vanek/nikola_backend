@@ -169,11 +169,11 @@ class HouseReservation(models.Model):
         # если все хорошо, то высчитать цену
         from houses.services.price_calculators import calculate_reservation_receipt
         if not self.price:
-            self.price = calculate_reservation_receipt(house=self.house,
-                                                       check_in_datetime=self.check_in_datetime,
-                                                       check_out_datetime=self.check_out_datetime,
-                                                       extra_persons_amount=self.extra_persons_amount,
-                                                       ).total
+            self.receipt = calculate_reservation_receipt(house=self.house,
+                                                         check_in_datetime=self.check_in_datetime,
+                                                         check_out_datetime=self.check_out_datetime,
+                                                         extra_persons_amount=self.extra_persons_amount,)
+            self.price = self.receipt.total
 
     def clean_extra_persons_amount(self):
         if self.extra_persons_amount < 0:

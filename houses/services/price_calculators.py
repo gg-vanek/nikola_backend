@@ -129,7 +129,7 @@ def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool)
     if use_cached_data:
         cached_price = cache.get(key)
         if cached_price:
-            return cached_price + 10
+            return cached_price
 
     price = house.base_price
     # TODO events нужно доставать из кэша, потому что их мало

@@ -1,16 +1,19 @@
 from datetime import datetime as Datetime
+from dataclasses import asdict
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from clients.models import Client
+from clients.serializers import ClientSerializer
 from core.mixins import ByActionMixin
 from core.models import Pricing
 from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter, FeaturesHousesFilter
 
-from houses.models import House, HouseFeature
-from houses.serializers import HouseFeatureListSerializer, HouseListSerializer, ReservationPriceParametersSerializer
+from houses.models import House, HouseFeature, HouseReservation
+from houses.serializers import HouseFeatureListSerializer, HouseListSerializer, HouseReservationParametersSerializer
 from houses.services.calendar_calculator import calculate_calendar
 
 from houses.services.price_calculators import calculate_reservation_receipt
@@ -23,7 +26,8 @@ class HouseViewSet(ByActionMixin,
         "default": None,
         "list": HouseListSerializer,
         "calendar": None,
-        "reservation_price": ReservationPriceParametersSerializer,
+        "reservation_price": HouseReservationParametersSerializer,
+        "new_reservation": HouseReservationParametersSerializer,
     }
     queryset = House.objects.all()
 
@@ -53,12 +57,12 @@ class HouseViewSet(ByActionMixin,
             calendar_end_date = Datetime.strptime(self.request.query_params.get("calendar_end_date"),
                                                   "%d-%m-%Y").date()
         except (TypeError, ValueError):
-            return Response({"detail": "Некорректное значение одной из дат. "
-                                       "Значение должно соответствовать шаблону %d-%m-%Y"},
+            return Response({"error": "Некорректное значение одной из дат. "
+                                      "Значение должно соответствовать шаблону %d-%m-%Y"},
                             status=status.HTTP_400_BAD_REQUEST)
 
         if calendar_end_date < calendar_start_date:
-            return Response({"detail": "calendar_end_date должна быть больше, чем calendar_start_date"},
+            return Response({"error": "calendar_end_date должна быть больше, чем calendar_start_date"},
                             status=status.HTTP_400_BAD_REQUEST)
 
         return None
@@ -107,26 +111,60 @@ class HouseViewSet(ByActionMixin,
 
     @action(methods=['put'], url_path='reservation_price', detail=True)
     def reservation_price(self, request: Request, *args, **kwargs):
-        # serializer = self.get_serializer_class()(data=request.data)
-        # serializer.is_valid()
-        # return Response(serializer.validated_data,
-        #                 status=status.HTTP_200_OK)
-
         house = self.queryset.get(id=self.kwargs['pk'])
-        serializer = self.get_serializer(house, data=request.data)
-        serializer.is_valid(raise_exception=True)
+        reservation_parameters_serializer = self.get_serializer(house, data=request.data)
+        reservation_parameters_serializer.is_valid(raise_exception=True)
         receipt = calculate_reservation_receipt(house=house,
-                                                **serializer.validated_data,
+                                                **reservation_parameters_serializer.validated_data,
                                                 use_cached_data=False)
         return Response({"receipt": asdict(receipt),
                          "total": receipt.total,
                          "house_id": self.kwargs['pk'],
-                         **serializer.validated_data},
+                         **reservation_parameters_serializer.validated_data},
                         status=status.HTTP_200_OK)
 
     @action(methods=['post'], url_path='new_reservation', detail=True)
     def new_reservation(self, request: Request, *args, **kwargs):
-        pass
+        house = self.queryset.get(id=self.kwargs['pk'])
+
+        client_serializer = ClientSerializer(data=request.data)
+        client_serializer.is_valid(raise_exception=True)
+        try:
+            client = Client.objects.get(email=client_serializer.validated_data["email"])
+            if client.first_name != client_serializer.validated_data["first_name"] or \
+                    client.last_name != client_serializer.validated_data["last_name"]:
+                pass  # TODO
+        except Client.DoesNotExist:
+            client = client_serializer.create(client_serializer.validated_data)
+            client.save()
+
+        reservation_parameters_serializer = self.get_serializer(house, data=request.data)
+        reservation_parameters_serializer.is_valid(raise_exception=True)
+
+        try:
+            preferred_contact = request.data["preferred_contact"]
+            comment = request.data.get("comment", ' ')
+        except KeyError:
+            return Response({"error": "Поле preferred_contact не должно быть пустым"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        reservation = HouseReservation.objects.create(client=client,
+                                                      house=house,
+                                                      preferred_contact=preferred_contact,
+                                                      comment=comment,
+                                                      **reservation_parameters_serializer.validated_data)
+        receipt = reservation.receipt
+
+        # TODO celery
+        # TODO email notification (also via celery)
+
+        return Response({"receipt": asdict(receipt),
+                         "total": receipt.total,
+                         "house_id": self.kwargs['pk'],
+                         **reservation_parameters_serializer.validated_data,
+                         "preferred_contact": preferred_contact,
+                         "comment": comment},
+                        status=status.HTTP_201_CREATED)
 
 
 class HouseFeatureViewSet(ByActionMixin,
