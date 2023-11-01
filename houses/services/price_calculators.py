@@ -148,6 +148,16 @@ def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool)
 
 
 def is_holiday(day: Date) -> bool:
-    # TODO добавить запрос по апи к официальным ресурсам
-    #  добавить кэширование
+    # код ниже очень долго работает. Никто не будет 15 секунд ждать календарь
+
+    # cached_day = cache.get(day)
+    # if cached_day:
+    #     return cached_day
+    #
+    # # logger.error(requests.get("https://isdayoff.ru/"+day.strftime("%Y-%m-%d")).text)
+    # is_holiday_flag = bool(int(requests.get("https://isdayoff.ru/"+day.strftime("%Y-%m-%d")).text))
+    #
+    # cache.set(day, is_holiday_flag, timeout=60*60*12)  # раз в 12 часов будет эта инфа обновляться
+    #
+    # return is_holiday_flag
     return day.weekday() in [5, 6]

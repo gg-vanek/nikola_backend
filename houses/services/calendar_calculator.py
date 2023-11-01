@@ -6,7 +6,7 @@ from django.utils.timezone import now
 
 from core.models import Pricing
 from houses.models import HouseReservation, House
-from houses.services.price_calculators import calculate_house_price_by_day
+from houses.services.price_calculators import calculate_house_price_by_day, is_holiday
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,9 @@ def calculate_calendar(houses: list[House] | QuerySet[House],
         if day <= now().date():
             # не показываем цены домиков в уже прошедшие дни
             # все равно их нельзя забронировать :)
-            calendar[day.strftime("%d-%m-%Y")] = {'price': None}
+            calendar[day.strftime("%d-%m-%Y")] = {'price': None,
+                                                  'weekday': day.weekday(),
+                                                  'is_holiday': is_holiday(day)}
         else:
             minimum_day_price = None
             # если в этот день не будет свободных домиков, то цена так и останется None
@@ -46,7 +48,9 @@ def calculate_calendar(houses: list[House] | QuerySet[House],
                 else:
                     minimum_day_price = house_day_price
 
-            calendar[day.strftime("%d-%m-%Y")] = {'price': minimum_day_price}
+            calendar[day.strftime("%d-%m-%Y")] = {'price': minimum_day_price,
+                                                  'weekday': day.weekday(),
+                                                  'is_holiday': is_holiday(day)}
         day += timedelta(days=1)
 
     return calendar
