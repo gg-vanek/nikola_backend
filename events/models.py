@@ -19,7 +19,6 @@ class Event(models.Model):
         verbose_name_plural = 'События'
 
     def clear_event_cache(self):
-        # TODO
         cache.clear()
 
     def save(self, *args, **kwargs):

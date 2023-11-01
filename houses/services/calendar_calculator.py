@@ -13,12 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 def calculate_calendar(houses: list[House] | QuerySet[House],
-                       calendar_start_date: Date,
-                       calendar_end_date: Date) -> dict[str: dict[str: int | None]]:
+                       year: int,
+                       month: int) -> dict[str: dict[str: int | None]]:
     calendar = {}
-    day = calendar_start_date
+    day = Date(year=year, month=month, day=1)
+    end_day = Date(year=year + month // 12, month=month % 12 + 1, day=1)  # просто первый день следующего месяца
 
-    while day <= calendar_end_date:
+    while day < end_day:
         if day <= now().date():
             # не показываем цены домиков в уже прошедшие дни
             # все равно их нельзя забронировать :)
@@ -28,7 +29,8 @@ def calculate_calendar(houses: list[House] | QuerySet[House],
             # если в этот день не будет свободных домиков, то цена так и останется None
             q = Q(
                 reservations__check_in_datetime__lte=Datetime.combine(day, Pricing.ALLOWED_CHECK_IN_TIMES['default']),
-                reservations__check_out_datetime__gte=Datetime.combine(day, Pricing.ALLOWED_CHECK_OUT_TIMES['default'])
+                reservations__check_out_datetime__gte=Datetime.combine(day, Pricing.ALLOWED_CHECK_OUT_TIMES['default']),
+                reservations__cancelled=False,
             )
             for house in houses.annotate(
                     overlapping_reservations=Coalesce(

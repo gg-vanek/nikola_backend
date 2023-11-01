@@ -202,5 +202,9 @@ class HouseReservation(models.Model):
             raise ValidationError("Дата и время заезда должны быть строго меньше даты и времени выезда")
 
     def __str__(self):
-        return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
-               f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
+        if self.house:
+            return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
+                   f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
+        else:
+            return f'{self.house} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
+                   f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'

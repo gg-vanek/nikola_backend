@@ -148,4 +148,6 @@ def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool)
 
 
 def is_holiday(day: Date) -> bool:
+    # TODO добавить запрос по апи к официальным ресурсам
+    #  добавить кэширование
     return day.weekday() in [5, 6]

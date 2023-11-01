@@ -10,7 +10,7 @@ from clients.models import Client
 from clients.serializers import ClientSerializer
 from core.mixins import ByActionMixin
 from core.models import Pricing
-from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter, FeaturesHousesFilter
+from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter
 
 from houses.models import House, HouseFeature, HouseReservation
 from houses.serializers import HouseFeatureListSerializer, HouseListSerializer, HouseReservationParametersSerializer
@@ -33,7 +33,7 @@ class HouseViewSet(ByActionMixin,
 
     filter_backends = [
         MaxPersonsAmountHousesFilter,
-        FeaturesHousesFilter,
+        # FeaturesHousesFilter,
         AvailableByDateHousesFilter,
     ]
 
@@ -52,50 +52,43 @@ class HouseViewSet(ByActionMixin,
         self.request.query_params._mutable = _mutable
 
         try:
-            calendar_start_date = Datetime.strptime(self.request.query_params.get("calendar_start_date"),
-                                                    "%d-%m-%Y").date()
-            calendar_end_date = Datetime.strptime(self.request.query_params.get("calendar_end_date"),
-                                                  "%d-%m-%Y").date()
-        except (TypeError, ValueError):
-            return Response({"error": "Некорректное значение одной из дат. "
-                                      "Значение должно соответствовать шаблону %d-%m-%Y"},
+            month = int(self.request.query_params.get("month"))
+            assert 1 <= month <= 12
+            year = int(self.request.query_params.get("year"))
+        except (TypeError, ValueError, AssertionError):
+            return Response({"error": "month и year должны быть целыми положительными числами. "
+                                      "Номер месяца не может быть меньше 1 или больше 12"},
                             status=status.HTTP_400_BAD_REQUEST)
-
-        if calendar_end_date < calendar_start_date:
-            return Response({"error": "calendar_end_date должна быть больше, чем calendar_start_date"},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        return None
 
     @action(methods=['get'], url_path='calendar', detail=False)
     def calendar(self, request: Request, *args, **kwargs):
-        check = self.calendar_clean_and_check_request()
-        if check:
-            return check
+        error_message_response = self.calendar_clean_and_check_request()
+        if error_message_response:
+            return error_message_response
 
-        calendar_start_date = Datetime.strptime(self.request.query_params.get("calendar_start_date"), "%d-%m-%Y").date()
-        calendar_end_date = Datetime.strptime(self.request.query_params.get("calendar_end_date"), "%d-%m-%Y").date()
+        month = int(self.request.query_params.get("month"))
+        year = int(self.request.query_params.get("year"))
 
         houses = self.filter_queryset(self.get_queryset())
 
         return Response({"calendar": calculate_calendar(houses=houses,
-                                                        calendar_start_date=calendar_start_date,
-                                                        calendar_end_date=calendar_end_date)})
+                                                        year=year,
+                                                        month=month)})
 
     @action(methods=['get'], url_path='calendar', detail=True)
     def single_house_calendar(self, request: Request, *args, **kwargs):
-        check = self.calendar_clean_and_check_request()
-        if check:
-            return check
+        error_message_response = self.calendar_clean_and_check_request()
+        if error_message_response:
+            return error_message_response
 
-        calendar_start_date = Datetime.strptime(self.request.query_params.get("calendar_start_date"), "%d-%m-%Y").date()
-        calendar_end_date = Datetime.strptime(self.request.query_params.get("calendar_end_date"), "%d-%m-%Y").date()
+        month = int(self.request.query_params.get("month"))
+        year = int(self.request.query_params.get("year"))
 
         house = self.queryset.filter(id=self.kwargs['pk'])
 
         return Response({"calendar": calculate_calendar(houses=house,
-                                                        calendar_start_date=calendar_start_date,
-                                                        calendar_end_date=calendar_end_date)})
+                                                        year=year,
+                                                        month=month)})
 
     @action(methods=['get'], url_path='reservation_options', detail=True)
     def reservation_options(self, request: Request, *args, **kwargs):
@@ -155,7 +148,8 @@ class HouseViewSet(ByActionMixin,
                                                       **reservation_parameters_serializer.validated_data)
         receipt = reservation.receipt
 
-        # TODO celery
+        # TODO celery --- cancel if not approved payment
+        # TODO telegram notification
         # TODO email notification (also via celery)
 
         return Response({"receipt": asdict(receipt),
