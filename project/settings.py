@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     # 3-rd party
     'rest_framework',
+    'django_admin_listfilter_dropdown',
 ]
 
 MIDDLEWARE = [
@@ -122,8 +123,17 @@ REST_FRAMEWORK = {
         # То же самое с группой url'ов api-auth
         'rest_framework.authentication.BasicAuthentication',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 20
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}",
+        "TIMEOUT": 60,
+        "OPTIONS": {
+            "db": 0,
+        }
+    }
 }
 
 # Internationalization
@@ -136,6 +146,26 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+DATETIME_INPUT_FORMATS = [
+    "%d-%m-%Y %H:%M:%S",
+    "%d-%m-%Y %H:%M:%S.%f",
+    "%d-%m-%Y %H:%M",
+    "%d/%m/%Y %H:%M:%S",
+    "%d/%m/%Y %H:%M:%S.%f",
+    "%d/%m/%Y %H:%M",
+    "%d/%m/%Y %H:%M:%S",
+    "%d/%m/%Y %H:%M:%S.%f",
+    "%d/%m/%Y %H:%M",
+    "%d-%m-%YT%H:%M:%S",
+    "%d-%m-%YT%H:%M:%S.%f",
+    "%d-%m-%YT%H:%M",
+    "%d/%m/%YT%H:%M:%S",
+    "%d/%m/%YT%H:%M:%S.%f",
+    "%d/%m/%YT%H:%M",
+    "%d/%m/%YT%H:%M:%S",
+    "%d/%m/%YT%H:%M:%S.%f",
+    "%d/%m/%YT%H:%M",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -189,8 +219,9 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'INFO',
-            'handlers': ['console'],
+            'level': 'DEBUG',
+            'handlers': ['console', 'rotating_file_handler'],
+            "propagate": False,  # чтобы не дублировалось в консоли
         }
     }
 }

@@ -2,24 +2,21 @@ import os
 
 import logging
 from django.contrib.postgres.constraints import ExclusionConstraint
-from django.contrib.postgres.fields import RangeOperators, RangeBoundary, DateTimeRangeField
+from django.contrib.postgres.fields import RangeOperators, RangeBoundary
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 
 from django.db import models
-from django.db.models import Func, Q
+from django.db.models import Q
 from django.utils.timezone import now
 
 from core.models import Pricing
 
 from clients.models import Client
+from houses.services.sql_functions import TsTzRange
 
 logger = logging.getLogger(__name__)
-
-
-class TsTzRange(Func):
-    function = "TSTZRANGE"
-    output_field = DateTimeRangeField()
 
 
 def generate_house_picture_filename(instance, filename):
@@ -65,12 +62,21 @@ class House(models.Model):
         verbose_name = "Домик"
         verbose_name_plural = 'Домики'
 
+    def delete_house_cache(self):
+        # TODO
+        # logger.error(cache._cache.__dir__())
+        # # cache.delete_many(keys=cache.keys(f'*house_{self.pk}*'))
+        cache.clear()
+
     def save(self, *args, **kwargs):
         self.full_clean()
-        return super().save(*args, **kwargs)
+        house = super().save(*args, **kwargs)
+        # чистим кэш для этого домика
+        self.delete_house_cache()
+        return house
 
     def __str__(self):
-        return self.name
+        return f"({self.id}) {self.name}"
 
 
 class HousePicture(models.Model):
@@ -125,6 +131,8 @@ class HouseReservation(models.Model):
     created_at = models.DateTimeField("Время создания бронирования", auto_now_add=True)
     updated_at = models.DateTimeField("Время последнего изменения бронирования", auto_now=True)
 
+    receipt = None
+
     class Meta:
         # https://runebook.dev/ru/docs/django/ref/contrib/postgres/constraints
         # ctrl+f exclude_overlapping_reservations
@@ -146,6 +154,9 @@ class HouseReservation(models.Model):
         verbose_name_plural = 'Брони домиков'
 
     def save(self, *args, **kwargs):
+        # TODO из-за того, что оно (check_datetime_fields) находится здесь (до full_clean) в админке
+        #  при создании неправильного бронирования вместо
+        #  небольшой красной плашки вылетает желтая страница с ошибкой
         self.check_datetime_fields()
         # вызывать эту функцию выше следует именно до full_clean
         # Чтобы если она не проходит, возникала именно ValidationError, а не какая-то другая
@@ -158,13 +169,13 @@ class HouseReservation(models.Model):
         self.clean_extra_persons_amount()
 
         # если все хорошо, то высчитать цену
-        from houses.services.price_calculators import calculate_reservation_price
+        from houses.services.price_calculators import calculate_reservation_receipt
         if not self.price:
-            self.price = calculate_reservation_price(house=self.house,
-                                                     check_in_datetime=self.check_in_datetime,
-                                                     check_out_datetime=self.check_out_datetime,
-                                                     extra_persons_amount=self.extra_persons_amount,
-                                                     )
+            self.receipt = calculate_reservation_receipt(house=self.house,
+                                                         check_in_datetime=self.check_in_datetime,
+                                                         check_out_datetime=self.check_out_datetime,
+                                                         extra_persons_amount=self.extra_persons_amount,)
+            self.price = self.receipt.total
 
     def clean_extra_persons_amount(self):
         if self.extra_persons_amount < 0:
@@ -193,5 +204,8 @@ class HouseReservation(models.Model):
             raise ValidationError("Дата и время заезда должны быть строго меньше даты и времени выезда")
 
     def __str__(self):
-        return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
-                                f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
+        if self.house:
+            return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
+                   f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
+        return f'{self.house} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
+               f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'

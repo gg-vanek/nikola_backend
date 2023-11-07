@@ -8,8 +8,7 @@ from clients.models import Client
 from events.models import Event
 from houses.models import House, HouseReservation
 
-from houses.services.price_calculators import calculate_reservation_price, \
-    calculate_reservation_price_receipt, Receipt, ReceiptPosition
+from houses.services.price_calculators import calculate_reservation_receipt, Receipt, ReceiptPosition
 
 
 class PriceGenerationTest(TestCase):
@@ -150,80 +149,9 @@ class PriceGenerationTest(TestCase):
 
             self.assertEqual(reservation.price,
                              test_parameters["expected_price"])
-            self.assertEqual(calculate_reservation_price(**test_parameters["reservation_parameters"]),
-                             test_parameters["expected_price"])
-            self.assertEqual(calculate_reservation_price_receipt(**test_parameters["reservation_parameters"]).total,
-                             test_parameters["expected_price"])
 
             # reservation.delete() удалять бронирования не надо - они по замыслу не пересекаются
         event.delete()
-
-    def test_price_calculation_func(self):
-        cls = PriceGenerationTest
-        Event.objects.create(
-            name="Событие",
-            multiplier=4,
-            start_date=(cls.saturday + timedelta(days=12)).date(),
-            end_date=(cls.saturday + timedelta(days=15)).date(),
-        )
-        for test_parameters in [
-            {
-                "reservation_parameters": {
-                    "house": cls.house1,
-                    "check_in_datetime": cls.default_check_in + timedelta(days=1),
-                    "check_out_datetime": cls.default_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
-                },
-                "expected_price": 10_000,
-            },
-            {
-                "reservation_parameters": {
-                    "house": cls.house2,
-                    "check_in_datetime": cls.early_check_in + timedelta(days=1),
-                    "check_out_datetime": cls.default_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
-                },
-                "expected_price": 17_600,
-            },
-            {
-                "reservation_parameters": {
-                    "house": cls.house3,
-                    "check_in_datetime": cls.default_check_in + timedelta(days=1),
-                    "check_out_datetime": cls.late_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
-                },
-                "expected_price": 23_000,
-            },
-            {
-                "reservation_parameters": {
-                    "house": cls.house3,
-                    "check_in_datetime": cls.early_check_in + timedelta(days=5),
-                    "check_out_datetime": cls.late_check_out + timedelta(days=8),
-                    "extra_persons_amount": 2,
-                },
-                "expected_price": 77_000,
-            },
-            {
-                "reservation_parameters": {
-                    "house": cls.house1,
-                    "check_in_datetime": cls.early_check_in + timedelta(days=10),
-                    "check_out_datetime": cls.late_check_out + timedelta(days=13),
-                    "extra_persons_amount": 1,
-                },
-                "expected_price": 58_500,
-            },
-            {
-                "reservation_parameters": {
-                    "house": cls.house3,
-                    "check_in_datetime": cls.default_check_in + timedelta(days=11),
-                    "check_out_datetime": cls.late_check_out + timedelta(days=15),
-                    "extra_persons_amount": 3,
-                },
-                "expected_price": 300_000,
-            },
-        ]:
-            self.assertEqual(calculate_reservation_price(**test_parameters["reservation_parameters"]),
-                             test_parameters["expected_price"])
 
     def test_receipt_generation_func(self):
         cls = PriceGenerationTest
@@ -243,17 +171,13 @@ class PriceGenerationTest(TestCase):
                 },
                 "expected_price": 10_000,
                 "expected_receipt": Receipt(
-                    positions=[
+                    nights=[
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=2 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=2)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=2)).date(),
                             price=5_000
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=3 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=3)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=3)).date(),
                             price=5_000
                         ),
                     ]
@@ -268,22 +192,21 @@ class PriceGenerationTest(TestCase):
                 },
                 "expected_price": 17_600,
                 "expected_receipt": Receipt(
-                    positions=[
+                    extra_services=[
                         ReceiptPosition(
-                            name=f"Ранний въезд "
-                                 f"{(cls.early_check_in + timedelta(days=1)).strftime('%d.%m (%H:%M)')}",
+                            date=(cls.early_check_in + timedelta(days=1)).date(),
+                            time=(cls.early_check_in + timedelta(days=1)).time(),
+                            type="early_check_in",
                             price=3_600
-                        ),
+                        )
+                    ],
+                    nights=[
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=2 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=2)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=2)).date(),
                             price=7_000
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=3 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=3)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=3)).date(),
                             price=7_000
                         ),
                     ]
@@ -298,23 +221,22 @@ class PriceGenerationTest(TestCase):
                 },
                 "expected_price": 23_000,
                 "expected_receipt": Receipt(
-                    positions=[
+                    extra_services=[
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=2 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=2)).strftime('%d.%m')}",
-                            price=10_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=3 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=3)).strftime('%d.%m')}",
-                            price=10_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Поздний выезд "
-                                 f"{(cls.late_check_out + timedelta(days=3)).strftime('%d.%m (%H:%M)')}",
+                            date=(cls.late_check_out + timedelta(days=3)).date(),
+                            time=(cls.late_check_out + timedelta(days=3)).time(),
+                            type="late_check_out",
                             price=3_000
+                        ),
+                    ],
+                    nights=[
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=2)).date(),
+                            price=10_000
+                        ),
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=3)).date(),
+                            price=10_000
                         ),
                     ]
                 )
@@ -328,34 +250,32 @@ class PriceGenerationTest(TestCase):
                 },
                 "expected_price": 77_000,
                 "expected_receipt": Receipt(
-                    positions=[
+                    extra_services=[
                         ReceiptPosition(
-                            name=f"Ранний въезд "
-                                 f"{(cls.early_check_in + timedelta(days=5)).strftime('%d.%m (%H:%M)')}",
+                            date=(cls.early_check_in + timedelta(days=5)).date(),
+                            time=(cls.early_check_in + timedelta(days=5)).time(),
+                            type="early_check_in",
                             price=3_000
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=6 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=6)).strftime('%d.%m')}",
+                            date=(cls.late_check_out + timedelta(days=8)).date(),
+                            time=(cls.late_check_out + timedelta(days=8)).time(),
+                            type="late_check_out",
+                            price=6_000
+                        ),
+                    ],
+                    nights=[
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=6)).date(),
                             price=16_000
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=7 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=7)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=7)).date(),
                             price=26_000
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=8 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=8)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=8)).date(),
                             price=26_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Поздний выезд "
-                                 f"{(cls.late_check_out + timedelta(days=8)).strftime('%d.%m (%H:%M)')}",
-                            price=6_000
                         ),
                     ]
                 )
@@ -369,34 +289,32 @@ class PriceGenerationTest(TestCase):
                 },
                 "expected_price": 58_500,
                 "expected_receipt": Receipt(
-                    positions=[
+                    extra_services=[
                         ReceiptPosition(
-                            name=f"Ранний въезд "
-                                 f"{(cls.early_check_in + timedelta(days=10)).strftime('%d.%m (%H:%M)')}",
+                            date=(cls.early_check_in + timedelta(days=10)).date(),
+                            time=(cls.early_check_in + timedelta(days=10)).time(),
+                            type="early_check_in",
                             price=1_500
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=11 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=11)).strftime('%d.%m')}",
+                            date=(cls.late_check_out + timedelta(days=13)).date(),
+                            time=(cls.late_check_out + timedelta(days=13)).time(),
+                            type="late_check_out",
+                            price=6_000
+                        ),
+                    ],
+                    nights=[
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=11)).date(),
                             price=7_000
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=12 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=12)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=12)).date(),
                             price=22_000
                         ),
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=13 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=13)).strftime('%d.%m')}",
+                            date=(cls.default_check_in + timedelta(days=13)).date(),
                             price=22_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Поздний выезд "
-                                 f"{(cls.late_check_out + timedelta(days=13)).strftime('%d.%m (%H:%M)')}",
-                            price=6_000
                         ),
                     ]
                 )
@@ -410,48 +328,42 @@ class PriceGenerationTest(TestCase):
                 },
                 "expected_price": 300_000,
                 "expected_receipt": Receipt(
-                    positions=[
+                    extra_services=[
                         ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=12 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=12)).strftime('%d.%m')}",
-                            price=49_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=13 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=13)).strftime('%d.%m')}",
-                            price=49_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=14 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=14)).strftime('%d.%m')}",
-                            price=89_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Ночь "
-                                 f"{(cls.default_check_in + timedelta(days=15 - 1)).strftime('%d.%m')}-"
-                                 f"{(cls.default_check_in + timedelta(days=15)).strftime('%d.%m')}",
-                            price=89_000
-                        ),
-                        ReceiptPosition(
-                            name=f"Поздний выезд "
-                                 f"{(cls.late_check_out + timedelta(days=15)).strftime('%d.%m (%H:%M)')}",
+                            date=(cls.late_check_out + timedelta(days=15)).date(),
+                            time=(cls.late_check_out + timedelta(days=15)).time(),
+                            type="late_check_out",
                             price=24_000
+                        ),
+                    ],
+                    nights=[
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=12)).date(),
+                            price=49_000
+                        ),
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=13)).date(),
+                            price=49_000
+                        ),
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=14)).date(),
+                            price=89_000
+                        ),
+                        ReceiptPosition(
+                            date=(cls.default_check_in + timedelta(days=15)).date(),
+                            price=89_000
                         ),
                     ]
                 )
             },
         ]:
-            receipt = calculate_reservation_price_receipt(**test_parameters["reservation_parameters"])
-            self.assertEqual(receipt.total,
-                             test_parameters["expected_price"])
+            receipt = calculate_reservation_receipt(**test_parameters["reservation_parameters"])
+            self.assertEqual(receipt.total, test_parameters["expected_price"])
             self.assertEqual(receipt,
                              test_parameters["expected_receipt"],
-                             msg=f"\n{receipt.full_receipt_str()}\n"
+                             msg=f"\n{receipt}\n"
                                  f"---------\n"
-                                 f"{test_parameters['expected_receipt'].full_receipt_str()}")
+                                 f"{test_parameters['expected_receipt']}")
 
             # reservation.delete() удалять бронирования не надо - они по замыслу не пересекаются
         event.delete()

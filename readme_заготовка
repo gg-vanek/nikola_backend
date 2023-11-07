@@ -1,10 +1,11 @@
 Запуск линтера
-pylint --rcfile=config/pylint/django.pylintrc $(git ls-files '*.py')
+  - pylint --rcfile=config/pylint/django.pylintrc $(git ls-files '*.py')
 
 Запуск проекта
-docker compose -f .\config\docker\docker-compose.yml --env-file .\config\env\.env up --build
+  - docker compose -f .\config\docker\docker-compose.yml --env-file .\config\env\.env up --build
 
-Если не проходят миграции и ругается на GIST, то нужно провалиться в контейнер с бд и запустить по очереди команды
-su - postgres
-psql
-CREATE EXTENSION btree_gist;
+Текст ниже неактуален - я включил эту процедуру в миграции
+  - Если не проходят миграции и ругается на GIST, то нужно провалиться в контейнер с бд и запустить по очереди команды
+    su - postgres
+    psql
+    CREATE EXTENSION btree_gist;
