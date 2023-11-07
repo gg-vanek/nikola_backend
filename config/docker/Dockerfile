@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.12
 
 LABEL maintainer="vanek"
 LABEL t="backend"
@@ -8,8 +8,6 @@ COPY ../.. .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-
-RUN python manage.py wait_for_db
 
 RUN chmod +x ./config/scripts/entrypoint.sh
 ENTRYPOINT ["/bin/bash", "./config/scripts/entrypoint.sh"]

@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
 from pathlib import Path
 import os
 
@@ -30,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,9 +41,13 @@ INSTALLED_APPS = [
 
     # local
     'core',
+    'houses',
+    'clients',
+    'events',
 
     # 3-rd party
     'rest_framework',
+    'django_admin_listfilter_dropdown',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +80,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -93,7 +94,6 @@ DATABASES = {
         'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -123,8 +123,17 @@ REST_FRAMEWORK = {
         # То же самое с группой url'ов api-auth
         'rest_framework.authentication.BasicAuthentication',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 20
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}",
+        "TIMEOUT": 60,
+        "OPTIONS": {
+            "db": 0,
+        }
+    }
 }
 
 # Internationalization
@@ -137,7 +146,26 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
+DATETIME_INPUT_FORMATS = [
+    "%d-%m-%Y %H:%M:%S",
+    "%d-%m-%Y %H:%M:%S.%f",
+    "%d-%m-%Y %H:%M",
+    "%d/%m/%Y %H:%M:%S",
+    "%d/%m/%Y %H:%M:%S.%f",
+    "%d/%m/%Y %H:%M",
+    "%d/%m/%Y %H:%M:%S",
+    "%d/%m/%Y %H:%M:%S.%f",
+    "%d/%m/%Y %H:%M",
+    "%d-%m-%YT%H:%M:%S",
+    "%d-%m-%YT%H:%M:%S.%f",
+    "%d-%m-%YT%H:%M",
+    "%d/%m/%YT%H:%M:%S",
+    "%d/%m/%YT%H:%M:%S.%f",
+    "%d/%m/%YT%H:%M",
+    "%d/%m/%YT%H:%M:%S",
+    "%d/%m/%YT%H:%M:%S.%f",
+    "%d/%m/%YT%H:%M",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -148,6 +176,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# создание файла для записи логов, если его не существует
+if not os.path.exists(os.path.join(BASE_DIR, "logs", "log.log")):
+    if not os.path.exists(os.path.join(BASE_DIR, "logs")):
+        os.mkdir(os.path.join(BASE_DIR, "logs"))
+    with open(os.path.join(BASE_DIR, "logs", "log.log"), 'w', encoding='utf-8'):
+        pass
 
 LOGGING = {
     'version': 1,
@@ -185,7 +220,8 @@ LOGGING = {
         },
         'django.db.backends': {
             'level': 'DEBUG',
-            'handlers': ['console'],
+            'handlers': ['console', 'rotating_file_handler'],
+            "propagate": False,  # чтобы не дублировалось в консоли
         }
     }
 }
