@@ -1,15 +1,14 @@
-from django.core.validators import MinValueValidator
-from django.utils.timezone import now
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-
-from core.models import Pricing
-from django.db.models import Value, IntegerField, Q, F, Count
-from django.db.models.functions import Coalesce
-from houses.models import House, HouseFeature, HousePicture
 from datetime import datetime as Datetime
 
 import logging
+from django.core.validators import MinValueValidator
+from django.db.models import Value, IntegerField, Q, F, Count
+from django.db.models.functions import Coalesce
+from django.utils.timezone import now
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from core.models import Pricing
+from houses.models import House, HouseFeature, HousePicture
 
 from houses.services.price_calculators import calculate_reservation_receipt
 from project import settings
@@ -52,10 +51,8 @@ class HouseListSerializer(serializers.ModelSerializer):
     def get_total_price(self, house: House) -> int | None:
         query_params = self.context["request"].query_params
         try:
-            check_in_date = Datetime.strptime(query_params.get("check_in_date"),
-                                              "%d-%m-%Y").date()
-            check_out_date = Datetime.strptime(query_params.get("check_out_date"),
-                                               "%d-%m-%Y").date()
+            check_in_date = Datetime.strptime(query_params.get("check_in_date"), "%d-%m-%Y").date()
+            check_out_date = Datetime.strptime(query_params.get("check_out_date"), "%d-%m-%Y").date()
         except (ValueError, TypeError):
             # если нет какой-то из дат - мы не можем высчитать суммарную цену бронирования
             return None
@@ -106,11 +103,11 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                   'extra_persons_amount',
                   )
 
-    def validate(self, data):
+    def validate(self, attrs):
         house = self.instance
 
-        check_in_datetime = data["check_in_datetime"]
-        check_out_datetime = data["check_out_datetime"]
+        check_in_datetime = attrs["check_in_datetime"]
+        check_out_datetime = attrs["check_out_datetime"]
 
         if check_in_datetime >= check_out_datetime:
             raise ValidationError("Дата заезда должна быть меньше даты выезда")
@@ -147,12 +144,12 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                                   "если дни заезда и выезда в календаре отмечены, как свободные.", )
 
         try:
-            extra_persons_amount = data["extra_persons_amount"]
+            extra_persons_amount = attrs["extra_persons_amount"]
             assert extra_persons_amount >= 0
-        except (ValueError, AssertionError):
+        except (ValueError, AssertionError) as e:
             raise ValidationError("Некорректное extra_persons_amount - "
-                                  "это должно быть целое неотрицательное число")
-        except KeyError:
-            raise ValidationError("Отсутствует extra_persons_amount")
+                                  "это должно быть целое неотрицательное число") from e
+        except KeyError as e:
+            raise ValidationError("Отсутствует extra_persons_amount") from e
 
-        return data
+        return attrs

@@ -16,7 +16,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         house_id = None
         client_id = None
-        self.stdout.write(f'Generating house reservations ...')
+        self.stdout.write('Generating house reservations ...')
 
         if house_id is None:
             house = House.objects.create(

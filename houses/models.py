@@ -131,6 +131,8 @@ class HouseReservation(models.Model):
     created_at = models.DateTimeField("Время создания бронирования", auto_now_add=True)
     updated_at = models.DateTimeField("Время последнего изменения бронирования", auto_now=True)
 
+    receipt = None
+
     class Meta:
         # https://runebook.dev/ru/docs/django/ref/contrib/postgres/constraints
         # ctrl+f exclude_overlapping_reservations
@@ -205,6 +207,5 @@ class HouseReservation(models.Model):
         if self.house:
             return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
                    f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
-        else:
-            return f'{self.house} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
-                   f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
+        return f'{self.house} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
+               f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'

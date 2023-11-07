@@ -1,13 +1,13 @@
 from datetime import datetime as Datetime, date as Date, timedelta
 
+import logging
 from django.db.models import QuerySet, Q, IntegerField, Value, Sum
 from django.db.models.functions import Coalesce
 from django.utils.timezone import now
 
 from core.models import Pricing
-from houses.models import HouseReservation, House
+from houses.models import House
 from houses.services.price_calculators import calculate_house_price_by_day, is_holiday
-import logging
 
 logger = logging.getLogger(__name__)
 

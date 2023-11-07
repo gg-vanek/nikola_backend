@@ -1,11 +1,11 @@
 from dataclasses import dataclass, field
 from datetime import date as Date, datetime as Datetime, time as Time, timedelta
 
+import logging
+from django.core.cache import cache
 from core.models import Pricing
 from events.models import Event
 from houses.models import House
-import logging
-from django.core.cache import cache
 logger = logging.getLogger(__name__)
 
 
@@ -68,8 +68,8 @@ def calculate_reservation_receipt(house: House | int,
     if isinstance(house, int):
         try:
             house = House.objects.get(pk=house)
-        except House.DoesNotExist:
-            raise ValueError(f"Некорректный id домика = {house}")
+        except House.DoesNotExist as e:
+            raise ValueError(f"Некорректный id домика = {house}") from e
 
     if extra_persons_amount < 0:
         raise ValueError("Отрицательное количество людей в заявке")

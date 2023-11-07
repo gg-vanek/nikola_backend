@@ -1,5 +1,6 @@
-from datetime import datetime as Datetime
 from dataclasses import asdict
+
+from django.utils.timezone import now
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -55,6 +56,8 @@ class HouseViewSet(ByActionMixin,
             month = int(self.request.query_params.get("month"))
             assert 1 <= month <= 12
             year = int(self.request.query_params.get("year"))
+            assert now().year <= year
+            return None
         except (TypeError, ValueError, AssertionError):
             return Response({"error": "month и year должны быть целыми положительными числами. "
                                       "Номер месяца не может быть меньше 1 или больше 12"},
@@ -126,7 +129,7 @@ class HouseViewSet(ByActionMixin,
             client = Client.objects.get(email=client_serializer.validated_data["email"])
             if client.first_name != client_serializer.validated_data["first_name"] or \
                     client.last_name != client_serializer.validated_data["last_name"]:
-                pass  # TODO
+                pass  # TODO придумать что делать если у клиента та же почта, но другое имя
         except Client.DoesNotExist:
             client = client_serializer.create(client_serializer.validated_data)
             client.save()
