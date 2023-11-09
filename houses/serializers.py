@@ -120,6 +120,7 @@ class HouseReservationParametersSerializer(serializers.Serializer):
 
         q1 = Q(check_out_datetime__lt=check_in_datetime, cancelled=False)
         q2 = Q(check_in_datetime__gt=check_out_datetime, cancelled=False)
+        q3 = Q(cancelled=False)
 
         if house.reservations.annotate(
                 booked_before=Coalesce(
@@ -133,7 +134,7 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                     output_field=IntegerField()
                 ),
                 booked_total=Coalesce(
-                    Count("id", distinct=True),
+                    Count("id", filter=Q(q3), distinct=True),
                     Value(0),
                     output_field=IntegerField()
                 ),
