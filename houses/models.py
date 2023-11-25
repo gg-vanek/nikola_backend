@@ -70,10 +70,9 @@ class House(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean()
-        house = super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
         # чистим кэш для этого домика
         self.delete_house_cache()
-        return house
 
     def __str__(self):
         return f"({self.id}) {self.name}"
