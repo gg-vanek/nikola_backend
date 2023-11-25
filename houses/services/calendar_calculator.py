@@ -12,7 +12,7 @@ from houses.services.price_calculators import calculate_house_price_by_day, is_h
 logger = logging.getLogger(__name__)
 
 
-def calculate_calendar(houses: list[House] | QuerySet[House],
+def calculate_calendar(houses: QuerySet[House],
                        year: int,
                        month: int) -> dict[str: dict[str: int | None]]:
     calendar = {}
