@@ -1,13 +1,12 @@
 import logging
 from datetime import datetime as Datetime
-from django.db.models import Q, QuerySet, IntegerField, Sum, Value, F
-from django.db.models.functions import Coalesce
+from django.db.models import Q, QuerySet
 from django.utils.timezone import now
 from rest_framework.filters import BaseFilterBackend
 
 from rest_framework.request import Request
 
-from core.models import Pricing
+from houses.services.check_overlapping import filter_for_available_houses_by_period
 
 logger = logging.getLogger(__name__)
 
@@ -39,35 +38,7 @@ class AvailableByDateHousesFilter(BaseFilterBackend):
                 # если пытаются забронировать что-то на прошедшую дату
                 raise ValueError
 
-            check_in_datetime = Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['default'])
-            check_out_datetime = Datetime.combine(check_out_date, Pricing.ALLOWED_CHECK_OUT_TIMES['default'])
-
-            q1 = Q(reservations__check_out_datetime__lt=check_in_datetime, reservations__cancelled=False)
-            q2 = Q(reservations__check_in_datetime__gt=check_out_datetime, reservations__cancelled=False)
-            # два условия выше - условия, что очередное бронирование не пересекается с выбранными датами
-            # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
-            # не равно общему количеству бронирований
-            q3 = Q(reservations__cancelled=False)
-
-            # есть еще queryset.extra позволяющий делать запуск raw SQL
-            queryset = queryset.annotate(
-                booked_before=Coalesce(
-                    Sum("reservations", filter=Q(q1), distinct=True),
-                    Value(0),
-                    output_field=IntegerField()
-                ),
-                booked_after=Coalesce(
-                    Sum("reservations", filter=Q(q2), distinct=True),
-                    Value(0),
-                    output_field=IntegerField()
-                ),
-                booked_total=Coalesce(
-                    Sum("reservations", filter=Q(q3), distinct=True),
-                    Value(0),
-                    output_field=IntegerField()
-                ),
-                overlapping_reservations=F("booked_total") - F("booked_before") - F("booked_after")
-            ).filter(overlapping_reservations=0)
+            queryset = filter_for_available_houses_by_period(queryset, check_in_date, check_out_date)
 
         except (ValueError, TypeError):
             # если нет какой-то из дат - мы не можем фильтровать

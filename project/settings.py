@@ -225,7 +225,7 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'handlers': ['console', 'rotating_file_handler'],
             "propagate": False,  # чтобы не дублировалось в консоли
         }
