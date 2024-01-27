@@ -40,10 +40,7 @@ class AvailableByDateHousesFilter(BaseFilterBackend):
                 # если пытаются забронировать что-то на прошедшую дату
                 raise ValueError
 
-            check_in_datetime = Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['default'])
-            check_out_datetime = Datetime.combine(check_out_date, Pricing.ALLOWED_CHECK_OUT_TIMES['default'])
-
-            queryset = filter_for_available_houses_by_period(queryset, check_in_datetime, check_out_datetime)
+            queryset = filter_for_available_houses_by_period(queryset, check_in_date, check_out_date)
 
         except (ValueError, TypeError):
             # если нет какой-то из дат - мы не можем фильтровать

@@ -43,28 +43,36 @@ def filter_for_available_houses_by_day(houses: QuerySet[House], day: Date) -> Qu
     return available_houses
 
 
-def filter_for_available_houses_by_period(houses: QuerySet[House], check_in_datetime: Date, check_out_datetime: Date) -> QuerySet[House]:
-    q1 = Q(reservations__check_out_datetime__lt=check_in_datetime, reservations__cancelled=False)
-    q2 = Q(reservations__check_in_datetime__gt=check_out_datetime, reservations__cancelled=False)
+def filter_for_available_houses_by_period(
+        houses: QuerySet[House],
+        check_in_date: Date,
+        check_out_date: Date) -> QuerySet[House]:
+    booked_before_query = Q(
+        reservations__check_out_datetime__lt=Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['latest']),
+        reservations__cancelled=False)
+    booked_after_query = Q(
+        reservations__check_in_datetime__gt=Datetime.combine(check_out_date,
+                                                             Pricing.ALLOWED_CHECK_IN_TIMES['earliest']),
+        reservations__cancelled=False)
     # два условия выше - условия, что очередное бронирование не пересекается с выбранными датами
     # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
     # не равно общему количеству бронирований
-    q3 = Q(cancelled=False)
+    booked_total_query = Q(cancelled=False)
 
     # есть еще queryset.extra позволяющий делать запуск raw SQL
     return houses.annotate(
         booked_before=Coalesce(
-            Sum("reservations", filter=Q(q1), distinct=True),
+            Sum("reservations", filter=Q(booked_before_query), distinct=True),
             Value(0),
             output_field=IntegerField()
         ),
         booked_after=Coalesce(
-            Sum("reservations", filter=Q(q2), distinct=True),
+            Sum("reservations", filter=Q(booked_after_query), distinct=True),
             Value(0),
             output_field=IntegerField()
         ),
         booked_total=Coalesce(
-            Sum("reservations", filter=Q(q3), distinct=True),
+            Sum("reservations", filter=Q(booked_total_query), distinct=True),
             Value(0),
             output_field=IntegerField()
         ),
@@ -72,7 +80,7 @@ def filter_for_available_houses_by_period(houses: QuerySet[House], check_in_date
     ).filter(overlapping_reservations=0)
 
 
-def check_if_house_free_by_period(house: House, check_in_datetime: Date, check_out_datetime: Date) -> bool:
+def check_if_house_free_by_period(house: House, check_in_datetime: Datetime, check_out_datetime: Datetime) -> bool:
     q1 = Q(check_out_datetime__lt=check_in_datetime, cancelled=False)
     q2 = Q(check_in_datetime__gt=check_out_datetime, cancelled=False)
     q3 = Q(cancelled=False)

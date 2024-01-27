@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from django.utils.timezone import now
 
 from houses.models import House
-from houses.services.check_overlapping import filter_for_available_houses_by_day
+from houses.services.check_overlapping import filter_for_available_houses_by_day, filter_for_available_houses_by_period
 from houses.services.price_calculators import calculate_house_price_by_day, is_holiday
 
 logger = logging.getLogger(__name__)
@@ -55,23 +55,18 @@ def calculate_check_out_calendar(houses: QuerySet[House],
     else:
         # случай когда мы должны уже знать, сколько стоит бронирование каждого домика во все дни до этого суммарно
         # при этом нас интересуют только те домики которые имеют весь этот промежуток свободным
+        houses = filter_for_available_houses_by_period(houses, check_in_date=check_in_date, check_out_date=day)
 
         accumulated_prices = {}
-        month_start = day
-        day = check_in_date + timedelta(days=1)
-        while day < month_start:
-            # отфильтровать домики и оставить только доступные
-            houses = filter_for_available_houses_by_day(houses, day)
-            for house in houses:
-                # для каждого из оставшихся домиков высчитать суммарную стоимость к первому дню текущего месяца
-                price = calculate_house_price_by_day(house, day, use_cached_data=True)
-                accumulated_prices[house] += price
-        # day == month_start снова
 
-        # чистим словарь с накопленными ценами
-        for house in accumulated_prices:
-            if house not in houses:
-                del accumulated_prices[house]
+        # для множества домиков, свободных весь период от даты заезда до начала рассматриваемого месяца вычислим цену
+        calendar_month_start = day
+        day = check_in_date + timedelta(days=1)
+        while day < calendar_month_start:
+            for house in houses:
+                # для каждого из домиков высчитать суммарную стоимость к первому дню текущего месяца
+                accumulated_prices[house] += calculate_house_price_by_day(house, day, use_cached_data=True)
+        # day == calendar_month_start снова
 
     while day < end_day:
         calendar[day.strftime("%d-%m-%Y")] = {}
