@@ -12,10 +12,11 @@ from clients.models import Client
 from clients.serializers import ClientSerializer
 from core.mixins import ByActionMixin
 from core.models import Pricing
-from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter
 
+from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter
 from houses.models import House, HouseFeature, HouseReservation
 from houses.serializers import HouseFeatureListSerializer, HouseListSerializer, HouseReservationParametersSerializer
+
 from calendars.service import calculate_check_in_calendar, calculate_check_out_calendar
 
 from houses.services.price_calculators import calculate_reservation_receipt
@@ -81,10 +82,9 @@ class HouseViewSet(ByActionMixin,
                                                                       check_in_date=check_in_date,
                                                                       year=year,
                                                                       month=month)})
-        else:
-            return Response({"calendar": calculate_check_in_calendar(houses=houses,
-                                                                      year=year,
-                                                                      month=month)})
+        return Response({"calendar": calculate_check_in_calendar(houses=houses,
+                                                                  year=year,
+                                                                  month=month)})
 
     @action(methods=['get'], url_path='calendar', detail=True)
     def single_house_calendar(self, request: Request, *args, **kwargs):
@@ -104,10 +104,10 @@ class HouseViewSet(ByActionMixin,
                                                                       check_in_date=check_in_date,
                                                                       year=year,
                                                                       month=month)})
-        else:
-            return Response({"calendar": calculate_check_in_calendar(houses=house,
-                                                                      year=year,
-                                                                      month=month)})
+
+        return Response({"calendar": calculate_check_in_calendar(houses=house,
+                                                                  year=year,
+                                                                  month=month)})
 
     @action(methods=['get'], url_path='reservation_options', detail=True)
     def reservation_options(self, request: Request, *args, **kwargs):

@@ -1,13 +1,11 @@
 import logging
 from datetime import datetime as Datetime
-from django.db.models import Q, QuerySet, IntegerField, Sum, Value, F
-from django.db.models.functions import Coalesce
+from django.db.models import Q, QuerySet
 from django.utils.timezone import now
 from rest_framework.filters import BaseFilterBackend
 
 from rest_framework.request import Request
 
-from core.models import Pricing
 from houses.services.check_overlapping import filter_for_available_houses_by_period
 
 logger = logging.getLogger(__name__)

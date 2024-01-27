@@ -2,13 +2,12 @@ from datetime import datetime as Datetime
 
 import logging
 from django.core.validators import MinValueValidator
-from django.db.models import Value, IntegerField, Q, F, Count
-from django.db.models.functions import Coalesce
 from django.utils.timezone import now
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from core.models import Pricing
 from houses.models import House, HouseFeature, HousePicture
+from houses.services.check_overlapping import check_if_house_free_by_period
 
 from houses.services.price_calculators import calculate_reservation_receipt
 from project import settings
