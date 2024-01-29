@@ -12,3 +12,9 @@
 
 Дамп фикстур
   - python manage.py dumpdata clients events houses > fixtures.json
+
+Провалиться в докер контейнер
+  - docker ps
+  - Найти интересующий нас контейнер и скопировать его id
+  - docker exec -it <container_id> bash
+  - вы в контейнере
