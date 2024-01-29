@@ -1,628 +1,5 @@
 [
   {
-    "model": "auth.permission",
-    "pk": 1,
-    "fields": {
-      "name": "Can add log entry",
-      "content_type": 1,
-      "codename": "add_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 2,
-    "fields": {
-      "name": "Can change log entry",
-      "content_type": 1,
-      "codename": "change_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 3,
-    "fields": {
-      "name": "Can delete log entry",
-      "content_type": 1,
-      "codename": "delete_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 4,
-    "fields": {
-      "name": "Can view log entry",
-      "content_type": 1,
-      "codename": "view_logentry"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 5,
-    "fields": {
-      "name": "Can add permission",
-      "content_type": 2,
-      "codename": "add_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 6,
-    "fields": {
-      "name": "Can change permission",
-      "content_type": 2,
-      "codename": "change_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 7,
-    "fields": {
-      "name": "Can delete permission",
-      "content_type": 2,
-      "codename": "delete_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 8,
-    "fields": {
-      "name": "Can view permission",
-      "content_type": 2,
-      "codename": "view_permission"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 9,
-    "fields": {
-      "name": "Can add group",
-      "content_type": 3,
-      "codename": "add_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 10,
-    "fields": {
-      "name": "Can change group",
-      "content_type": 3,
-      "codename": "change_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 11,
-    "fields": {
-      "name": "Can delete group",
-      "content_type": 3,
-      "codename": "delete_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 12,
-    "fields": {
-      "name": "Can view group",
-      "content_type": 3,
-      "codename": "view_group"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 13,
-    "fields": {
-      "name": "Can add user",
-      "content_type": 4,
-      "codename": "add_user"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 14,
-    "fields": {
-      "name": "Can change user",
-      "content_type": 4,
-      "codename": "change_user"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 15,
-    "fields": {
-      "name": "Can delete user",
-      "content_type": 4,
-      "codename": "delete_user"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 16,
-    "fields": {
-      "name": "Can view user",
-      "content_type": 4,
-      "codename": "view_user"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 17,
-    "fields": {
-      "name": "Can add content type",
-      "content_type": 5,
-      "codename": "add_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 18,
-    "fields": {
-      "name": "Can change content type",
-      "content_type": 5,
-      "codename": "change_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 19,
-    "fields": {
-      "name": "Can delete content type",
-      "content_type": 5,
-      "codename": "delete_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 20,
-    "fields": {
-      "name": "Can view content type",
-      "content_type": 5,
-      "codename": "view_contenttype"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 21,
-    "fields": {
-      "name": "Can add session",
-      "content_type": 6,
-      "codename": "add_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 22,
-    "fields": {
-      "name": "Can change session",
-      "content_type": 6,
-      "codename": "change_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 23,
-    "fields": {
-      "name": "Can delete session",
-      "content_type": 6,
-      "codename": "delete_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 24,
-    "fields": {
-      "name": "Can view session",
-      "content_type": 6,
-      "codename": "view_session"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 25,
-    "fields": {
-      "name": "Can add Домик",
-      "content_type": 7,
-      "codename": "add_house"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 26,
-    "fields": {
-      "name": "Can change Домик",
-      "content_type": 7,
-      "codename": "change_house"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 27,
-    "fields": {
-      "name": "Can delete Домик",
-      "content_type": 7,
-      "codename": "delete_house"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 28,
-    "fields": {
-      "name": "Can view Домик",
-      "content_type": 7,
-      "codename": "view_house"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 29,
-    "fields": {
-      "name": "Can add Бронь домика",
-      "content_type": 8,
-      "codename": "add_housereservation"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 30,
-    "fields": {
-      "name": "Can change Бронь домика",
-      "content_type": 8,
-      "codename": "change_housereservation"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 31,
-    "fields": {
-      "name": "Can delete Бронь домика",
-      "content_type": 8,
-      "codename": "delete_housereservation"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 32,
-    "fields": {
-      "name": "Can view Бронь домика",
-      "content_type": 8,
-      "codename": "view_housereservation"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 33,
-    "fields": {
-      "name": "Can add Изображение домика",
-      "content_type": 9,
-      "codename": "add_housepicture"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 34,
-    "fields": {
-      "name": "Can change Изображение домика",
-      "content_type": 9,
-      "codename": "change_housepicture"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 35,
-    "fields": {
-      "name": "Can delete Изображение домика",
-      "content_type": 9,
-      "codename": "delete_housepicture"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 36,
-    "fields": {
-      "name": "Can view Изображение домика",
-      "content_type": 9,
-      "codename": "view_housepicture"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 37,
-    "fields": {
-      "name": "Can add Клиент",
-      "content_type": 10,
-      "codename": "add_client"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 38,
-    "fields": {
-      "name": "Can change Клиент",
-      "content_type": 10,
-      "codename": "change_client"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 39,
-    "fields": {
-      "name": "Can delete Клиент",
-      "content_type": 10,
-      "codename": "delete_client"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 40,
-    "fields": {
-      "name": "Can view Клиент",
-      "content_type": 10,
-      "codename": "view_client"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 41,
-    "fields": {
-      "name": "Can add Фича домика",
-      "content_type": 11,
-      "codename": "add_housefeature"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 42,
-    "fields": {
-      "name": "Can change Фича домика",
-      "content_type": 11,
-      "codename": "change_housefeature"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 43,
-    "fields": {
-      "name": "Can delete Фича домика",
-      "content_type": 11,
-      "codename": "delete_housefeature"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 44,
-    "fields": {
-      "name": "Can view Фича домика",
-      "content_type": 11,
-      "codename": "view_housefeature"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 45,
-    "fields": {
-      "name": "Can add Событие",
-      "content_type": 12,
-      "codename": "add_event"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 46,
-    "fields": {
-      "name": "Can change Событие",
-      "content_type": 12,
-      "codename": "change_event"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 47,
-    "fields": {
-      "name": "Can delete Событие",
-      "content_type": 12,
-      "codename": "delete_event"
-    }
-  },
-  {
-    "model": "auth.permission",
-    "pk": 48,
-    "fields": {
-      "name": "Can view Событие",
-      "content_type": 12,
-      "codename": "view_event"
-    }
-  },
-  {
-    "model": "auth.user",
-    "pk": 1,
-    "fields": {
-      "password": "pbkdf2_sha256$600000$56z2KcKBsjSAaY7NKTvb3G$SMPqkYoPYNSID8XU0Pt80wDcvzcJG1wudYoVgs+Kgvo=",
-      "last_login": "2024-01-27T00:43:05.689Z",
-      "is_superuser": true,
-      "username": "vanek",
-      "first_name": "",
-      "last_name": "",
-      "email": "",
-      "is_staff": true,
-      "is_active": true,
-      "date_joined": "2023-10-19T13:45:12.498Z",
-      "groups": [],
-      "user_permissions": []
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 1,
-    "fields": {
-      "app_label": "admin",
-      "model": "logentry"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 2,
-    "fields": {
-      "app_label": "auth",
-      "model": "permission"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 3,
-    "fields": {
-      "app_label": "auth",
-      "model": "group"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 4,
-    "fields": {
-      "app_label": "auth",
-      "model": "user"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 5,
-    "fields": {
-      "app_label": "contenttypes",
-      "model": "contenttype"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 6,
-    "fields": {
-      "app_label": "sessions",
-      "model": "session"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 7,
-    "fields": {
-      "app_label": "houses",
-      "model": "house"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 8,
-    "fields": {
-      "app_label": "houses",
-      "model": "housereservation"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 9,
-    "fields": {
-      "app_label": "houses",
-      "model": "housepicture"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 10,
-    "fields": {
-      "app_label": "clients",
-      "model": "client"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 11,
-    "fields": {
-      "app_label": "houses",
-      "model": "housefeature"
-    }
-  },
-  {
-    "model": "contenttypes.contenttype",
-    "pk": 12,
-    "fields": {
-      "app_label": "events",
-      "model": "event"
-    }
-  },
-  {
-    "model": "houses.house",
-    "pk": 1,
-    "fields": {
-      "name": "Скандинавия 1",
-      "description": "Эстетичный дизайн, удобная планировка и качество — все об этой серии модульных домов. Выполнен в лучших традициях Скандинавского стиля — использование натурального дерева в наружной и внутренней отделке, минимум лишних деталей.",
-      "base_price": 10000,
-      "holidays_multiplier": 2.0,
-      "base_persons_amount": 2,
-      "max_persons_amount": 6,
-      "price_per_extra_person": 2000,
-      "created_at": "2023-10-19T14:06:52.375Z",
-      "updated_at": "2023-11-09T21:40:20.114Z",
-      "features": [
-        1
-      ]
-    }
-  },
-  {
-    "model": "houses.house",
-    "pk": 2,
-    "fields": {
-      "name": "Скандинавия 2",
-      "description": "описание",
-      "base_price": 15000,
-      "holidays_multiplier": 2.0,
-      "base_persons_amount": 2,
-      "max_persons_amount": 3,
-      "price_per_extra_person": 2000,
-      "created_at": "2023-10-25T13:28:46.011Z",
-      "updated_at": "2023-10-25T13:28:46.011Z",
-      "features": [
-        1,
-        2
-      ]
-    }
-  },
-  {
-    "model": "houses.housepicture",
-    "pk": 4,
-    "fields": {
-      "house": 1,
-      "picture": "houses/pictures/1/1.jpg"
-    }
-  },
-  {
-    "model": "houses.housepicture",
-    "pk": 5,
-    "fields": {
-      "house": 1,
-      "picture": "houses/pictures/1/2.jpg"
-    }
-  },
-  {
-    "model": "houses.housepicture",
-    "pk": 6,
-    "fields": {
-      "house": 1,
-      "picture": "houses/pictures/1/3.jpg"
-    }
-  },
-  {
-    "model": "houses.housefeature",
-    "pk": 1,
-    "fields": {
-      "name": "Кондиционер",
-      "icon": "houses_features/icons/Кондиционер.png"
-    }
-  },
-  {
-    "model": "houses.housefeature",
-    "pk": 2,
-    "fields": {
-      "name": "Обогреватель",
-      "icon": "houses_features/icons/Обогреватель.png"
-    }
-  },
-  {
     "model": "clients.client",
     "pk": 1,
     "fields": {
@@ -731,6 +108,151 @@
       "multiplier": 4.0,
       "created_at": "2023-10-22T15:38:56.544Z",
       "updated_at": "2023-10-22T15:55:40.763Z"
+    }
+  },
+  {
+    "model": "houses.house",
+    "pk": 1,
+    "fields": {
+      "name": "Скандинавия 1",
+      "description": "Эстетичный дизайн, удобная планировка и качество — все об этой серии модульных домов. Выполнен в лучших традициях Скандинавского стиля — использование натурального дерева в наружной и внутренней отделке, минимум лишних деталей.",
+      "base_price": 10000,
+      "holidays_multiplier": 2.0,
+      "base_persons_amount": 2,
+      "max_persons_amount": 6,
+      "price_per_extra_person": 2000,
+      "created_at": "2023-10-19T14:06:52.375Z",
+      "updated_at": "2023-11-09T21:40:20.114Z",
+      "features": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "houses.house",
+    "pk": 2,
+    "fields": {
+      "name": "Скандинавия 2",
+      "description": "описание",
+      "base_price": 15000,
+      "holidays_multiplier": 2.0,
+      "base_persons_amount": 2,
+      "max_persons_amount": 3,
+      "price_per_extra_person": 2000,
+      "created_at": "2023-10-25T13:28:46.011Z",
+      "updated_at": "2023-10-25T13:28:46.011Z",
+      "features": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 4,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/1.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 5,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/2.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 6,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/3.jpg"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 1,
+    "fields": {
+      "name": "Кондиционер",
+      "icon": "houses_features/icons/Кондиционер.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 2,
+    "fields": {
+      "name": "Обогреватель",
+      "icon": "houses_features/icons/Обогреватель.png"
+    }
+  },
+  {
+    "model": "houses.housereservation",
+    "pk": 14038,
+    "fields": {
+      "house": 1,
+      "client": 1,
+      "check_in_datetime": "2024-12-26T16:00:00Z",
+      "check_out_datetime": "2024-12-27T12:00:00Z",
+      "extra_persons_amount": 1,
+      "price": 12000,
+      "preferred_contact": "a",
+      "comment": "a",
+      "cancelled": false,
+      "created_at": "2023-11-09T21:03:15.902Z",
+      "updated_at": "2023-11-25T21:18:39.672Z"
+    }
+  },
+  {
+    "model": "houses.housereservation",
+    "pk": 14039,
+    "fields": {
+      "house": 2,
+      "client": 9,
+      "check_in_datetime": "2023-12-30T16:00:00Z",
+      "check_out_datetime": "2023-12-31T15:00:00Z",
+      "extra_persons_amount": 0,
+      "price": 39000,
+      "preferred_contact": "a",
+      "comment": "a",
+      "cancelled": true,
+      "created_at": "2023-11-09T21:16:57.540Z",
+      "updated_at": "2023-11-09T21:39:17.479Z"
+    }
+  },
+  {
+    "model": "houses.housereservation",
+    "pk": 14040,
+    "fields": {
+      "house": 1,
+      "client": 1,
+      "check_in_datetime": "2023-11-26T16:00:00Z",
+      "check_out_datetime": "2023-11-27T12:00:00Z",
+      "extra_persons_amount": 0,
+      "price": 20000,
+      "preferred_contact": "ф",
+      "comment": "ф",
+      "cancelled": false,
+      "created_at": "2023-11-23T14:31:40.563Z",
+      "updated_at": "2023-11-25T21:03:50.257Z"
+    }
+  },
+  {
+    "model": "houses.housereservation",
+    "pk": 14041,
+    "fields": {
+      "house": 1,
+      "client": 10,
+      "check_in_datetime": "2024-12-11T16:00:00Z",
+      "check_out_datetime": "2024-12-12T12:00:00Z",
+      "extra_persons_amount": 0,
+      "price": 10000,
+      "preferred_contact": "tg",
+      "comment": " ",
+      "cancelled": false,
+      "created_at": "2024-01-27T11:34:29.865Z",
+      "updated_at": "2024-01-27T11:34:29.865Z"
     }
   }
 ]

@@ -9,3 +9,6 @@
     su - postgres
     psql
     CREATE EXTENSION btree_gist;
+
+Дамп фикстур
+  - python manage.py dumpdata clients events houses > fixtures.json
