@@ -12,12 +12,16 @@ class Pricing:
 
     ALLOWED_CHECK_OUT_TIMES = {
         'default': Time(hour=12),
+        'earliest': Time(hour=12),
+        'latest': Time(hour=15),
         Time(hour=12): 0,
         Time(hour=15): 0.3,  # поздний выезд - доплата 30% от стоимости дневного проживания в день выезда
     }
 
     ALLOWED_CHECK_IN_TIMES = {
         'default': Time(hour=16),
+        'earliest': Time(hour=13),
+        'latest': Time(hour=16),
         Time(hour=16): 0,
         Time(hour=13): 0.3,  # ранний въезд - доплата 30% от стоимости дневного проживания в день въезда
     }

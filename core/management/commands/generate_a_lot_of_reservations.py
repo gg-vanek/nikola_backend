@@ -38,7 +38,7 @@ class Command(BaseCommand):
                 last_name=f"{Datetime.strftime(now(), 'фамилия %H:%M:%S')}",
             )
         else:
-            client = Client.objects.get(id=house_id)
+            client = Client.objects.get(id=client_id)
 
         start = (now() + timedelta(days=3)).date()
         end = (now() + timedelta(days=5000)).date()

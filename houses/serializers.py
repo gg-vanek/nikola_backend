@@ -2,13 +2,12 @@ from datetime import datetime as Datetime
 
 import logging
 from django.core.validators import MinValueValidator
-from django.db.models import Value, IntegerField, Q, F, Count
-from django.db.models.functions import Coalesce
 from django.utils.timezone import now
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from core.models import Pricing
 from houses.models import House, HouseFeature, HousePicture
+from houses.services.check_overlapping import check_if_house_free_by_period
 
 from houses.services.price_calculators import calculate_reservation_receipt
 from project import settings
@@ -118,28 +117,7 @@ class HouseReservationParametersSerializer(serializers.Serializer):
         if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
             raise ValidationError("Некорректное время выезда")
 
-        q1 = Q(check_out_datetime__lt=check_in_datetime, cancelled=False)
-        q2 = Q(check_in_datetime__gt=check_out_datetime, cancelled=False)
-        q3 = Q(cancelled=False)
-
-        if house.reservations.annotate(
-                booked_before=Coalesce(
-                    Count("id", filter=Q(q1), distinct=True),
-                    Value(0),
-                    output_field=IntegerField()
-                ),
-                booked_after=Coalesce(
-                    Count("id", filter=Q(q2), distinct=True),
-                    Value(0),
-                    output_field=IntegerField()
-                ),
-                booked_total=Coalesce(
-                    Count("id", filter=Q(q3), distinct=True),
-                    Value(0),
-                    output_field=IntegerField()
-                ),
-                overlapping_reservations=F("booked_total") - F("booked_before") - F("booked_after")
-        ).exclude(overlapping_reservations=0).exists():
+        if check_if_house_free_by_period(house, check_in_datetime, check_out_datetime):
             raise ValidationError("Выбранное время бронирования недоступно. "
                                   "Попробуйте поставить другое время заезда/выезда, "
                                   "если дни заезда и выезда в календаре отмечены, как свободные.", )
