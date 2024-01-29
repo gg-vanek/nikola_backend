@@ -1,10 +1,1729 @@
 [
   {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2023-10-19T14:03:29.546Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "1",
+      "object_repr": "Кондиционер",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2023-10-19T14:04:03.962Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "1",
+      "object_repr": "Кондиционер",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0418\\u043a\\u043e\\u043d\\u043a\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2023-10-19T14:04:59.801Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "2",
+      "object_repr": "Обогреватель",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2023-10-19T14:06:52.577Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/\\u04321.jpg\"}}, {\"added\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/\\u04322.jpg\"}}, {\"added\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/\\u04323.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2023-10-19T14:07:32.087Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "1",
+      "object_repr": "client1@mail.ru",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2023-10-19T14:09:19.898Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/1.jpg\"}}, {\"added\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/2.jpg\"}}, {\"added\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/3.jpg\"}}, {\"deleted\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/\\u04321.jpg\"}}, {\"deleted\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/\\u04322.jpg\"}}, {\"deleted\": {\"name\": \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"object\": \"houses/pictures/1/\\u04323.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2023-10-19T14:10:21.725Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2023-10-19T14:14:59.944Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "2",
+      "object_repr": "Обогреватель",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0418\\u043a\\u043e\\u043d\\u043a\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2023-10-19T14:15:42.043Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "2",
+      "object_repr": "Обогреватель",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2023-10-19T14:16:13.935Z",
+      "user": 1,
+      "content_type": 11,
+      "object_id": "2",
+      "object_repr": "Обогреватель",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0418\\u043a\\u043e\\u043d\\u043a\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+      "action_time": "2023-10-20T17:35:49.591Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+      "action_time": "2023-10-20T17:40:13.073Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30 2023-10-22 16:00:00+00:00-2023-10-24 15:00:00+00:00",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+      "action_time": "2023-10-20T17:40:34.837Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30 2023-10-22 16:00:00+00:00-2023-10-24 15:00:00+00:00",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+      "action_time": "2023-10-20T17:40:40.929Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30 2023-10-22 16:00:00+00:00-2023-10-24 15:00:00+00:00",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+      "action_time": "2023-10-22T15:38:56.546Z",
+      "user": 1,
+      "content_type": 12,
+      "object_id": "2",
+      "object_repr": "Тестовое событие 2023-11-02-2023-11-05",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+      "action_time": "2023-10-22T15:39:24.745Z",
+      "user": 1,
+      "content_type": 12,
+      "object_id": "2",
+      "object_repr": "Тестовое событие 02.11-05.11",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+      "action_time": "2023-10-22T15:41:02.843Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 2023-11-01 16:00:00+00:00-2023-11-05 15:00:00+00:00",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+      "action_time": "2023-10-22T15:43:17.913Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+      "action_time": "2023-10-22T15:43:22.822Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+      "action_time": "2023-10-22T15:43:36.444Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+      "action_time": "2023-10-22T15:44:09.258Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+      "action_time": "2023-10-22T15:44:36.755Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+      "action_time": "2023-10-22T15:47:58.453Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+      "action_time": "2023-10-22T15:48:00.930Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+      "action_time": "2023-10-22T15:48:05.341Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+      "action_time": "2023-10-22T15:52:37.501Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+      "action_time": "2023-10-22T15:52:57.688Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+      "action_time": "2023-10-22T15:53:02.254Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (01.11 16:00)-(05.11 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+      "action_time": "2023-10-22T15:55:40.764Z",
+      "user": 1,
+      "content_type": 12,
+      "object_id": "2",
+      "object_repr": "Тестовое событие 11.01-14.01",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u043d\\u0430\\u0447\\u0430\\u043b\\u0430 \\u0441\\u043e\\u0431\\u044b\\u0442\\u0438\\u044f\", \"\\u0414\\u0430\\u0442\\u0430 \\u043a\\u043e\\u043d\\u0446\\u0430 \\u0441\\u043e\\u0431\\u044b\\u0442\\u0438\\u044f\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+      "action_time": "2023-10-22T15:56:10.269Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (10.01 16:00)-(14.01 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\", \"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0432\\u044b\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+      "action_time": "2023-10-22T15:56:53.051Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (10.01 16:00)-(14.01 15:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 62,
+    "fields": {
+      "action_time": "2023-10-22T15:59:16.518Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (10.01 16:00)-(14.01 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 63,
+    "fields": {
+      "action_time": "2023-10-22T16:01:21.863Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (10.01 16:00)-(14.01 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 64,
+    "fields": {
+      "action_time": "2023-10-22T16:02:53.853Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (10.01 16:00)-(14.01 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 65,
+    "fields": {
+      "action_time": "2023-10-22T16:11:30.739Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Скандинавия 30 (10.01 16:00)-(14.01 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 66,
+    "fields": {
+      "action_time": "2023-10-25T13:28:46.015Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "2",
+      "object_repr": "Скандинавия 2",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 67,
+    "fields": {
+      "action_time": "2023-10-25T22:45:42.244Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "3",
+      "object_repr": "Скандинавия 30 (30.10 16:00)-(31.10 12:00)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 68,
+    "fields": {
+      "action_time": "2023-10-26T15:44:19.634Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 69,
+    "fields": {
+      "action_time": "2023-10-26T15:44:53.742Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 70,
+    "fields": {
+      "action_time": "2023-10-26T15:45:22.724Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 71,
+    "fields": {
+      "action_time": "2023-10-26T15:45:49.450Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 72,
+    "fields": {
+      "action_time": "2023-10-26T15:46:25.277Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 73,
+    "fields": {
+      "action_time": "2023-10-26T15:46:54.605Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 74,
+    "fields": {
+      "action_time": "2023-10-26T16:53:32.260Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 75,
+    "fields": {
+      "action_time": "2023-10-26T16:53:42.833Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 76,
+    "fields": {
+      "action_time": "2023-10-26T16:54:03.196Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 77,
+    "fields": {
+      "action_time": "2023-10-26T16:54:38.098Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 78,
+    "fields": {
+      "action_time": "2023-10-26T16:55:12.377Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Скандинавия 30",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u043a\\u0441\\u0438\\u043c\\u0430\\u043b\\u044c\\u043d\\u043e\\u0435 \\u043a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u0447\\u0435\\u043b\\u043e\\u0432\\u0435\\u043a \\u0434\\u043b\\u044f \\u043f\\u0440\\u043e\\u0436\\u0438\\u0432\\u0430\\u043d\\u0438\\u044f \\u0432 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0435\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 79,
+    "fields": {
+      "action_time": "2023-10-26T19:00:54.327Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "4",
+      "object_repr": "Домик 2023-10-26 19:00:26.462941+00:00 (29.10 16:00)-(30.10 12:00)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 80,
+    "fields": {
+      "action_time": "2023-10-26T19:30:04.568Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "2",
+      "object_repr": "26.10.2023.19.00.26@mail.ru",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 81,
+    "fields": {
+      "action_time": "2023-10-27T14:31:31.279Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "9034",
+      "object_repr": "Домик 2023-10-26 19:32:25.124474+00:00 (29.10 16:00)-(30.10 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 82,
+    "fields": {
+      "action_time": "2023-10-27T14:31:35.516Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "9035",
+      "object_repr": "Домик 2023-10-26 19:32:25.124474+00:00 (30.10 16:00)-(31.10 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 83,
+    "fields": {
+      "action_time": "2023-10-27T14:32:04.364Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "9034",
+      "object_repr": "Домик 2023-10-26 19:32:25.124474+00:00 (29.10 16:00)-(30.10 12:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 84,
+    "fields": {
+      "action_time": "2023-10-27T14:33:36.497Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "9",
+      "object_repr": "9",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\", \"\\u041f\\u043b\\u044e\\u0448\\u043a\\u0438\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 85,
+    "fields": {
+      "action_time": "2023-10-27T14:34:07.774Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14031",
+      "object_repr": "9 (31.10 16:00)-(01.11 12:00)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 86,
+    "fields": {
+      "action_time": "2023-10-27T14:36:29.589Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14031",
+      "object_repr": "9 (30.10 16:00)-(01.11 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 87,
+    "fields": {
+      "action_time": "2023-10-27T14:36:47.012Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14031",
+      "object_repr": "9 (29.10 16:00)-(01.11 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 88,
+    "fields": {
+      "action_time": "2023-10-27T14:37:01.101Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14031",
+      "object_repr": "9 (30.10 13:00)-(01.11 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 89,
+    "fields": {
+      "action_time": "2023-10-27T15:37:19.794Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14032",
+      "object_repr": "Домик 2023-10-26 19:00:58.206625+00:00 (28.10 16:00)-(29.10 12:00)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 90,
+    "fields": {
+      "action_time": "2023-10-27T15:43:49.958Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14032",
+      "object_repr": "Домик 2023-10-26 19:00:58.206625+00:00 (28.10 16:00)-(29.10 12:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 91,
+    "fields": {
+      "action_time": "2023-10-27T17:30:20.715Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14033",
+      "object_repr": "Домик 2023-10-26 19:00:26.462941+00:00 (15.11 16:00)-(18.11 12:00)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 92,
+    "fields": {
+      "action_time": "2023-10-27T17:36:40.483Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14034",
+      "object_repr": "9 (29.10 16:00)-(30.10 12:00)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 93,
+    "fields": {
+      "action_time": "2023-10-29T18:43:30.146Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "9",
+      "object_repr": "(9) 9",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 94,
+    "fields": {
+      "action_time": "2023-10-29T18:43:30.148Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "8",
+      "object_repr": "(8) Домик 2023-10-26 19:15:49.295190+00:00",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 95,
+    "fields": {
+      "action_time": "2023-10-29T18:43:30.150Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "7",
+      "object_repr": "(7) Домик 2023-10-26 19:08:18.822085+00:00",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 96,
+    "fields": {
+      "action_time": "2023-10-29T18:43:30.152Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "(6) Домик 2023-10-26 19:02:36.685374+00:00",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 97,
+    "fields": {
+      "action_time": "2023-10-29T18:43:30.154Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "5",
+      "object_repr": "(5) Домик 2023-10-26 19:00:58.206625+00:00",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 98,
+    "fields": {
+      "action_time": "2023-10-29T18:43:30.155Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "(4) Домик 2023-10-26 19:00:26.462941+00:00",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 99,
+    "fields": {
+      "action_time": "2023-10-29T18:43:30.157Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "3",
+      "object_repr": "(3) Домик 2023-10-26 18:59:49.019734+00:00",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 100,
+    "fields": {
+      "action_time": "2023-10-29T18:44:38.302Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14032",
+      "object_repr": "HouseReservation object (14032)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 101,
+    "fields": {
+      "action_time": "2023-10-29T18:44:38.308Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14035",
+      "object_repr": "HouseReservation object (14035)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 102,
+    "fields": {
+      "action_time": "2023-10-29T18:44:38.310Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14031",
+      "object_repr": "HouseReservation object (14031)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 103,
+    "fields": {
+      "action_time": "2023-10-29T18:44:38.311Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14033",
+      "object_repr": "HouseReservation object (14033)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 104,
+    "fields": {
+      "action_time": "2023-10-29T18:45:58.947Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14036",
+      "object_repr": "HouseReservation object (14036)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 105,
+    "fields": {
+      "action_time": "2023-10-29T18:46:07.390Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14036",
+      "object_repr": "HouseReservation object (14036)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 106,
+    "fields": {
+      "action_time": "2023-11-01T10:18:24.477Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14036",
+      "object_repr": "HouseReservation object (14036)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 107,
+    "fields": {
+      "action_time": "2023-11-01T10:19:03.420Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14037",
+      "object_repr": "HouseReservation object (14037)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 108,
+    "fields": {
+      "action_time": "2023-11-01T10:20:40.217Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14037",
+      "object_repr": "HouseReservation object (14037)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 109,
+    "fields": {
+      "action_time": "2023-11-01T10:21:42.296Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14037",
+      "object_repr": "HouseReservation object (14037)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 110,
+    "fields": {
+      "action_time": "2023-11-01T10:28:29.782Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14037",
+      "object_repr": "HouseReservation object (14037)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 111,
+    "fields": {
+      "action_time": "2023-11-09T21:02:09.883Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14037",
+      "object_repr": "Скандинавия 30 (06.11 16:00)-(08.11 12:00)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 112,
+    "fields": {
+      "action_time": "2023-11-09T21:03:15.909Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 30 (20.12 16:00)-(29.12 12:00)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 113,
+    "fields": {
+      "action_time": "2023-11-09T21:03:33.689Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 30 (20.12 16:00)-(29.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 114,
+    "fields": {
+      "action_time": "2023-11-09T21:03:47.036Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 30 (20.12 16:00)-(29.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 115,
+    "fields": {
+      "action_time": "2023-11-09T21:12:11.726Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 30 (20.12 16:00)-(29.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 116,
+    "fields": {
+      "action_time": "2023-11-09T21:34:16.754Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 30 (20.12 16:00)-(29.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 117,
+    "fields": {
+      "action_time": "2023-11-09T21:39:17.481Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14039",
+      "object_repr": "Скандинавия 2 (30.12 16:00)-(31.12 15:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 118,
+    "fields": {
+      "action_time": "2023-11-09T21:40:00.104Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 30 (20.12 16:00)-(29.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 119,
+    "fields": {
+      "action_time": "2023-11-09T21:40:20.118Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "(1) Скандинавия 1",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435 \\u0434\\u043e\\u043c\\u0438\\u043a\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 150,
+    "fields": {
+      "action_time": "2023-11-23T14:31:40.569Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14040",
+      "object_repr": "Скандинавия 1 (24.11 16:00)-(26.11 12:00)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 151,
+    "fields": {
+      "action_time": "2023-11-25T21:00:47.566Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14040",
+      "object_repr": "Скандинавия 1 (24.12 16:00)-(26.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\", \"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0432\\u044b\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 152,
+    "fields": {
+      "action_time": "2023-11-25T21:00:51.282Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14040",
+      "object_repr": "Скандинавия 1 (24.12 16:00)-(26.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 153,
+    "fields": {
+      "action_time": "2023-11-25T21:00:53.887Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14040",
+      "object_repr": "Скандинавия 1 (24.12 16:00)-(26.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 154,
+    "fields": {
+      "action_time": "2023-11-25T21:01:03.045Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 1 (25.12 16:00)-(27.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\", \"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0432\\u044b\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 155,
+    "fields": {
+      "action_time": "2023-11-25T21:02:40.698Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 1 (26.12 16:00)-(27.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\", \"\\u041e\\u0442\\u043c\\u0435\\u043d\\u0435\\u043d\\u043e?\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 156,
+    "fields": {
+      "action_time": "2023-11-25T21:02:54.060Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 1 (26.12 16:00)-(27.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 157,
+    "fields": {
+      "action_time": "2023-11-25T21:02:58.594Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14040",
+      "object_repr": "Скандинавия 1 (24.12 16:00)-(26.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0421\\u0442\\u043e\\u0438\\u043c\\u043e\\u0441\\u0442\\u044c\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 158,
+    "fields": {
+      "action_time": "2023-11-25T21:03:50.259Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14040",
+      "object_repr": "Скандинавия 1 (26.11 16:00)-(27.11 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\", \"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0432\\u044b\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 159,
+    "fields": {
+      "action_time": "2023-11-25T21:18:39.674Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "14038",
+      "object_repr": "Скандинавия 1 (26.12 16:00)-(27.12 12:00)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0437\\u0430\\u0435\\u0437\\u0434\\u0430\", \"\\u0414\\u0430\\u0442\\u0430 \\u0438 \\u0432\\u0440\\u0435\\u043c\\u044f \\u0432\\u044b\\u0435\\u0437\\u0434\\u0430\"]}}]"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can view log entry",
+      "content_type": 1,
+      "codename": "view_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can view permission",
+      "content_type": 2,
+      "codename": "view_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can view group",
+      "content_type": 3,
+      "codename": "view_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 4,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 4,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 4,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can view user",
+      "content_type": 4,
+      "codename": "view_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 5,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 5,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 5,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can view content type",
+      "content_type": 5,
+      "codename": "view_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 6,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 6,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 6,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can view session",
+      "content_type": 6,
+      "codename": "view_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add Домик",
+      "content_type": 7,
+      "codename": "add_house"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change Домик",
+      "content_type": 7,
+      "codename": "change_house"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete Домик",
+      "content_type": 7,
+      "codename": "delete_house"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can view Домик",
+      "content_type": 7,
+      "codename": "view_house"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can add Бронь домика",
+      "content_type": 8,
+      "codename": "add_housereservation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can change Бронь домика",
+      "content_type": 8,
+      "codename": "change_housereservation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can delete Бронь домика",
+      "content_type": 8,
+      "codename": "delete_housereservation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can view Бронь домика",
+      "content_type": 8,
+      "codename": "view_housereservation"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can add Изображение домика",
+      "content_type": 9,
+      "codename": "add_housepicture"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can change Изображение домика",
+      "content_type": 9,
+      "codename": "change_housepicture"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can delete Изображение домика",
+      "content_type": 9,
+      "codename": "delete_housepicture"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can view Изображение домика",
+      "content_type": 9,
+      "codename": "view_housepicture"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add Клиент",
+      "content_type": 10,
+      "codename": "add_client"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change Клиент",
+      "content_type": 10,
+      "codename": "change_client"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete Клиент",
+      "content_type": 10,
+      "codename": "delete_client"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can view Клиент",
+      "content_type": 10,
+      "codename": "view_client"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can add Фича домика",
+      "content_type": 11,
+      "codename": "add_housefeature"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can change Фича домика",
+      "content_type": 11,
+      "codename": "change_housefeature"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can delete Фича домика",
+      "content_type": 11,
+      "codename": "delete_housefeature"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can view Фича домика",
+      "content_type": 11,
+      "codename": "view_housefeature"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can add Событие",
+      "content_type": 12,
+      "codename": "add_event"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can change Событие",
+      "content_type": 12,
+      "codename": "change_event"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can delete Событие",
+      "content_type": 12,
+      "codename": "delete_event"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can view Событие",
+      "content_type": 12,
+      "codename": "view_event"
+    }
+  },
+  {
     "model": "auth.user",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$600000$56z2KcKBsjSAaY7NKTvb3G$SMPqkYoPYNSID8XU0Pt80wDcvzcJG1wudYoVgs+Kgvo=",
-      "last_login": "2023-10-19T13:45:19.275Z",
+      "last_login": "2024-01-27T00:43:05.689Z",
       "is_superuser": true,
       "username": "vanek",
       "first_name": "",
@@ -18,18 +1737,175 @@
     }
   },
   {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "auth",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "houses",
+      "model": "house"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "houses",
+      "model": "housereservation"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "houses",
+      "model": "housepicture"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "clients",
+      "model": "client"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "houses",
+      "model": "housefeature"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "events",
+      "model": "event"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "71dc6mmzdtjzcykq19xoh0x3h3cei25d",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnxdwMlPWew1rs2DiBbipMKcXcSKQW0b2beWwRclxLWnuYwsbgIJU6_W0R6proDfmC9N0mtLvMU5a7Ig3Z5a5xe18P9OyjYy1Zb8IPDs88aLLKHPLKKeVDRGAUZVHRAnrS3m2M0a3AwmiGTypjYEojPF8jyN3k:1rTWmn:iWlUeR2BgECwL-ORUsjtKISLUAoPjJLqAFxuMquubpE",
+      "expire_date": "2024-02-10T00:43:05.693Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "ab16f88wq4gs8o8n6uxjwkqlk72gi9lu",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnxdwMlPWew1rs2DiBbipMKcXcSKQW0b2beWwRclxLWnuYwsbgIJU6_W0R6proDfmC9N0mtLvMU5a7Ig3Z5a5xe18P9OyjYy1Zb8IPDs88aLLKHPLKKeVDRGAUZVHRAnrS3m2M0a3AwmiGTypjYEojPF8jyN3k:1qw1QG:HJToRM335NuDHWpRWcFNb521HQW_0l2MF1eqs7ThXFI",
+      "expire_date": "2023-11-09T14:33:20.360Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "ics6ijghseu40o76bk2hzezoob5guaa0",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnxdwMlPWew1rs2DiBbipMKcXcSKQW0b2beWwRclxLWnuYwsbgIJU6_W0R6proDfmC9N0mtLvMU5a7Ig3Z5a5xe18P9OyjYy1Zb8IPDs88aLLKHPLKKeVDRGAUZVHRAnrS3m2M0a3AwmiGTypjYEojPF8jyN3k:1qtTKx:iIS1W0v7rZTBJ86bgsaQVj6T2QteiBzAH8vbrdSEqkw",
+      "expire_date": "2023-11-02T13:45:19.279Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "lctsr6cg19wudvgvb71iofgnsu8m9tp4",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnxdwMlPWew1rs2DiBbipMKcXcSKQW0b2beWwRclxLWnuYwsbgIJU6_W0R6proDfmC9N0mtLvMU5a7Ig3Z5a5xe18P9OyjYy1Zb8IPDs88aLLKHPLKKeVDRGAUZVHRAnrS3m2M0a3AwmiGTypjYEojPF8jyN3k:1r6zkm:xlAzgv7C4wWd18l4P0ENX8lccFJaalGXlBjB7Djbysk",
+      "expire_date": "2023-12-09T20:59:52.395Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "yihr6aj81segc6jxnnzktxok14oh4itn",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnxdwMlPWew1rs2DiBbipMKcXcSKQW0b2beWwRclxLWnuYwsbgIJU6_W0R6proDfmC9N0mtLvMU5a7Ig3Z5a5xe18P9OyjYy1Zb8IPDs88aLLKHPLKKeVDRGAUZVHRAnrS3m2M0a3AwmiGTypjYEojPF8jyN3k:1r1BwR:6qisdyjWB72prk6XEVYIZv9SLo8RvYnKVB0gaafCXb4",
+      "expire_date": "2023-11-23T20:47:55.649Z"
+    }
+  },
+  {
     "model": "houses.house",
     "pk": 1,
     "fields": {
-      "name": "Скандинавия 30",
+      "name": "Скандинавия 1",
       "description": "Эстетичный дизайн, удобная планировка и качество — все об этой серии модульных домов. Выполнен в лучших традициях Скандинавского стиля — использование натурального дерева в наружной и внутренней отделке, минимум лишних деталей.",
-      "max_occupancy": 3,
       "base_price": 10000,
       "holidays_multiplier": 2.0,
+      "base_persons_amount": 2,
+      "max_persons_amount": 6,
+      "price_per_extra_person": 2000,
       "created_at": "2023-10-19T14:06:52.375Z",
-      "updated_at": "2023-10-19T14:10:21.722Z",
+      "updated_at": "2023-11-09T21:40:20.114Z",
       "features": [
         1
+      ]
+    }
+  },
+  {
+    "model": "houses.house",
+    "pk": 2,
+    "fields": {
+      "name": "Скандинавия 2",
+      "description": "описание",
+      "base_price": 15000,
+      "holidays_multiplier": 2.0,
+      "base_persons_amount": 2,
+      "max_persons_amount": 3,
+      "price_per_extra_person": 2000,
+      "created_at": "2023-10-25T13:28:46.011Z",
+      "updated_at": "2023-10-25T13:28:46.011Z",
+      "features": [
+        1,
+        2
       ]
     }
   },
@@ -74,6 +1950,74 @@
     }
   },
   {
+    "model": "houses.housereservation",
+    "pk": 14038,
+    "fields": {
+      "house": 1,
+      "client": 1,
+      "check_in_datetime": "2024-12-26T16:00:00Z",
+      "check_out_datetime": "2024-12-27T12:00:00Z",
+      "extra_persons_amount": 1,
+      "price": 12000,
+      "preferred_contact": "a",
+      "comment": "a",
+      "cancelled": false,
+      "created_at": "2023-11-09T21:03:15.902Z",
+      "updated_at": "2023-11-25T21:18:39.672Z"
+    }
+  },
+  {
+    "model": "houses.housereservation",
+    "pk": 14039,
+    "fields": {
+      "house": 2,
+      "client": 9,
+      "check_in_datetime": "2023-12-30T16:00:00Z",
+      "check_out_datetime": "2023-12-31T15:00:00Z",
+      "extra_persons_amount": 0,
+      "price": 39000,
+      "preferred_contact": "a",
+      "comment": "a",
+      "cancelled": true,
+      "created_at": "2023-11-09T21:16:57.540Z",
+      "updated_at": "2023-11-09T21:39:17.479Z"
+    }
+  },
+  {
+    "model": "houses.housereservation",
+    "pk": 14040,
+    "fields": {
+      "house": 1,
+      "client": 1,
+      "check_in_datetime": "2023-11-26T16:00:00Z",
+      "check_out_datetime": "2023-11-27T12:00:00Z",
+      "extra_persons_amount": 0,
+      "price": 20000,
+      "preferred_contact": "ф",
+      "comment": "ф",
+      "cancelled": false,
+      "created_at": "2023-11-23T14:31:40.563Z",
+      "updated_at": "2023-11-25T21:03:50.257Z"
+    }
+  },
+  {
+    "model": "houses.housereservation",
+    "pk": 14041,
+    "fields": {
+      "house": 1,
+      "client": 10,
+      "check_in_datetime": "2024-12-11T16:00:00Z",
+      "check_out_datetime": "2024-12-12T12:00:00Z",
+      "extra_persons_amount": 0,
+      "price": 10000,
+      "preferred_contact": "tg",
+      "comment": " ",
+      "cancelled": false,
+      "created_at": "2024-01-27T11:34:29.865Z",
+      "updated_at": "2024-01-27T11:34:29.865Z"
+    }
+  },
+  {
     "model": "clients.client",
     "pk": 1,
     "fields": {
@@ -82,6 +2026,106 @@
       "last_name": "Петров",
       "created_at": "2023-10-19T14:07:32.072Z",
       "updated_at": "2023-10-19T14:07:32.072Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 3,
+    "fields": {
+      "email": "26.10.2023.19.00.58@mail.ru",
+      "first_name": "имечко 26-10-2023",
+      "last_name": "фамилия 19:00:58",
+      "created_at": "2023-10-26T19:00:58.261Z",
+      "updated_at": "2023-10-26T19:00:58.261Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 4,
+    "fields": {
+      "email": "26.10.2023.19.02.36@mail.ru",
+      "first_name": "имечко 26-10-2023",
+      "last_name": "фамилия 19:02:36",
+      "created_at": "2023-10-26T19:02:36.741Z",
+      "updated_at": "2023-10-26T19:02:36.741Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 5,
+    "fields": {
+      "email": "26.10.2023.19.08.18@mail.ru",
+      "first_name": "имечко 26-10-2023",
+      "last_name": "фамилия 19:08:18",
+      "created_at": "2023-10-26T19:08:18.877Z",
+      "updated_at": "2023-10-26T19:08:18.877Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 6,
+    "fields": {
+      "email": "26.10.2023.19.15.49@mail.ru",
+      "first_name": "имечко 26-10-2023",
+      "last_name": "фамилия 19:15:49",
+      "created_at": "2023-10-26T19:15:49.353Z",
+      "updated_at": "2023-10-26T19:15:49.353Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 7,
+    "fields": {
+      "email": "26.10.2023.19.32.25@mail.ru",
+      "first_name": "имечко 26-10-2023",
+      "last_name": "фамилия 19:32:25",
+      "created_at": "2023-10-26T19:32:25.179Z",
+      "updated_at": "2023-10-26T19:32:25.179Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 8,
+    "fields": {
+      "email": "asd@asd.dsf",
+      "first_name": "asd@asd.dsf",
+      "last_name": "asd@asd.dsf",
+      "created_at": "2023-10-27T17:13:24.963Z",
+      "updated_at": "2023-10-27T17:13:24.963Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 9,
+    "fields": {
+      "email": "asd@asd.asd",
+      "first_name": "nikita",
+      "last_name": "n",
+      "created_at": "2023-11-09T20:57:04.898Z",
+      "updated_at": "2023-11-09T20:57:04.906Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 10,
+    "fields": {
+      "email": "aaa@aaa.aaa",
+      "first_name": "aaa",
+      "last_name": "aaa",
+      "created_at": "2024-01-27T11:30:03.544Z",
+      "updated_at": "2024-01-27T11:30:03.548Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+      "name": "Тестовое событие",
+      "start_date": "2024-01-11",
+      "end_date": "2024-01-14",
+      "multiplier": 4.0,
+      "created_at": "2023-10-22T15:38:56.544Z",
+      "updated_at": "2023-10-22T15:55:40.763Z"
     }
   }
 ]
