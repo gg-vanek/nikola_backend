@@ -97,7 +97,7 @@ class HouseViewSet(ByActionMixin,
 
         house = self.queryset.filter(id=self.kwargs['pk'])
 
-        check_in_date = self.request.query_params.get("check_in_date")
+        check_in_date = self.request.query_params.get("chosen_check_in_date")
         if check_in_date:
             check_in_date = Datetime.strptime(check_in_date, "%d-%m-%Y").date()
             return Response({"calendar": calculate_check_out_calendar(houses=house,

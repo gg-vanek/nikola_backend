@@ -33,8 +33,7 @@ def calculate_check_in_calendar(houses: QuerySet[House],
             # проверяем, можно ли въехать в рассматриваемый день, поэтому добавляем 1 день (см описание функции)
             available_houses = filter_for_available_houses_by_day(houses, day + timedelta(days=1))
 
-            if available_houses:
-                calendar[day.strftime("%d-%m-%Y")]["check_in_is_available"] = True
+            calendar[day.strftime("%d-%m-%Y")]["check_in_is_available"] = bool(available_houses)
 
         day += timedelta(days=1)
 
@@ -90,9 +89,8 @@ def calculate_check_out_calendar(houses: QuerySet[House],
                     del accumulated_prices[house]
 
             for house in houses:
-                house_day_price = \
-                    accumulated_prices[house] + \
-                    calculate_house_price_by_day(house=house, day=day, use_cached_data=True)
+                accumulated_prices[house] += calculate_house_price_by_day(house=house, day=day, use_cached_data=True)
+                house_day_price = accumulated_prices[house]
 
                 # обновляем минимальную цену
                 if minimum_day_price:
