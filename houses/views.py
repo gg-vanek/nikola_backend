@@ -62,7 +62,8 @@ class HouseViewSet(ByActionMixin,
             return None
         except (TypeError, ValueError, AssertionError):
             return Response({"error": "month и year должны быть целыми положительными числами. "
-                                      "Номер месяца не может быть меньше 1 или больше 12"},
+                                      "Номер месяца не может быть меньше 1 или больше 12. "
+                                      "Номер года не может быть меньше текущего года"},
                             status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['get'], url_path='calendar', detail=False)
