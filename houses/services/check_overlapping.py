@@ -57,7 +57,7 @@ def filter_for_available_houses_by_period(
     # два условия выше - условия, что очередное бронирование не пересекается с выбранными датами
     # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
     # не равно общему количеству бронирований
-    booked_total_query = Q(cancelled=False)
+    booked_total_query = Q(reservations__cancelled=False)
 
     # есть еще queryset.extra позволяющий делать запуск raw SQL
     return houses.annotate(
