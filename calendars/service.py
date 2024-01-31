@@ -76,7 +76,8 @@ def calculate_check_out_calendar(houses: QuerySet[House],
             # не показываем цены домиков в дни, которые до дня въезда
             # все равно их нельзя забронировать :)
             calendar[day.strftime("%d-%m-%Y")]['price'] = None
-            calendar[day.strftime("%d-%m-%Y")]["reason"] = "Before_check_in"
+            calendar[day.strftime("%d-%m-%Y")]['check_out_is_available'] = False
+            calendar[day.strftime("%d-%m-%Y")]["reason(debug)"] = "Before_check_in"
         else:
             # если в этот день не будет свободных домиков, то цена так и останется None
             minimum_day_price = None
@@ -105,10 +106,12 @@ def calculate_check_out_calendar(houses: QuerySet[House],
                     calendar[day.strftime("%d-%m-%Y")]["weekday"] = day.weekday()
                     calendar[day.strftime("%d-%m-%Y")]["is_holiday"] = is_holiday(day)
                     calendar[day.strftime("%d-%m-%Y")]['price'] = None
-                    calendar[day.strftime("%d-%m-%Y")]["reason"] = "No houses available for this check in and out"
+                    calendar[day.strftime("%d-%m-%Y")]['check_out_is_available'] = False
+                    calendar[day.strftime("%d-%m-%Y")]["reason(debug)"] = "No houses available for this check in and out"
                     day += timedelta(days=1)
             else:
                 calendar[day.strftime("%d-%m-%Y")]['price'] = minimum_day_price
+                calendar[day.strftime("%d-%m-%Y")]['check_out_is_available'] = True
 
         day += timedelta(days=1)
 
