@@ -72,15 +72,15 @@ def calculate_reservation_receipt(house: House | int,
             raise ValueError(f"Некорректный id домика = {house}") from e
 
     if extra_persons_amount < 0:
-        raise ValueError("Отрицательное количество людей в заявке")
+        raise ValueError(f"Отрицательное количество людей в заявке: {extra_persons_amount}")
     if extra_persons_amount + house.base_persons_amount > house.max_persons_amount:
-        raise ValueError("Слишком много дополнительных людей в заявке")
+        raise ValueError(f"Слишком много дополнительных людей в заявке: {extra_persons_amount} + {house.base_persons_amount} > {house.max_persons_amount}")
     if check_in_datetime >= check_out_datetime:
-        raise ValueError("Некорректные дата и время въезда и выезда (въезд позже выезда)")
+        raise ValueError(f"Некорректные дата и время въезда и выезда (въезд позже выезда): {check_in_datetime.strftime('%d-%m-%Y %H:%M')} >= {check_out_datetime.strftime('%d-%m-%Y')}")
     if check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
-        raise ValueError("Некорректное время въезда")
+        raise ValueError(f"Некорректное время въезда: {check_in_datetime.time().strftime('%H:%M')}")
     if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
-        raise ValueError("Некорректное время выезда")
+        raise ValueError(f"Некорректное время выезда: {check_in_datetime.time().strftime('%H:%M')}")
 
     check_in_date = check_in_datetime.date()
     check_in_time = check_in_datetime.time()
