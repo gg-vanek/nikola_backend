@@ -56,7 +56,7 @@ def calculate_check_out_calendar(houses: QuerySet[House],
         # при этом нас интересуют только те домики которые имеют весь этот промежуток свободным
         houses = filter_for_available_houses_by_period(houses, check_in_date=check_in_date, check_out_date=day)
 
-        accumulated_prices = {}
+        accumulated_prices = {house: 0 for house in houses}
 
         # для множества домиков, свободных весь период от даты заезда до начала рассматриваемого месяца вычислим цену
         calendar_month_start = day
@@ -65,7 +65,9 @@ def calculate_check_out_calendar(houses: QuerySet[House],
             for house in houses:
                 # для каждого из домиков высчитать суммарную стоимость к первому дню текущего месяца
                 accumulated_prices[house] += calculate_house_price_by_day(house, day, use_cached_data=True)
-        # day == calendar_month_start снова
+                
+            day += timedelta(days=1)
+    # day == calendar_month_start снова
 
     while day < end_day:
         calendar[day.strftime("%d-%m-%Y")] = {}
