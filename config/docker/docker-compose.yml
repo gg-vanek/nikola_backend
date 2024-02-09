@@ -16,11 +16,11 @@ services:
       - db:db
       - redis:redis
     env_file:
-      - ../env/.env
+      - ../../../.env
 
   db:
     image: postgres
-    env_file: ../env/.env
+    env_file: ../../../.env
 
   redis:
     image: library/redis
