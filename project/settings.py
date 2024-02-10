@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # 'core.middleware.DebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -63,8 +64,15 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1",
+    "http://localhost",
+    "http://0.0.0.0",
+    "http://127.0.0.1:80",
+    "http://localhost:80",
+    "http://0.0.0.0:80",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "http://0.0.0.0:3000",
 ]
 
 ROOT_URLCONF = 'project.urls'
