@@ -3,12 +3,12 @@ version: '2'
 services:
   backend:
     build: 
-      context: ../../.
-      dockerfile: config/docker/Dockerfile
+      context: .
+      dockerfile: ./Dockerfile
     ports:
       - '${BACKEND_PORT}:8000'
     volumes:
-      - ../../.:/app/backend
+      - .:/app/backend
     depends_on:
       - db
       - redis
@@ -16,11 +16,11 @@ services:
       - db:db
       - redis:redis
     env_file:
-      - ../../../.env
+      - ../.env
 
   db:
     image: postgres
-    env_file: ../../../.env
+    env_file: ../.env
 
   redis:
     image: library/redis

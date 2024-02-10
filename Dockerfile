@@ -4,10 +4,10 @@ LABEL maintainer="vanek"
 LABEL t="backend"
 
 WORKDIR /app/backend
-COPY ../.. .
+COPY . .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-RUN chmod +x ./config/scripts/entrypoint.sh
-ENTRYPOINT ["/bin/bash", "./config/scripts/entrypoint.sh"]
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["/bin/bash", "./entrypoint.sh"]

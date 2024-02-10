@@ -214,7 +214,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
         },
@@ -230,7 +230,7 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
