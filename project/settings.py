@@ -64,6 +64,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    f"http://{os.getenv('FRONTEND_HOST')}",
+    f"http://{os.getenv('FRONTEND_HOST')}:80",
+    f"http://{os.getenv('FRONTEND_HOST')}:3000",
     "http://127.0.0.1",
     "http://localhost",
     "http://0.0.0.0",
