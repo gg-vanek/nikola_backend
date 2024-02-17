@@ -52,7 +52,7 @@ def filter_for_available_houses_by_period(
         reservations__cancelled=False)
     booked_after_query = Q(
         reservations__check_in_datetime__gt=Datetime.combine(check_out_date,
-                                                             Pricing.ALLOWED_CHECK_IN_TIMES['earliest']),
+                                                             Pricing.ALLOWED_CHECK_OUT_TIMES['earliest']),
         reservations__cancelled=False)
     # два условия выше - условия, что очередное бронирование не пересекается с выбранными датами
     # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
