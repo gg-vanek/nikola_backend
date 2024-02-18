@@ -3,6 +3,9 @@ from datetime import date as Date, datetime as Datetime, time as Time, timedelta
 
 import logging
 from django.core.cache import cache
+
+from core.errors import LogicError, IncorrectPeopleAmountInReservationException, \
+    IncorrectDatetimesException, IncorrectTimeException
 from core.models import Pricing
 from events.models import Event
 from houses.models import House
@@ -18,18 +21,21 @@ class ReceiptPosition:
     name: str = field(init=False)
 
     def __post_init__(self):
-        self.price = int(round(self.price, -2))
-        if self.type == "night":
-            assert self.time is None
-            self.name = f"Ночь {(self.date - timedelta(days=1)).strftime('%d.%m')}-{self.date.strftime('%d.%m')}"
-        elif self.type == "early_check_in":
-            assert isinstance(self.time, Time)
-            self.name = f"Ранний въезд {self.date.strftime('%d.%m')} в {self.time.strftime('%H:%M')}"
-        elif self.type == "late_check_out":
-            assert isinstance(self.time, Time)
-            self.name = f"Поздний выезд {self.date.strftime('%d.%m')} в {self.time.strftime('%H:%M')}"
-        else:
-            raise ValueError(f"unexpected self.type = {self.type}")
+        try:
+            self.price = int(round(self.price, -2))
+            if self.type == "night":
+                assert self.time is None
+                self.name = f"Ночь {(self.date - timedelta(days=1)).strftime('%d.%m')}-{self.date.strftime('%d.%m')}"
+            elif self.type == "early_check_in":
+                assert isinstance(self.time, Time)
+                self.name = f"Ранний въезд {self.date.strftime('%d.%m')} в {self.time.strftime('%H:%M')}"
+            elif self.type == "late_check_out":
+                assert isinstance(self.time, Time)
+                self.name = f"Поздний выезд {self.date.strftime('%d.%m')} в {self.time.strftime('%H:%M')}"
+            else:
+                assert False, f"unexpected self.type = {self.type}"
+        except AssertionError as e:
+            raise LogicError(str(e)) from e
 
 
 @dataclass
@@ -69,18 +75,18 @@ def calculate_reservation_receipt(house: House | int,
         try:
             house = House.objects.get(pk=house)
         except House.DoesNotExist as e:
-            raise ValueError(f"Некорректный id домика = {house}") from e
+            raise LogicError(f"Некорректный id домика = {house}") from e
 
     if extra_persons_amount < 0:
-        raise ValueError(f"Отрицательное количество людей в заявке: {extra_persons_amount}")
+        raise IncorrectPeopleAmountInReservationException(f"Отрицательное количество людей в заявке: {extra_persons_amount}")
     if extra_persons_amount + house.base_persons_amount > house.max_persons_amount:
-        raise ValueError(f"Слишком много дополнительных людей в заявке: {extra_persons_amount} + {house.base_persons_amount} > {house.max_persons_amount}")
+        raise IncorrectPeopleAmountInReservationException(f"Слишком много дополнительных людей в заявке: {extra_persons_amount} + {house.base_persons_amount} > {house.max_persons_amount}")
     if check_in_datetime >= check_out_datetime:
-        raise ValueError(f"Некорректные дата и время въезда и выезда (въезд позже выезда): {check_in_datetime.strftime('%d-%m-%Y %H:%M')} >= {check_out_datetime.strftime('%d-%m-%Y')}")
+        raise IncorrectDatetimesException(f"Некорректные дата и время въезда и выезда (въезд позже выезда): {check_in_datetime.strftime('%d-%m-%Y %H:%M')} >= {check_out_datetime.strftime('%d-%m-%Y')}")
     if check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
-        raise ValueError(f"Некорректное время въезда: {check_in_datetime.time().strftime('%H:%M')}")
+        raise IncorrectTimeException(f"Некорректное время въезда: {check_in_datetime.time().strftime('%H:%M')}")
     if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
-        raise ValueError(f"Некорректное время выезда: {check_in_datetime.time().strftime('%H:%M')}")
+        raise IncorrectTimeException(f"Некорректное время выезда: {check_in_datetime.time().strftime('%H:%M')}")
 
     check_in_date = check_in_datetime.date()
     check_in_time = check_in_datetime.time()

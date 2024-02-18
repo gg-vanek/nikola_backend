@@ -6,6 +6,7 @@ from rest_framework.filters import BaseFilterBackend
 
 from rest_framework.request import Request
 
+from core.errors import IncorrectDatesException
 from houses.services.check_overlapping import filter_for_available_houses_by_period
 
 logger = logging.getLogger(__name__)
@@ -40,11 +41,15 @@ class AvailableByDateHousesFilter(BaseFilterBackend):
             if not now().date() < check_in_date < check_out_date:
                 # если прилетели неправильные даты check_in и check_out или
                 # если пытаются забронировать что-то на прошедшую дату
-                raise ValueError
+                raise IncorrectDatesException("Некорректные даты бронирования. "
+                                            "Не выполнено неравенство now < check_in_date < check_out_date: "
+                                            f"{now().date().strftime('%d-%m-%Y')} < "
+                                            f"{check_in_date.strftime('%d-%m-%Y')} < "
+                                            f"{check_out_date.strftime('%d-%m-%Y')}")
 
             queryset = filter_for_available_houses_by_period(queryset, check_in_date, check_out_date)
 
-        except (ValueError, TypeError):
+        except TypeError:
             # если нет какой-то из дат - мы не можем фильтровать
             # также если проблема с порядком дат "now < in < out" попадаем сюда же
             pass
