@@ -25,7 +25,8 @@ MEDIA_URL = '/media/'
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.getenv('DEBUG_BACKEND')=="true")
+# DEBUG = (os.getenv('DEBUG_BACKEND')=="true")
+DEBUG = True
 
 ALLOWED_HOSTS = [
     os.getenv('BACKEND_HOST'),
@@ -219,7 +220,7 @@ LOGGING = {
     },
     'handlers': {
         'console': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
         },
@@ -239,7 +240,7 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'handlers': ['console', 'rotating_file_handler'],
             "propagate": False,  # чтобы не дублировалось в консоли
         }
