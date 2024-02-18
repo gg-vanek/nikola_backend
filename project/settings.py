@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-CACHALOT_ENABLED = os.getenv("ENABLE_CACHALOT", False)
+CACHALOT_ENABLED = (os.getenv('ENABLE_CACHALOT')=="true")
 
 CACHES = {
     "default": {
