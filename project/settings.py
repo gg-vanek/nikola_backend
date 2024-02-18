@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
     # 3-rd party
     'corsheaders',
-    'django_admin_listfilter_dropdown',
+    'cachalot',
     'rest_framework',
 ]
 
@@ -146,14 +146,12 @@ REST_FRAMEWORK = {
     ],
 }
 
+CACHALOT_ENABLED = os.getenv("ENABLE_CACHALOT", False)
+
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}",
-        "TIMEOUT": 60,
-        "OPTIONS": {
-            "db": 0,
-        }
     }
 }
 
