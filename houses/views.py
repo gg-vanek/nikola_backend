@@ -128,8 +128,7 @@ class HouseViewSet(ByActionMixin,
         reservation_parameters_serializer = self.get_serializer(house, data=request.data)
         reservation_parameters_serializer.is_valid(raise_exception=True)
         receipt = calculate_reservation_receipt(house=house,
-                                                **reservation_parameters_serializer.validated_data,
-                                                use_cached_data=False)
+                                                **reservation_parameters_serializer.validated_data)
         return Response({"receipt": asdict(receipt),
                          "total": receipt.total,
                          "house_id": self.kwargs['pk'],

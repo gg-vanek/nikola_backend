@@ -64,7 +64,7 @@ def calculate_check_out_calendar(houses: QuerySet[House],
         while day < calendar_month_start:
             for house in houses:
                 # для каждого из домиков высчитать суммарную стоимость к первому дню текущего месяца
-                accumulated_prices[house] += calculate_house_price_by_day(house, day, use_cached_data=True)
+                accumulated_prices[house] += calculate_house_price_by_day(house, day)
                 
             day += timedelta(days=1)
     # day == calendar_month_start снова
@@ -92,7 +92,7 @@ def calculate_check_out_calendar(houses: QuerySet[House],
                     del accumulated_prices[house]
 
             for house in houses:
-                accumulated_prices[house] += calculate_house_price_by_day(house=house, day=day, use_cached_data=True)
+                accumulated_prices[house] += calculate_house_price_by_day(house=house, day=day)
                 house_day_price = accumulated_prices[house]
 
                 # обновляем минимальную цену

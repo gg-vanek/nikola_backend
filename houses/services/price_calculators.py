@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from datetime import date as Date, datetime as Datetime, time as Time, timedelta
 
 import logging
-from django.core.cache import cache
 
 from core.errors import LogicError, IncorrectPeopleAmountInReservationException, \
     IncorrectDatetimesException, IncorrectTimeException
@@ -69,8 +68,7 @@ class Receipt:
 
 def calculate_reservation_receipt(house: House | int,
                                   check_in_datetime: Datetime, check_out_datetime: Datetime,
-                                  extra_persons_amount: int,
-                                  use_cached_data: bool = False) -> Receipt:
+                                  extra_persons_amount: int) -> Receipt:
     if isinstance(house, int):
         try:
             house = House.objects.get(pk=house)
@@ -102,7 +100,7 @@ def calculate_reservation_receipt(house: House | int,
         time=check_in_time,
         date=check_in_date,
         price=Pricing.ALLOWED_CHECK_IN_TIMES.get(check_in_time, 0) *
-              calculate_house_price_by_day(house, check_in_date, use_cached_data)
+              calculate_house_price_by_day(house, check_in_date)
     )
     receipt.add_position(position=early_check_in)
 
@@ -111,7 +109,7 @@ def calculate_reservation_receipt(house: House | int,
         time=check_out_time,
         date=check_out_date,
         price=Pricing.ALLOWED_CHECK_OUT_TIMES.get(check_out_time, 0) *
-              calculate_house_price_by_day(house, check_out_date, use_cached_data)
+              calculate_house_price_by_day(house, check_out_date)
     )
     receipt.add_position(position=late_check_out)
 
@@ -121,21 +119,15 @@ def calculate_reservation_receipt(house: House | int,
     while date <= check_out_date:
         receipt.add_position(position=ReceiptPosition(
             type="night", date=date,
-            price=calculate_house_price_by_day(house, date, use_cached_data) +
+            price=calculate_house_price_by_day(house, date) +
                   extra_persons_amount * house.price_per_extra_person))
         date = date + timedelta(days=1)
 
     return receipt
 
 
-def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool) -> int:
+def calculate_house_price_by_day(house: House, day: Date) -> int:
     # TODO в этой функции нужно принимать не house, а house_id, base_price, holidays_multiplier
-    key = f"house_{house.id}_day_{day.strftime('%d-%m-%Y')}"
-
-    if use_cached_data:
-        cached_price = cache.get(key)
-        if cached_price:
-            return cached_price
 
     price = house.base_price
     # TODO events нужно доставать из кэша, потому что их мало
@@ -148,7 +140,6 @@ def calculate_house_price_by_day(house: House, day: Date, use_cached_data: bool)
         price *= event.multiplier
 
     price = int(round(price, -2))
-    cache.set(key, price)
 
     return price
 

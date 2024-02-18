@@ -80,8 +80,7 @@ class HouseListSerializer(serializers.ModelSerializer):
         receipt = calculate_reservation_receipt(house=house,
                                                 check_in_datetime=check_in_datetime,
                                                 check_out_datetime=check_out_datetime,
-                                                extra_persons_amount=extra_persons_amount,
-                                                use_cached_data=True)
+                                                extra_persons_amount=extra_persons_amount)
 
         return receipt.nights_total
 
