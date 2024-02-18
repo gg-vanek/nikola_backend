@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # 3-rd party
     'corsheaders',
     'cachalot',
+    'django_admin_listfilter_dropdown',
     'rest_framework',
 ]
 
