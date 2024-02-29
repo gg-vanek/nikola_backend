@@ -2,7 +2,8 @@ version: '2'
 
 services:
   backend:
-    build: 
+    build:
+      container_name: backend
       context: .
       dockerfile: ./Dockerfile
     ports:
