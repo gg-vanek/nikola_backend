@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'core.middleware.DebugMiddleware',
+    'core.middleware.DebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -243,7 +243,7 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'handlers': ['console', 'rotating_file_handler'],
             "propagate": False,  # чтобы не дублировалось в консоли
         }
