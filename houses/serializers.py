@@ -20,7 +20,7 @@ class HousePictureListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HousePicture
-        fields = ('picture_path',)
+        fields = ('picture',)
 
 
 class HouseFeatureListSerializer(serializers.ModelSerializer):

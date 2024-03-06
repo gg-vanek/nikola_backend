@@ -20,9 +20,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    path('backend/admin/', admin.site.urls),
+    path('backend/api-auth/', include('rest_framework.urls')),
     # Строчка выше - группа url'ов необходимая для авторизации в браузерной версии апи.
     # То же самое с SessionAuthentication в настройках проекта
-    path('api/v1/houses/', include('houses.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('backend/api/v1/houses/', include('houses.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
+ + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

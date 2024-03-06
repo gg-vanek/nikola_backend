@@ -16,7 +16,10 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = '/backend/media/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/backend/static/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -29,6 +32,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    "51.250.115.72", # HARDCODE
     os.getenv('BACKEND_HOST'),
 ]
 
@@ -69,6 +73,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    "https://avokado.site", # HARDCODE
     f"http://{os.getenv('FRONTEND_HOST')}",
     f"http://{os.getenv('FRONTEND_HOST')}:80",
     f"http://{os.getenv('FRONTEND_HOST')}:3000",
@@ -82,6 +87,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://0.0.0.0:3000",
 ]
+
+CSRF_TRUSTED_ORIGINS = ['https://avokado.site'] # HARDCODE
 
 ROOT_URLCONF = 'project.urls'
 
@@ -188,11 +195,6 @@ DATETIME_INPUT_FORMATS = [
     "%d/%m/%YT%H:%M",
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -240,7 +242,7 @@ LOGGING = {
             'handlers': ['console', 'rotating_file_handler'],
         },
         'django.db.backends': {
-            'level': 'DEBUG',
+            'level': 'WARNING',
             'handlers': ['console', 'rotating_file_handler'],
             "propagate": False,  # чтобы не дублировалось в консоли
         }

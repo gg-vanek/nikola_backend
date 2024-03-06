@@ -9,5 +9,9 @@ python manage.py makemigrations
 echo "Run database migrations"
 python manage.py migrate
 
-echo "Runserver"
-python manage.py runserver 0.0.0.0:8000
+echo "Collect static files"
+python manage.py collectstatic --no-input
+
+echo "Run Gunicorn server"
+exec gunicorn project.wsgi:application -w 3 -b :8000 -k gthread
+

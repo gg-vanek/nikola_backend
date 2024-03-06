@@ -2,7 +2,7 @@ version: '2'
 
 services:
   backend:
-    build: 
+    build:
       context: .
       dockerfile: ./Dockerfile
     ports:
@@ -11,3 +11,9 @@ services:
       - .:/app/backend
     env_file:
       - ../.env
+    networks:
+      - nikola-docker-network
+
+networks:
+  nikola-docker-network:
+    external: true
