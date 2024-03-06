@@ -2,7 +2,7 @@ from datetime import datetime as Datetime
 
 import logging
 from django.core.validators import MinValueValidator
-from django.utils.timezone import now
+from django.utils.timezone import now, get_default_timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from core.models import Pricing
@@ -10,7 +10,7 @@ from houses.models import House, HouseFeature, HousePicture
 from houses.services.check_overlapping import check_if_house_free_by_period
 
 from houses.services.price_calculators import calculate_reservation_receipt
-from project import settings
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -72,8 +72,10 @@ class HouseListSerializer(serializers.ModelSerializer):
         # return None
 
         extra_persons_amount = total_persons_amount - house.base_persons_amount
-        check_in_datetime = Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['default'])
-        check_out_datetime = Datetime.combine(check_out_date, Pricing.ALLOWED_CHECK_OUT_TIMES['default'])
+        check_in_datetime = Datetime.combine(
+            check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['default'], tzinfo=get_default_timezone())
+        check_out_datetime = Datetime.combine(
+            check_out_date, Pricing.ALLOWED_CHECK_OUT_TIMES['default'], tzinfo=get_default_timezone())
 
         receipt = calculate_reservation_receipt(house=house,
                                                 check_in_datetime=check_in_datetime,

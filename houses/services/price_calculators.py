@@ -1,3 +1,4 @@
+import calendar
 from dataclasses import dataclass, field
 from datetime import date as Date, datetime as Datetime, time as Time, timedelta
 
@@ -157,4 +158,4 @@ def is_holiday(day: Date) -> bool:
     # cache.set(day, is_holiday_flag, timeout=60*60*12)  # раз в 12 часов будет эта инфа обновляться
     #
     # return is_holiday_flag
-    return day.weekday() in [5, 6]
+    return day.weekday() in [calendar.SATURDAY, calendar.SUNDAY]

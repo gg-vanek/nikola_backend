@@ -3,12 +3,12 @@ from datetime import datetime as Datetime, date as Date, timedelta
 import logging
 from django.db.models import QuerySet, Q, IntegerField, Value, Sum, Count, F
 from django.db.models.functions import Coalesce
+from django.utils.timezone import get_default_timezone
 
 from core.models import Pricing
 from houses.models import House
 
 logger = logging.getLogger(__name__)
-
 
 def filter_for_available_houses_by_day(houses: QuerySet[House], day: Date) -> QuerySet[House]:
     """
@@ -22,10 +22,12 @@ def filter_for_available_houses_by_day(houses: QuerySet[House], day: Date) -> Qu
     # проверяем отсутствие пересечения с latest check_in и earliest check_out, потому что это тот кейс
     # который необходим для свободности домика в рассматриваемую ночь
     q = Q(
-        reservations__check_in_datetime__lte=Datetime.combine(day - timedelta(days=1),
-                                                              Pricing.ALLOWED_CHECK_IN_TIMES['latest']),
-        reservations__check_out_datetime__gte=Datetime.combine(day,
-                                                               Pricing.ALLOWED_CHECK_OUT_TIMES['earliest']),
+        reservations__check_in_datetime__lte=
+        Datetime.combine(day - timedelta(days=1), Pricing.ALLOWED_CHECK_IN_TIMES['latest'],
+                         tzinfo=get_default_timezone()),
+        reservations__check_out_datetime__gte=
+        Datetime.combine(day, Pricing.ALLOWED_CHECK_OUT_TIMES['earliest'],
+                         tzinfo=get_default_timezone()),
         reservations__cancelled=False,
     )
 
@@ -48,11 +50,13 @@ def filter_for_available_houses_by_period(
         check_in_date: Date,
         check_out_date: Date) -> QuerySet[House]:
     booked_before_query = Q(
-        reservations__check_out_datetime__lt=Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['latest']),
+        reservations__check_out_datetime__lt=Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['latest'],
+                                                              tzinfo=get_default_timezone()),
         reservations__cancelled=False)
     booked_after_query = Q(
         reservations__check_in_datetime__gt=Datetime.combine(check_out_date,
-                                                             Pricing.ALLOWED_CHECK_OUT_TIMES['earliest']),
+                                                             Pricing.ALLOWED_CHECK_OUT_TIMES['earliest'],
+                                                             tzinfo=get_default_timezone()),
         reservations__cancelled=False)
     # два условия выше - условия, что очередное бронирование не пересекается с выбранными датами
     # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
