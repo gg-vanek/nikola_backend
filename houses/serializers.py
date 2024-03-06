@@ -16,8 +16,6 @@ logger = logging.getLogger(__name__)
 
 
 class HousePictureListSerializer(serializers.ModelSerializer):
-    picture_path = serializers.CharField(read_only=True, source='picture.url')
-
     class Meta:
         model = HousePicture
         fields = ('picture',)
