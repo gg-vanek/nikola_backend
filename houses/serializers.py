@@ -27,6 +27,20 @@ class HouseFeatureListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'icon',)
 
 
+class HouseDetailSerializer(serializers.ModelSerializer):
+    pictures = HousePictureListSerializer(many=True)
+    features = HouseFeatureListSerializer(many=True)
+
+    class Meta:
+        model = House
+        fields = ('id', 'name',
+                  'description', 'features', 'pictures',
+                  'base_price',
+                  'base_persons_amount',
+                  'max_persons_amount',
+                  'price_per_extra_person',)
+
+
 class HouseListSerializer(serializers.ModelSerializer):
     # если нет дат в запросе - total_price == None
     # если в эти даты домик занят хотя бы в один из дней - total_price == None

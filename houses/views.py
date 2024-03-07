@@ -15,7 +15,7 @@ from core.models import Pricing
 
 from houses.filters import AvailableByDateHousesFilter, MaxPersonsAmountHousesFilter
 from houses.models import House, HouseFeature, HouseReservation
-from houses.serializers import HouseFeatureListSerializer, HouseListSerializer, HouseReservationParametersSerializer
+from houses.serializers import HouseFeatureListSerializer, HouseListSerializer, HouseReservationParametersSerializer, HouseDetailSerializer
 
 from calendars.service import calculate_check_in_calendar, calculate_check_out_calendar
 
@@ -23,10 +23,12 @@ from houses.services.price_calculators import calculate_reservation_receipt
 
 
 class HouseViewSet(ByActionMixin,
+                   mixins.RetrieveModelMixin,
                    mixins.ListModelMixin,
                    GenericViewSet):
     serializer_classes_by_action = {
         "default": None,
+        "retrieve": HouseDetailSerializer,
         "list": HouseListSerializer,
         "calendar": None,
         "reservation_price": HouseReservationParametersSerializer,
