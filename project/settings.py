@@ -34,6 +34,10 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "51.250.115.72", # HARDCODE
     os.getenv('BACKEND_HOST'),
+    "0.0.0.0",
+    "127.0.0.1",
+    "localhost",
+    "backend",
 ]
 
 # Application definition
@@ -60,7 +64,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'core.middleware.DebugMiddleware',
+    'core.middleware.DebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
