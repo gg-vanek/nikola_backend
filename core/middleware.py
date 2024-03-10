@@ -15,7 +15,10 @@ class DebugMiddleware:
     def __call__(self, request):
         logger.error(request.META)
         response = self.get_response(request)
-        logger.error(response.content)
+        try:
+            logger.error(response.content)
+        except Exception as e:
+            pass
         return response
 
 
