@@ -77,7 +77,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://avokado.site", # HARDCODE
+    "https://floppa.space", # HARDCODE
     f"http://{os.getenv('FRONTEND_HOST')}",
     f"http://{os.getenv('FRONTEND_HOST')}:80",
     f"http://{os.getenv('FRONTEND_HOST')}:3000",
@@ -92,7 +92,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://0.0.0.0:3000",
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://avokado.site'] # HARDCODE
+CSRF_TRUSTED_ORIGINS = [
+    'https://floppa.space',
+] # HARDCODE
 
 ROOT_URLCONF = 'project.urls'
 
