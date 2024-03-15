@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from django.utils.timezone import now
 
 from houses.models import House
-from houses.services.check_overlapping import filter_for_available_houses_by_day, filter_for_available_houses_by_period
+from house_reservations.services.check_overlapping import filter_for_available_houses_by_day, filter_for_available_houses_by_period
 from houses.services.price_calculators import calculate_house_price_by_day, is_holiday
 
 logger = logging.getLogger(__name__)

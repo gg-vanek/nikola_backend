@@ -5,7 +5,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     run_before = [
-        ('houses', '0001_initial'),
+        ('house_reservations', '0001_initial'),
     ]
 
     operations = [

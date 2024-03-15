@@ -25,7 +25,7 @@ STATIC_URL = '/backend/static/'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "django-insecure-va=jrmk350#&^7a$gan2&v5#(m8r8$5gp(0dx52g7%8h4cb51p")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = (os.getenv('DEBUG_BACKEND')=="true")
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # local
     'core',
     'houses',
+    'house_reservations',
     'clients',
     'events',
 
@@ -123,11 +124,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
+        'NAME': os.getenv('POSTGRES_DB', "postgres"),
+        'USER': os.getenv('POSTGRES_USER', "postgres"),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', "postgres"),
+        'HOST': os.getenv('POSTGRES_HOST', "localhost"),
+        'PORT': os.getenv('POSTGRES_PORT', "5432"),
     }
 }
 
@@ -166,7 +167,7 @@ CACHALOT_ENABLED = (os.getenv('ENABLE_CACHALOT')=="true")
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}",
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}",
     }
 }
 
