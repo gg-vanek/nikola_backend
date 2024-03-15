@@ -15,7 +15,7 @@ from house_reservations.serializers import HouseReservationParametersSerializer
 
 from houses.models import House
 
-from houses.services.price_calculators import calculate_reservation_receipt
+from billing.services.price_calculators import calculate_reservation_receipt
 
 
 class HouseReservationsViewSet(ByActionMixin,

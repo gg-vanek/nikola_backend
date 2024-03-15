@@ -32,7 +32,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "django-insecure-va=jrmk350#&^7a$gan
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "51.250.115.72", # HARDCODE
+    "51.250.115.72",  # HARDCODE
     os.getenv('BACKEND_HOST'),
     "0.0.0.0",
     "127.0.0.1",
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # local
+    'billing',
     'core',
     'houses',
     'house_reservations',
@@ -78,7 +79,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://floppa.space", # HARDCODE
+    "https://floppa.space",  # HARDCODE
     f"http://{os.getenv('FRONTEND_HOST')}",
     f"http://{os.getenv('FRONTEND_HOST')}:80",
     f"http://{os.getenv('FRONTEND_HOST')}:3000",
@@ -95,7 +96,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://floppa.space',
-] # HARDCODE
+]  # HARDCODE
 
 ROOT_URLCONF = 'project.urls'
 
@@ -162,7 +163,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-CACHALOT_ENABLED = (os.getenv('ENABLE_CACHALOT')=="true")
+CACHALOT_ENABLED = (os.getenv('ENABLE_CACHALOT') == "true")
 
 CACHES = {
     "default": {

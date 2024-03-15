@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from core.models import Pricing
 from houses.models import House, HouseFeature, HousePicture
-from houses.services.price_calculators import calculate_reservation_receipt
+from billing.services.price_calculators import calculate_reservation_receipt
 
 from datetime import datetime as Datetime
 

@@ -1,7 +1,6 @@
 from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators, RangeBoundary
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 from django.db import models
 from django.db.models import Q
@@ -71,7 +70,7 @@ class HouseReservation(models.Model):
         self.clean_total_persons_amount()
 
         # если все хорошо, то высчитать цену
-        from houses.services.price_calculators import calculate_reservation_receipt
+        from billing.services.price_calculators import calculate_reservation_receipt
         if not self.price:
             self.receipt = calculate_reservation_receipt(house=self.house,
                                                          check_in_datetime=self.check_in_datetime,

@@ -10,7 +10,7 @@ from events.models import Event
 from houses.models import House
 from house_reservations.models import HouseReservation
 
-from houses.services.price_calculators import calculate_reservation_receipt
+from billing.services.price_calculators import calculate_reservation_receipt
 
 
 class HouseReservationModelTest(TestCase):
