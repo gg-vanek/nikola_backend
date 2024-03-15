@@ -1,7 +1,7 @@
 from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators, RangeBoundary
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from django.db import models
 from django.db.models import Q
@@ -21,12 +21,7 @@ class HouseReservation(models.Model):
 
     check_in_datetime = models.DateTimeField("Дата и время заезда")
     check_out_datetime = models.DateTimeField("Дата и время выезда")
-    extra_persons_amount = models.IntegerField(
-        "Дополнительное количество человек для проживания в домике",
-        default=0,
-        validators=[
-            MinValueValidator(0, message="В бронировании нельзя указывать отрицательное количество человек"),
-        ])
+    total_persons_amount = models.IntegerField("Количество человек для проживания в домике")
 
     price = models.IntegerField("Стоимость", blank=True)
 
@@ -73,7 +68,7 @@ class HouseReservation(models.Model):
     def clean(self, *args, **kwargs):
         self.clean_check_in_datetime()
         self.clean_check_out_datetime()
-        self.clean_extra_persons_amount()
+        self.clean_total_persons_amount()
 
         # если все хорошо, то высчитать цену
         from houses.services.price_calculators import calculate_reservation_receipt
@@ -81,17 +76,17 @@ class HouseReservation(models.Model):
             self.receipt = calculate_reservation_receipt(house=self.house,
                                                          check_in_datetime=self.check_in_datetime,
                                                          check_out_datetime=self.check_out_datetime,
-                                                         extra_persons_amount=self.extra_persons_amount, )
+                                                         total_persons_amount=self.total_persons_amount, )
             self.price = self.receipt.total
 
-    def clean_extra_persons_amount(self):
-        if self.extra_persons_amount < 0:
+    def clean_total_persons_amount(self):
+        if self.total_persons_amount < 0:
             raise ValidationError("Невозможно заселить отрицательное количество человек в домик")
-        if self.house.base_persons_amount + self.extra_persons_amount > self.house.max_persons_amount:
+        if not (self.house.base_persons_amount <= self.total_persons_amount <= self.house.max_persons_amount):
             raise ValidationError(f"Невозможно заселить столько человек в домик: \n"
-                                  f"Базовое количество человек: {self.house.base_persons_amount}\n"
-                                  f"Дополнительно количество человек: {self.extra_persons_amount}\n"
-                                  f"Максимальное количество человек: {self.house.max_persons_amount}")
+                                  f"Минимальное количество человек: {self.house.base_persons_amount}\n"
+                                  f"Максимальное количество человек: {self.house.max_persons_amount}"
+                                  f"Указанное количество человек: {self.total_persons_amount}\n")
 
     def clean_check_in_datetime(self):
         if self.check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:

@@ -7,7 +7,8 @@ from django.utils.timezone import now
 
 from clients.models import Client
 from events.models import Event
-from houses.models import House, HouseReservation
+from houses.models import House
+from house_reservations.models import HouseReservation
 
 from houses.services.price_calculators import calculate_reservation_receipt
 
@@ -56,6 +57,7 @@ class HouseReservationModelTest(TestCase):
         """verbose_name в полях совпадает с ожидаемым."""
         reservation = HouseReservation.objects.create(
             **HouseReservationModelTest.default_reservation_arguments,
+            total_persons_amount=2,
             check_in_datetime=HouseReservationModelTest.today_default_check_in + timedelta(days=1),
             check_out_datetime=HouseReservationModelTest.today_default_check_out + timedelta(days=2),
         )
@@ -65,7 +67,7 @@ class HouseReservationModelTest(TestCase):
             'client': "Клиент",
             'check_in_datetime': "Дата и время заезда",
             'check_out_datetime': "Дата и время выезда",
-            "extra_persons_amount": "Дополнительное количество человек для проживания в домике",
+            "total_persons_amount": "Количество человек для проживания в домике",
             "price": "Стоимость",
             'preferred_contact': "Предпочтительный способ связи",
             'comment': "Комментарий",
@@ -85,6 +87,7 @@ class HouseReservationModelTest(TestCase):
                                        f"И заканчивающееся через {check_out_delta} дней"):
                 reservation = HouseReservation.objects.create(
                     **HouseReservationModelTest.default_reservation_arguments,
+                    total_persons_amount=2,
                     check_in_datetime=HouseReservationModelTest.today_default_check_in
                                       + timedelta(days=check_in_delta),
                     check_out_datetime=HouseReservationModelTest.today_default_check_out
@@ -95,6 +98,7 @@ class HouseReservationModelTest(TestCase):
         try:
             HouseReservation.objects.create(
                 **HouseReservationModelTest.default_reservation_arguments,
+                total_persons_amount=2,
                 check_in_datetime=HouseReservationModelTest.today_default_check_in + timedelta(days=1),
                 check_out_datetime=HouseReservationModelTest.today_default_check_out + timedelta(days=3),
             )
@@ -109,6 +113,7 @@ class HouseReservationModelTest(TestCase):
                                        f"И заканчивающееся через {check_out_delta} дней (test_correct_date_range)"):
                 reservation = HouseReservation.objects.create(
                     **HouseReservationModelTest.default_reservation_arguments,
+                    total_persons_amount=2,
                     check_in_datetime=HouseReservationModelTest.today_default_check_in + timedelta(days=check_in_delta),
                     check_out_datetime=HouseReservationModelTest.today_default_check_out + timedelta(
                         days=check_out_delta),
@@ -118,6 +123,7 @@ class HouseReservationModelTest(TestCase):
         try:
             HouseReservation.objects.create(
                 **HouseReservationModelTest.default_reservation_arguments,
+                total_persons_amount=2,
                 check_in_datetime=HouseReservationModelTest.today_default_check_in + timedelta(days=1),
                 check_out_datetime=HouseReservationModelTest.today_default_check_out + timedelta(days=3),
             )
@@ -385,6 +391,7 @@ class HouseReservationModelTest(TestCase):
 
             reservation1 = HouseReservation.objects.create(
                 **HouseReservationModelTest.default_reservation_arguments,
+                total_persons_amount=2,
                 **test_parameters["reservation1"],
             )
             if test_parameters["expected_result"] == "fail":
@@ -392,6 +399,7 @@ class HouseReservationModelTest(TestCase):
                                        msg=f"Создана пара бронирований {test_parameters['test_description']}"):
                     reservation2 = HouseReservation.objects.create(
                         **HouseReservationModelTest.default_reservation_arguments,
+                        total_persons_amount=2,
                         **test_parameters["reservation2"],
                     )
                     reservation2.delete()
@@ -399,6 +407,7 @@ class HouseReservationModelTest(TestCase):
                 try:
                     reservation2 = HouseReservation.objects.create(
                         **HouseReservationModelTest.default_reservation_arguments,
+                        total_persons_amount=2,
                         **test_parameters["reservation2"],
                     )
                     reservation2.delete()
@@ -566,6 +575,7 @@ class HouseReservationModelTest(TestCase):
                 ]:
             reservation1 = HouseReservation.objects.create(
                 **HouseReservationModelTest.default_reservation_arguments,
+                total_persons_amount=2,
                 **test_parameters["reservation1"],
                 cancelled=True,
             )
@@ -573,6 +583,7 @@ class HouseReservationModelTest(TestCase):
             try:
                 reservation2 = HouseReservation.objects.create(
                     **HouseReservationModelTest.default_reservation_arguments,
+                    total_persons_amount=2,
                     **test_parameters["reservation2"],
                 )
                 reservation2.delete()
@@ -586,31 +597,31 @@ class HouseReservationModelTest(TestCase):
         for test_parameters in [
             {
                 "expected_result": "fail",
-                "extra_persons_amount": -1,
+                "total_persons_amount": 1,
             },
             {
                 "expected_result": "pass",
-                "extra_persons_amount": 0,
+                "total_persons_amount": 2,
             },
             {
                 "expected_result": "pass",
-                "extra_persons_amount": 1,
+                "total_persons_amount": 3,
             },
             {
                 "expected_result": "pass",
-                "extra_persons_amount": 2,
+                "total_persons_amount": 4,
             },
             {
                 "expected_result": "pass",
-                "extra_persons_amount": 3,
+                "total_persons_amount": 5,
             },
             {
                 "expected_result": "fail",
-                "extra_persons_amount": 4,
+                "total_persons_amount": 6,
             },
             {
                 "expected_result": "fail",
-                "extra_persons_amount": 5,
+                "total_persons_amount": 7,
             },
         ]:
             if test_parameters["expected_result"] == "fail":
@@ -618,13 +629,13 @@ class HouseReservationModelTest(TestCase):
                         ValidationError,
                         msg=f"Создалось бронирование\n"
                             f"Базовое количество человек: {HouseReservationModelTest.house.base_persons_amount}\n"
-                            f"Дополнительно количество человек: {test_parameters['extra_persons_amount']}\n"
+                            f"Дополнительно количество человек: {test_parameters['total_persons_amount']}\n"
                             f"Максимальное количество человек: {HouseReservationModelTest.house.max_persons_amount}"):
                     HouseReservation.objects.create(
                         **HouseReservationModelTest.default_reservation_arguments,
                         check_in_datetime=HouseReservationModelTest.today_default_check_in + timedelta(days=1),
                         check_out_datetime=HouseReservationModelTest.today_default_check_out + timedelta(days=3),
-                        extra_persons_amount=test_parameters["extra_persons_amount"]
+                        total_persons_amount=test_parameters["total_persons_amount"]
                     )
             elif test_parameters["expected_result"] == "pass":
                 try:
@@ -632,13 +643,13 @@ class HouseReservationModelTest(TestCase):
                         **HouseReservationModelTest.default_reservation_arguments,
                         check_in_datetime=HouseReservationModelTest.today_default_check_in + timedelta(days=1),
                         check_out_datetime=HouseReservationModelTest.today_default_check_out + timedelta(days=3),
-                        extra_persons_amount=test_parameters["extra_persons_amount"]
+                        total_persons_amount=test_parameters["total_persons_amount"]
                     )
                     reservation.delete()
                 except ValidationError:
                     self.fail(msg=f"Не удалось создать бронирование\n"
                                   f"Базовое количество человек: {HouseReservationModelTest.house.base_persons_amount}\n"
-                                  f"Дополнительно количество человек: {test_parameters['extra_persons_amount']}\n"
+                                  f"Дополнительно количество человек: {test_parameters['total_persons_amount']}\n"
                                   f"Максимальное количество человек: "
                                   f"{HouseReservationModelTest.house.max_persons_amount}")
 
@@ -653,22 +664,22 @@ class HouseReservationModelTest(TestCase):
             {
                 'check_in_datetime': HouseReservationModelTest.today_default_check_in + timedelta(days=1),
                 'check_out_datetime': HouseReservationModelTest.today_default_check_out + timedelta(days=5),
-                'extra_persons_amount': 2,
+                'total_persons_amount': 4,
             },
             {
                 'check_in_datetime': HouseReservationModelTest.today_early_check_in + timedelta(days=3),
                 'check_out_datetime': HouseReservationModelTest.today_default_check_out + timedelta(days=7),
-                'extra_persons_amount': 3,
+                'total_persons_amount': 5,
             },
             {
                 'check_in_datetime': HouseReservationModelTest.today_default_check_in + timedelta(days=1),
                 'check_out_datetime': HouseReservationModelTest.today_late_check_out + timedelta(days=9),
-                'extra_persons_amount': 1,
+                'total_persons_amount': 3,
             },
             {
                 'check_in_datetime': HouseReservationModelTest.today_early_check_in + timedelta(days=2),
                 'check_out_datetime': HouseReservationModelTest.today_late_check_out + timedelta(days=4),
-                'extra_persons_amount': 0,
+                'total_persons_amount': 2,
             },
         ]:
             reservation = HouseReservation.objects.create(

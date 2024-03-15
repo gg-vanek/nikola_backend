@@ -52,7 +52,7 @@ class Command(BaseCommand):
                                                    Pricing.ALLOWED_CHECK_IN_TIMES["default"]),
                 check_out_datetime=Datetime.combine(start + timedelta(days=1),
                                                     Pricing.ALLOWED_CHECK_OUT_TIMES["default"]),
-                extra_persons_amount=0,
+                total_persons_amount=1,
                 preferred_contact='a',
                 comment='a',
             )

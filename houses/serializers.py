@@ -83,7 +83,6 @@ class HouseListSerializer(serializers.ModelSerializer):
         # if HouseReservation.objects.filter(house=house, check_in_date__lt=day, check_out_datetime__gt=day):
         # return None
 
-        extra_persons_amount = total_persons_amount - house.base_persons_amount
         check_in_datetime = Datetime.combine(
             check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['default'], tzinfo=get_default_timezone())
         check_out_datetime = Datetime.combine(
@@ -92,6 +91,6 @@ class HouseListSerializer(serializers.ModelSerializer):
         receipt = calculate_reservation_receipt(house=house,
                                                 check_in_datetime=check_in_datetime,
                                                 check_out_datetime=check_out_datetime,
-                                                extra_persons_amount=extra_persons_amount)
+                                                total_persons_amount=total_persons_amount)
 
         return receipt.nights_total

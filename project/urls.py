@@ -25,6 +25,5 @@ urlpatterns = [
     # Строчка выше - группа url'ов необходимая для авторизации в браузерной версии апи.
     # То же самое с SessionAuthentication в настройках проекта
     path('backend/api/v1/houses/', include('houses.urls')),
-    path('backend/api/v1/house_reservations/', include('house_reservations.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

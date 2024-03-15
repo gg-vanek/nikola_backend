@@ -18,7 +18,7 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                                                   format="%d-%m-%Y %H:%M", required=True)
     check_out_datetime = serializers.DateTimeField(input_formats=settings.DATETIME_INPUT_FORMATS,
                                                    format="%d-%m-%Y %H:%M", required=True)
-    extra_persons_amount = serializers.IntegerField(validators=[
+    total_persons_amount = serializers.IntegerField(validators=[
         MinValueValidator(0, message="В бронировании нельзя указывать отрицательное количество человек"),
     ], required=True)
 
@@ -26,7 +26,7 @@ class HouseReservationParametersSerializer(serializers.Serializer):
         fields = ('id',
                   'check_in_datetime',
                   'check_out_datetime',
-                  'extra_persons_amount',
+                  'total_persons_amount',
                   )
 
     def validate(self, attrs):
@@ -50,12 +50,15 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                                   "если дни заезда и выезда в календаре отмечены, как свободные.", )
 
         try:
-            extra_persons_amount = attrs["extra_persons_amount"]
-            assert extra_persons_amount >= 0
+            total_persons_amount = int(attrs["total_persons_amount"])
+            assert house.base_persons_amount <= total_persons_amount <= house.max_persons_amount
         except (ValueError, AssertionError) as e:
-            raise ValidationError("Некорректное extra_persons_amount - "
-                                  "это должно быть целое неотрицательное число") from e
+            raise ValidationError("Некорректное значение total_persons_amount - "
+                                  "это должно быть целое число в промежутке от "
+                                  f"количества проживающих в домике по умолчанию ({house.base_persons_amount} чел.) "
+                                  f"до максимально допустимого количества проживающих "
+                                  f"в домике ({house.max_persons_amount} чел.)") from e
         except KeyError as e:
-            raise ValidationError("Отсутствует extra_persons_amount") from e
+            raise ValidationError("Отсутствует total_persons_amount") from e
 
         return attrs

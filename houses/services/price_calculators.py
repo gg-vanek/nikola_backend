@@ -9,6 +9,7 @@ from core.errors import LogicError, IncorrectPeopleAmountInReservationException,
 from core.models import Pricing
 from events.models import Event
 from houses.models import House
+
 logger = logging.getLogger(__name__)
 
 
@@ -69,23 +70,28 @@ class Receipt:
 
 def calculate_reservation_receipt(house: House | int,
                                   check_in_datetime: Datetime, check_out_datetime: Datetime,
-                                  extra_persons_amount: int) -> Receipt:
+                                  total_persons_amount: int) -> Receipt:
     if isinstance(house, int):
         try:
             house = House.objects.get(pk=house)
         except House.DoesNotExist as e:
             raise LogicError(f"Некорректный id домика = {house}") from e
 
-    if extra_persons_amount < 0:
-        raise IncorrectPeopleAmountInReservationException(f"Отрицательное количество людей в заявке: {extra_persons_amount}")
-    if extra_persons_amount + house.base_persons_amount > house.max_persons_amount:
-        raise IncorrectPeopleAmountInReservationException(f"Слишком много дополнительных людей в заявке: {extra_persons_amount} + {house.base_persons_amount} > {house.max_persons_amount}")
+    if not (house.base_persons_amount <= total_persons_amount <= house.max_persons_amount):
+        raise IncorrectPeopleAmountInReservationException("Некорректное значение total_persons_amount - "
+                                                          "это должно быть целое число в промежутке от "
+                                                          f"количества проживающих в домике по умолчанию ({house.base_persons_amount} чел.) "
+                                                          f"до максимально допустимого количества проживающих "
+                                                          f"в домике ({house.max_persons_amount} чел.)")
     if check_in_datetime >= check_out_datetime:
-        raise IncorrectDatetimesException(f"Некорректные дата и время въезда и выезда (въезд позже выезда): {check_in_datetime.strftime('%d-%m-%Y %H:%M')} >= {check_out_datetime.strftime('%d-%m-%Y')}")
+        raise IncorrectDatetimesException(
+            f"Некорректные дата и время въезда и выезда (въезд позже выезда): {check_in_datetime.strftime('%d-%m-%Y %H:%M')} >= {check_out_datetime.strftime('%d-%m-%Y')}")
     if check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
         raise IncorrectTimeException(f"Некорректное время въезда: {check_in_datetime.time().strftime('%H:%M')}")
     if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
         raise IncorrectTimeException(f"Некорректное время выезда: {check_in_datetime.time().strftime('%H:%M')}")
+
+    extra_persons_amount = total_persons_amount - house.base_persons_amount
 
     check_in_date = check_in_datetime.date()
     check_in_time = check_in_datetime.time()
@@ -159,7 +165,7 @@ def is_holiday(day: Date) -> bool:
     #
     # return is_holiday_flag
 
-    KNOWN_HOLIDAYS = [ #HARDCODE
+    KNOWN_HOLIDAYS = [  # HARDCODE
         *[(i, 1) for i in range(1, 9)],
         (23, 2),
         (8, 3),
