@@ -1,6 +1,6 @@
 from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators, RangeBoundary
-from django.core.exceptions import ModelValidationError
+from django.core.exceptions import ValidationError
 
 from django.db import models, transaction
 from django.db.models import Q, F
@@ -84,29 +84,29 @@ class HouseReservation(models.Model):
 
     def clean_total_persons_amount(self):
         if self.total_persons_amount < 0:
-            raise ModelValidationError("Невозможно заселить отрицательное количество человек в домик")
+            raise ValidationError("Невозможно заселить отрицательное количество человек в домик")
         if not (self.house.base_persons_amount <= self.total_persons_amount <= self.house.max_persons_amount):
-            raise ModelValidationError(f"Невозможно заселить столько человек в домик: \n"
+            raise ValidationError(f"Невозможно заселить столько человек в домик: \n"
                                   f"Минимальное количество человек: {self.house.base_persons_amount}\n"
                                   f"Максимальное количество человек: {self.house.max_persons_amount}"
                                   f"Указанное количество человек: {self.total_persons_amount}\n")
 
     def clean_check_in_datetime(self):
         if self.check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
-            raise ModelValidationError(f"Недопустимое время ВЪЕЗДА - {self.check_in_datetime}. "
+            raise ValidationError(f"Недопустимое время ВЪЕЗДА - {self.check_in_datetime}. "
                                   f"Доступное время - {Pricing.ALLOWED_CHECK_IN_TIMES.keys()}")
 
     def clean_check_out_datetime(self):
         if self.check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
-            raise ModelValidationError(f"Недопустимое время ВЫЕЗДА - {self.check_out_datetime}. "
+            raise ValidationError(f"Недопустимое время ВЫЕЗДА - {self.check_out_datetime}. "
                                   f"Доступное время - {Pricing.ALLOWED_CHECK_OUT_TIMES.keys()}")
 
     def check_datetime_fields(self):
         if self.check_in_datetime.date() <= now().date():
-            raise ModelValidationError("Невозможно забронировать домик на прошедшую дату")
+            raise ValidationError("Невозможно забронировать домик на прошедшую дату")
 
         if self.check_in_datetime >= self.check_out_datetime:
-            raise ModelValidationError("Дата и время заезда должны быть строго меньше даты и времени выезда")
+            raise ValidationError("Дата и время заезда должны быть строго меньше даты и времени выезда")
 
     def __str__(self):
         if self.house:

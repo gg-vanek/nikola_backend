@@ -1,4 +1,4 @@
-from django.core.exceptions import ModelValidationError
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -23,10 +23,10 @@ class Event(models.Model):
 
     def clean(self, *args, **kwargs):
         if self.start_date > self.end_date:
-            raise ModelValidationError("Дата начала события не должна быть больше даты окончания события")
+            raise ValidationError("Дата начала события не должна быть больше даты окончания события")
 
         if self.multiplier < 1:
-            raise ModelValidationError("Если вы реально хотите устроить сезон скидок и поставить "
+            raise ValidationError("Если вы реально хотите устроить сезон скидок и поставить "
                                   "уменьшение цены - обратитесь к разработчику")
 
     def __str__(self):

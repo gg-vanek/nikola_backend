@@ -1,4 +1,4 @@
-from django.core.exceptions import ModelValidationError
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from core.validators import name_validator
@@ -26,9 +26,9 @@ class Client(models.Model):
         self.last_name = self.last_name.strip()
 
         if self.first_name == "":
-            raise ModelValidationError("First name can not be a blank string", code="invalid")
+            raise ValidationError("First name can not be a blank string", code="invalid")
         if self.last_name == "":
-            raise ModelValidationError("Last name can not be a blank string", code="invalid")
+            raise ValidationError("Last name can not be a blank string", code="invalid")
 
     def __str__(self):
         return self.email

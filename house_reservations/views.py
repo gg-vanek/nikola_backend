@@ -1,4 +1,4 @@
-from django.core.exceptions import ModelValidationError
+from django.core.exceptions import ValidationError
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -54,7 +54,7 @@ class HouseReservationsViewSet(ByActionMixin,
             return Response({"reservation": HouseReservationSerializer(reservation).data},
                             status=status.HTTP_200_OK)
         # TODO обернуть ошибку нормально
-        except ModelValidationError as e:
+        except ValidationError as e:
             return Response({"detail": str(e.messages)},
                             status=status.HTTP_400_BAD_REQUEST)
 
@@ -97,7 +97,7 @@ class HouseReservationsViewSet(ByActionMixin,
             return Response({"reservation": HouseReservationSerializer(reservation).data},
                             status=status.HTTP_200_OK)
         # TODO обернуть ошибку нормально
-        except ModelValidationError as e:
+        except ValidationError as e:
             return Response({"detail": str(e.messages)},
                             status=status.HTTP_400_BAD_REQUEST)
 

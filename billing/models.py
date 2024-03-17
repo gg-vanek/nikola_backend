@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.core.exceptions import ModelValidationError
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.timezone import now
 
@@ -43,25 +43,25 @@ class HouseReservationPromoCode(models.Model):
     def check_availability(self, value, client, bill_id):
         # Check dates
         if self.issuance_datetime and now() < self.issuance_datetime:
-            raise ModelValidationError(
+            raise ValidationError(
                 f"Промокод можно будет активировать с {self.issuance_datetime.strftime('%d-%m-%Y %H:%M')}")
         if self.expiration_datetime and now() > self.issuance_datetime:
-            raise ModelValidationError(f"Промокод истек {self.expiration_datetime.strftime('%d-%m-%Y %H:%M')}")
+            raise ValidationError(f"Промокод истек {self.expiration_datetime.strftime('%d-%m-%Y %H:%M')}")
 
         # Check client
         if self.client:
             if self.client != client:
-                raise ModelValidationError(f"Промокод принадлежит другому пользователю (идентификация по email)")
+                raise ValidationError(f"Промокод принадлежит другому пользователю (идентификация по email)")
 
         # Check usages count
         if bill_id and self.bills.filter(id=bill_id):  # если чек уже сохранен в бд с этим промокодом
             pass
         elif self.bills.count() >= self.max_use_times:
-            raise ModelValidationError('Промокод уже был использован максимальное количество раз')
+            raise ValidationError('Промокод уже был использован максимальное количество раз')
 
         # Check bill value
         if value < self.minimal_bill_value:
-            raise ModelValidationError(f'Промокод доступен при сумме в чеке от {self.minimal_bill_value}')
+            raise ValidationError(f'Промокод доступен при сумме в чеке от {self.minimal_bill_value}')
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -70,12 +70,12 @@ class HouseReservationPromoCode(models.Model):
     def clean(self):
         if self.discount_type == self.PERCENTAGE_DISCOUNT:
             if not (0 <= self.discount_value <= 100):
-                raise ModelValidationError('Промокод с типом "PERCENTAGE_DISCOUNT" '
+                raise ValidationError('Промокод с типом "PERCENTAGE_DISCOUNT" '
                                       'должен иметь значение в промежутке от 0 до 100')
 
         if self.issuance_datetime and self.expiration_datetime:
             if self.issuance_datetime >= self.expiration_datetime:
-                raise ModelValidationError(f'Некорректные даты действия промокода. '
+                raise ValidationError(f'Некорректные даты действия промокода. '
                                       f'не выполнено self.issuance_datetime < self.expiration_datetime: '
                                       f'({self.issuance_datetime.strftime("%d-%m-%Y %H:%M")} '
                                       f'< {self.expiration_datetime.strftime("%d-%m-%Y %H:%M")})')

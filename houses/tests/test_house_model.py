@@ -1,4 +1,4 @@
-from django.core.exceptions import ModelValidationError
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from core.models import Pricing
@@ -17,7 +17,7 @@ class HouseModelTest(TestCase):
         )
 
     def test_unique_house_name(self):
-        with self.assertRaises(ModelValidationError, msg="Создано 2 домика с одинаковыми именами"):
+        with self.assertRaises(ValidationError, msg="Создано 2 домика с одинаковыми именами"):
             house1 = House.objects.create(
                 name='Домик',
                 description='Тестовое описание1',
@@ -54,7 +54,7 @@ class HouseModelTest(TestCase):
 
     def test_base_price_validators(self):
         for base_price_test_value in [-100, -1, 0, 1, 100, Pricing.MIN_HOUSE_BASE_PRICE - 1]:
-            with self.assertRaises(ModelValidationError,
+            with self.assertRaises(ValidationError,
                                    msg=f"Создан домик с базовой ценой {base_price_test_value}, "
                                        f"при минимальной {Pricing.MIN_HOUSE_BASE_PRICE}"):
                 house = House.objects.create(
@@ -73,7 +73,7 @@ class HouseModelTest(TestCase):
                 holidays_multiplier=1,
                 base_price=Pricing.MIN_HOUSE_BASE_PRICE,
             )
-        except ModelValidationError:
+        except ValidationError:
             self.fail(msg=f"Не удалось создать домик с базовой ценой {Pricing.MIN_HOUSE_BASE_PRICE}, "
                           f"при минимальной {Pricing.MIN_HOUSE_BASE_PRICE}")
 
@@ -98,7 +98,7 @@ class HouseModelTest(TestCase):
                         "Множитель должен увеличивать базовую цену в выходные дни")
 
         for holiday_multiplier_test_value in [-100, -1, 0, Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER - 0.0001]:
-            with self.assertRaises(ModelValidationError,
+            with self.assertRaises(ValidationError,
                                    msg=f"Создан домик с множителем {holiday_multiplier_test_value}, "
                                        f"при минимальной {Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER}"):
                 house = House.objects.create(
@@ -115,6 +115,6 @@ class HouseModelTest(TestCase):
                 description='Тестовое описание',
                 holidays_multiplier=Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER,
             )
-        except ModelValidationError:
+        except ValidationError:
             self.fail(msg=f"Не удалось создать домик с множителем {Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER}, "
                           f"при минимальной {Pricing.MIN_HOUSE_HOLIDAYS_MULTIPLIER}")
