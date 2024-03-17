@@ -6,12 +6,33 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from billing.models import HouseReservationPromoCode
+from billing.serializers import HouseReservationBillSerializer
+from clients.serializers import ClientSerializer
 from core.models import Pricing
+from house_reservations.models import HouseReservation
 from house_reservations.services.check_overlapping import check_if_house_free_by_period
 
 import logging
 
+from houses.serializers import HouseDetailSerializer
+
 logger = logging.getLogger(__name__)
+
+
+class HouseReservationSerializer(serializers.ModelSerializer):
+    house = HouseDetailSerializer()
+    client = ClientSerializer()
+    bill = HouseReservationBillSerializer()
+
+    class Meta:
+        model = HouseReservation
+        fields = (
+            "house", "client", "bill",
+            'check_in_datetime', 'check_out_datetime',
+            'total_persons_amount',
+            'preferred_contact',
+            'comment',
+        )
 
 
 class HouseReservationParametersSerializer(serializers.Serializer):
@@ -33,7 +54,7 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                   )
 
     def get_promo_code(self) -> HouseReservationPromoCode | None:
-        requested_promo_code = self.context["request"].POST.get("promo_code")
+        requested_promo_code = self.context["request"].data.get("promo_code")
         promo_code = None
         if requested_promo_code:
             try:
@@ -74,5 +95,9 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                                   f"в домике ({house.max_persons_amount} чел.)") from e
         except KeyError as e:
             raise ValidationError("Отсутствует total_persons_amount") from e
+
+        # TODO тут написано криво, нужно переписать
+        self.promo_code = self.get_promo_code()
+        attrs["promo_code"] = self.promo_code
 
         return attrs

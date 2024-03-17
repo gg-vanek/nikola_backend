@@ -30,15 +30,16 @@ class Pricing:
 
     @staticmethod
     def serializable_times_dict(d: dict):
-        serializable_d = {}
+        times = []
+
         for k, v in d.items():
             if isinstance(k, Time):
-                k = k.strftime("%H:%M")
-            if isinstance(v, Time):
-                v = v.strftime("%H:%M")
-            serializable_d[k] = v
+                times.append(k)
 
-        return serializable_d
+        times.sort()
+        times = [t.strftime("%H:%M") for t in times]
+
+        return times
 
     def __str__(self):
         return "Configuration"

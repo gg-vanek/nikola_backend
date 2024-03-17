@@ -3,7 +3,7 @@
 
 Но валидатор написан хорошо и я не буду его удалять"""
 
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ModelValidationError
 
 from billing.json_mappers import DATE_FORMAT, TIME_FORMAT
 from billing.text_helpers import *
@@ -53,32 +53,32 @@ class ChronologicalPositionsValidator:
                 errors.extend([err for err in [price_error, time_error, date_error, description_error] if err])
 
             else:
-                raise ValidationError(f"Unexpected position type {position.get('type')}")
+                raise ModelValidationError(f"Unexpected position type {position.get('type')}")
 
     def validate_date(self, position, prefix, key):
         if key not in position:
-            return ValidationError(prefix + f"'{key}' key not found")
+            return ModelValidationError(prefix + f"'{key}' key not found")
         elif not isinstance(position[key], Date):
-            return ValidationError(
+            return ModelValidationError(
                 prefix + f"value at '{key}' key can not be parsed as Date. Expected format `{DATE_FORMAT}`")
 
     def validate_time(self, position, prefix, key):
         if key not in position:
-            return ValidationError(prefix + f"'{key}' key not found")
+            return ModelValidationError(prefix + f"'{key}' key not found")
         elif not isinstance(position[key], Date):
-            return ValidationError(
+            return ModelValidationError(
                 prefix + f"value at '{key}' key can not be parsed as Time. Expected format `{TIME_FORMAT}`")
 
     def validate_price(self, position, prefix):
         if "price" not in position:
-            return ValidationError(prefix + "'price' key not found")
+            return ModelValidationError(prefix + "'price' key not found")
         elif not isinstance(position["price"], int):
-            return ValidationError(prefix + f"value at 'price' key can not be interpreted as int")
+            return ModelValidationError(prefix + f"value at 'price' key can not be interpreted as int")
         elif not position["price"] % 100 == 0:
-            return ValidationError(prefix + f"value at 'price' has to be integer rounded to hundreds")
+            return ModelValidationError(prefix + f"value at 'price' has to be integer rounded to hundreds")
 
     def validate_description(self, position, prefix, dependencies, func, func_kwargs):
         if "description" not in position:
-            return ValidationError(prefix + "'description' key not found")
+            return ModelValidationError(prefix + "'description' key not found")
         elif dependencies and func(**func_kwargs) != position["description"]:
-            ValidationError(prefix + f"'description' value is incorrect: expected `{func(**func_kwargs)}`")
+            ModelValidationError(prefix + f"'description' value is incorrect: expected `{func(**func_kwargs)}`")

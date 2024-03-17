@@ -54,3 +54,21 @@ class ChronologicalPositionsDecoder(JSONDecoder):
                 obj[i] = self._recursive_transform(obj[i], transformed_key_pattern, transformation_rule)
         # Если объект не словарь и не список, оставляем его без изменений
         return obj
+
+
+class NonChronologicalPositionsEncoder(JSONEncoder):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__()
+        self.ensure_ascii = False
+        self.sort_keys = True
+        self.indent = 2
+
+    def default(self, o):
+        return super().default(o)
+
+
+class NonChronologicalPositionsDecoder(JSONDecoder):
+
+    def decode(self, s, _w=json.decoder.WHITESPACE.match):
+        result = super().decode(s, _w)
+        return result

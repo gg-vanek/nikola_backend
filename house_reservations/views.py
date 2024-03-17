@@ -1,18 +1,16 @@
-from dataclasses import asdict
-
+from django.core.exceptions import ModelValidationError
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from billing.serializers import HouseReservationBillSerializer
 from clients.models import Client
 from clients.serializers import ClientSerializer
 from core.mixins import ByActionMixin
 from core.models import Pricing
 from house_reservations.models import HouseReservation
-from house_reservations.serializers import HouseReservationParametersSerializer
+from house_reservations.serializers import HouseReservationParametersSerializer, HouseReservationSerializer
 
 from houses.models import House
 
@@ -50,12 +48,15 @@ class HouseReservationsViewSet(ByActionMixin,
 
         reservation = HouseReservation(house=house,
                                        **reservation_parameters_serializer.validated_data)
-        reservation.clean()
+        try:
+            reservation.clean()
 
-        return Response({"bill": HouseReservationBillSerializer(reservation.bill),
-                         "house_id": self.kwargs['pk'],
-                         **reservation_parameters_serializer.validated_data},
-                        status=status.HTTP_200_OK)
+            return Response({"reservation": HouseReservationSerializer(reservation).data},
+                            status=status.HTTP_200_OK)
+        # TODO обернуть ошибку нормально
+        except ModelValidationError as e:
+            return Response({"detail": str(e.messages)},
+                            status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], url_path='new_reservation', detail=True)
     def new_reservation(self, request: Request, *args, **kwargs):
@@ -82,19 +83,21 @@ class HouseReservationsViewSet(ByActionMixin,
             return Response({"error": "Поле preferred_contact не должно быть пустым"},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        reservation = HouseReservation.objects.create(client=client,
-                                                      house=house,
-                                                      preferred_contact=preferred_contact,
-                                                      comment=comment,
-                                                      **reservation_parameters_serializer.validated_data)
+        try:
+            reservation = HouseReservation.objects.create(client=client,
+                                                          house=house,
+                                                          preferred_contact=preferred_contact,
+                                                          comment=comment,
+                                                          **reservation_parameters_serializer.validated_data)
 
-        # TODO celery --- cancel if not approved payment
-        # TODO telegram notification
-        # TODO email notification (also via celery)
+            # TODO celery --- cancel if not approved payment
+            # TODO telegram notification
+            # TODO email notification (also via celery)
 
-        return Response({"bill": HouseReservationBillSerializer(reservation.bill),
-                         "house_id": self.kwargs['pk'],
-                         **reservation_parameters_serializer.validated_data,
-                         "preferred_contact": preferred_contact,
-                         "comment": comment},
-                        status=status.HTTP_201_CREATED)
+            return Response({"reservation": HouseReservationSerializer(reservation).data},
+                            status=status.HTTP_200_OK)
+        # TODO обернуть ошибку нормально
+        except ModelValidationError as e:
+            return Response({"detail": str(e.messages)},
+                            status=status.HTTP_400_BAD_REQUEST)
+
