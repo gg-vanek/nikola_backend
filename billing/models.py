@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.timezone import now
 
@@ -38,7 +39,7 @@ class HouseReservationPromoCode(models.Model):
 
     def apply(self, value: int, client, bill_id) -> int:
         self.check_availability(value, client, bill_id)
-        return self.discount_type_to_applying_function[self.discount_type](self, value)
+        return max(self.discount_type_to_applying_function[self.discount_type](self, value), 100)
 
     def check_availability(self, value, client, bill_id):
         # Check dates
@@ -49,7 +50,7 @@ class HouseReservationPromoCode(models.Model):
             raise ValidationError(f"Промокод истек {self.expiration_datetime.strftime('%d-%m-%Y %H:%M')}")
 
         # Check client
-        if self.client:
+        if self.client and client:  # когда происходит запрос цены бронирования информация приходит без клиента
             if self.client != client:
                 raise ValidationError(f"Промокод принадлежит другому пользователю (идентификация по email)")
 
@@ -97,7 +98,7 @@ class HouseReservationBill(models.Model):
                                        on_delete=models.CASCADE,
                                        null=True, blank=True, related_name='bill')
 
-    total = models.IntegerField("Итоговая стоимость", default=0)
+    total = models.IntegerField("Итоговая стоимость", validators=[MinValueValidator(100)])
 
     chronological_positions = models.JSONField(
         verbose_name="Хронологически упорядоченные позиции",
@@ -129,7 +130,6 @@ class HouseReservationBill(models.Model):
 
     def calculate_value(self):
         house = self.reservation.house
-        extra_persons_amount = self.reservation.total_persons_amount - house.base_persons_amount
 
         check_in_date = self.reservation.check_in_datetime.date()
         check_in_time = self.reservation.check_in_datetime.time()
@@ -148,8 +148,7 @@ class HouseReservationBill(models.Model):
                 "type": NIGHT_POSITION,
                 "start_date": date - timedelta(days=1),
                 "end_date": date,
-                "price": calculate_house_price_by_day(house, date) +
-                         extra_persons_amount * house.price_per_extra_person,
+                "price": calculate_house_price_by_day(house, date),
                 "description": night_description(date - timedelta(days=1), date)
             })
             date = date + timedelta(days=1)
@@ -177,8 +176,22 @@ class HouseReservationBill(models.Model):
         if late_check_out["price"] != 0:
             chronological_positions.append(late_check_out)
 
-        self.total = sum(
-            [ch_p["price"] for ch_p in chronological_positions] + [g_p["price"] for g_p in non_chronological_positions])
+        # увеличение стоимости за дополнительных людей
+        extra_persons_amount = self.reservation.total_persons_amount - house.base_persons_amount
+        price_per_extra_person = house.price_per_extra_person
+        nights_amount = (check_out_date - check_in_date).days
+
+        non_chronological_positions.append(
+            {
+                "type": EXTRA_PERSONS_POSITION,
+                "extra_persons_amount": extra_persons_amount,
+                "price_per_extra_person": price_per_extra_person,
+                "nights_amount": nights_amount,
+                "price": extra_persons_amount * price_per_extra_person * nights_amount,
+                "description": f"{extra_persons_amount} доп. гостей х {nights_amount} ночей",
+            }
+        )
+
         if self.promo_code:
             old_price = self.total
             self.total = self.promo_code.apply(self.total, self.reservation.client, self.pk)
@@ -195,6 +208,9 @@ class HouseReservationBill(models.Model):
 
         self.chronological_positions = chronological_positions
         self.non_chronological_positions = non_chronological_positions
+
+        self.total = sum(
+            [ch_p["price"] for ch_p in chronological_positions] + [g_p["price"] for g_p in non_chronological_positions])
 
     def save(self, *args, **kwargs):
         self.full_clean()
