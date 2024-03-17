@@ -1,3 +1,8 @@
+"""Выяснилось что этот валидатор не нужен, потому что при сохранении объекта в бд
+автоматически происходит изменение поля и оно не может быть некорректным
+
+Но валидатор написан хорошо и я не буду его удалять"""
+
 from django.core.exceptions import ValidationError
 
 from billing.json_mappers import DATE_FORMAT, TIME_FORMAT

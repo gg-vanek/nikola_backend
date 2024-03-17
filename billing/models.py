@@ -7,7 +7,6 @@ from django.utils.timezone import now
 from billing.json_mappers import ChronologicalPositionsEncoder, ChronologicalPositionsDecoder
 from billing.services.price_calculators import calculate_house_price_by_day
 from billing.text_helpers import *
-from billing.validators import ChronologicalPositionsValidator
 from core.models import Pricing
 
 
@@ -20,7 +19,7 @@ class HouseReservationPromoCode(models.Model):
     }
     discount_type_to_applying_function = {
         FIXED_VALUE_DISCOUNT: (lambda self, x: x - self.discount_value),
-        PERCENTAGE_DISCOUNT: (lambda self, x: round(x * (100 - self.discount_value) / 100), -1),
+        PERCENTAGE_DISCOUNT: (lambda self, x: round(x * (100 - self.discount_value) / 100, -2)),
     }
 
     code = models.CharField(max_length=255, verbose_name="Промокод", unique=True)
@@ -31,15 +30,16 @@ class HouseReservationPromoCode(models.Model):
 
     client = models.ForeignKey("clients.Client", default=None, null=True, blank=True, on_delete=models.CASCADE)
     max_use_times = models.IntegerField(default=1)
+    minimal_bill_value = models.IntegerField(default=0)
 
     issuance_datetime = models.DateTimeField(default=None, null=True, blank=True)
     expiration_datetime = models.DateTimeField(default=None, null=True, blank=True)
 
-    def apply(self, value: int, client) -> int:
-        self.check_availability(client)
+    def apply(self, value: int, client, bill_id) -> int:
+        self.check_availability(value, client, bill_id)
         return self.discount_type_to_applying_function[self.discount_type](self, value)
 
-    def check_availability(self, client):
+    def check_availability(self, value, client, bill_id):
         # Check dates
         if self.issuance_datetime and now() < self.issuance_datetime:
             raise ValidationError(
@@ -53,8 +53,14 @@ class HouseReservationPromoCode(models.Model):
                 raise ValidationError(f"Промокод принадлежит другому пользователю (идентификация по email)")
 
         # Check usages count
-        if self.bills.count() >= self.max_use_times:
+        if bill_id and self.bills.filter(id=bill_id):  # если чек уже сохранен в бд с этим промокодом
+            pass
+        elif self.bills.count() >= self.max_use_times:
             raise ValidationError('Промокод уже был использован максимальное количество раз')
+
+        # Check bill value
+        if value < self.minimal_bill_value:
+            raise ValidationError(f'Промокод доступен при сумме в чеке от {self.minimal_bill_value}')
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -97,7 +103,6 @@ class HouseReservationBill(models.Model):
         default=dict, blank=True,
         encoder=ChronologicalPositionsEncoder,
         decoder=ChronologicalPositionsDecoder,
-        validators=[ChronologicalPositionsValidator()]
     )
     non_chronological_positions = models.JSONField(
         verbose_name="Хронологически неупорядоченные позиции",
@@ -177,7 +182,7 @@ class HouseReservationBill(models.Model):
         self.total = sum(
             [ch_p["price"] for ch_p in chronological_positions] + [g_p["price"] for g_p in non_chronological_positions])
         if self.promo_code:
-            self.total = self.promo_code.apply(self.total, self.reservation.client)
+            self.total = self.promo_code.apply(self.total, self.reservation.client, self.pk)
 
     def save(self, *args, **kwargs):
         self.full_clean()

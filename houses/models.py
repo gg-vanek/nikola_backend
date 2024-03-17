@@ -16,7 +16,7 @@ def generate_house_picture_filename(instance, filename):
 
 
 def generate_house_feature_icon_filename(instance, filename: str):
-    path = os.path.join('houses_features', 'icons', str(instance.name) + '.' + filename.split('.')[-1])
+    path = os.path.join('house_features', 'icons', str(instance.name) + '.' + filename.split('.')[-1])
     return path
 
 
