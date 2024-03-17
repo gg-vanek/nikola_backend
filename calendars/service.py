@@ -5,8 +5,8 @@ from django.db.models import QuerySet
 from django.utils.timezone import now
 
 from houses.models import House
-from houses.services.check_overlapping import filter_for_available_houses_by_day, filter_for_available_houses_by_period
-from houses.services.price_calculators import calculate_house_price_by_day, is_holiday
+from house_reservations.services.check_overlapping import filter_for_available_houses_by_day, filter_for_available_houses_by_period
+from billing.services.price_calculators import calculate_house_price_by_day, is_holiday
 
 logger = logging.getLogger(__name__)
 
@@ -79,7 +79,7 @@ def calculate_check_out_calendar(houses: QuerySet[House],
             # все равно их нельзя забронировать :)
             calendar[day.strftime("%d-%m-%Y")]['price'] = None
             calendar[day.strftime("%d-%m-%Y")]['check_out_is_available'] = False
-            calendar[day.strftime("%d-%m-%Y")]["reason(debug)"] = "Before_check_in"
+            calendar[day.strftime("%d-%m-%Y")]["reason(debug)"] = "Check-out should be after check-in"
         else:
             # если в этот день не будет свободных домиков, то цена так и останется None
             minimum_day_price = None

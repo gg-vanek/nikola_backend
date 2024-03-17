@@ -25,14 +25,14 @@ STATIC_URL = '/backend/static/'
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "django-insecure-va=jrmk350#&^7a$gan2&v5#(m8r8$5gp(0dx52g7%8h4cb51p")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = (os.getenv('DEBUG_BACKEND')=="true")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "51.250.115.72", # HARDCODE
+    "51.250.115.72",  # HARDCODE
     os.getenv('BACKEND_HOST'),
     "0.0.0.0",
     "127.0.0.1",
@@ -51,8 +51,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # local
+    'billing',
     'core',
     'houses',
+    'house_reservations',
     'clients',
     'events',
 
@@ -64,7 +66,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'core.middleware.DebugMiddleware',
+    # 'core.middleware.DebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -77,7 +79,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://floppa.space", # HARDCODE
+    "https://floppa.space",  # HARDCODE
     f"http://{os.getenv('FRONTEND_HOST')}",
     f"http://{os.getenv('FRONTEND_HOST')}:80",
     f"http://{os.getenv('FRONTEND_HOST')}:3000",
@@ -94,7 +96,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://floppa.space',
-] # HARDCODE
+]  # HARDCODE
 
 ROOT_URLCONF = 'project.urls'
 
@@ -123,11 +125,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
+        'NAME': os.getenv('POSTGRES_DB', "postgres"),
+        'USER': os.getenv('POSTGRES_USER', "postgres"),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', "postgres"),
+        'HOST': os.getenv('POSTGRES_HOST', "localhost"),
+        'PORT': os.getenv('POSTGRES_PORT', "5432"),
     }
 }
 
@@ -161,12 +163,12 @@ REST_FRAMEWORK = {
     ],
 }
 
-CACHALOT_ENABLED = (os.getenv('ENABLE_CACHALOT')=="true")
+CACHALOT_ENABLED = (os.getenv('ENABLE_CACHALOT') == "true")
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}",
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}",
     }
 }
 

@@ -6,9 +6,10 @@ from django.utils.timezone import now
 
 from clients.models import Client
 from events.models import Event
-from houses.models import House, HouseReservation
+from houses.models import House
+from house_reservations.models import HouseReservation
 
-from houses.services.price_calculators import calculate_reservation_receipt, Receipt, ReceiptPosition
+from billing.services.price_calculators import light_calculate_reservation_price, Receipt, ReceiptPosition
 
 
 class PriceGenerationTest(TestCase):
@@ -92,7 +93,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house1,
                     "check_in_datetime": cls.default_check_in + timedelta(days=1),
                     "check_out_datetime": cls.default_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
+                    "total_persons_amount": 2,
                 },
                 "expected_price": 10_000,
             },
@@ -101,7 +102,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house2,
                     "check_in_datetime": cls.early_check_in + timedelta(days=1),
                     "check_out_datetime": cls.default_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
+                    "total_persons_amount": 2,
                 },
                 "expected_price": 17_600,
             },
@@ -110,7 +111,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house3,
                     "check_in_datetime": cls.default_check_in + timedelta(days=1),
                     "check_out_datetime": cls.late_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
+                    "total_persons_amount": 2,
                 },
                 "expected_price": 23_000,
             },
@@ -119,7 +120,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house3,
                     "check_in_datetime": cls.early_check_in + timedelta(days=5),
                     "check_out_datetime": cls.late_check_out + timedelta(days=8),
-                    "extra_persons_amount": 2,
+                    "total_persons_amount": 4,
                 },
                 "expected_price": 77_000,
             },
@@ -128,7 +129,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house1,
                     "check_in_datetime": cls.early_check_in + timedelta(days=10),
                     "check_out_datetime": cls.late_check_out + timedelta(days=13),
-                    "extra_persons_amount": 1,
+                    "total_persons_amount": 3,
                 },
                 "expected_price": 58_500,
             },
@@ -137,7 +138,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house3,
                     "check_in_datetime": cls.default_check_in + timedelta(days=11),
                     "check_out_datetime": cls.late_check_out + timedelta(days=15),
-                    "extra_persons_amount": 3,
+                    "total_persons_amount": 5,
                 },
                 "expected_price": 300_000,
             },
@@ -167,7 +168,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house1,
                     "check_in_datetime": cls.default_check_in + timedelta(days=1),
                     "check_out_datetime": cls.default_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
+                    "total_persons_amount": 2,
                 },
                 "expected_price": 10_000,
                 "expected_receipt": Receipt(
@@ -188,7 +189,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house2,
                     "check_in_datetime": cls.early_check_in + timedelta(days=1),
                     "check_out_datetime": cls.default_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
+                    "total_persons_amount": 2,
                 },
                 "expected_price": 17_600,
                 "expected_receipt": Receipt(
@@ -217,7 +218,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house3,
                     "check_in_datetime": cls.default_check_in + timedelta(days=1),
                     "check_out_datetime": cls.late_check_out + timedelta(days=3),
-                    "extra_persons_amount": 0,
+                    "total_persons_amount": 2,
                 },
                 "expected_price": 23_000,
                 "expected_receipt": Receipt(
@@ -246,7 +247,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house3,
                     "check_in_datetime": cls.early_check_in + timedelta(days=5),
                     "check_out_datetime": cls.late_check_out + timedelta(days=8),
-                    "extra_persons_amount": 2,
+                    "total_persons_amount": 4,
                 },
                 "expected_price": 77_000,
                 "expected_receipt": Receipt(
@@ -285,7 +286,7 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house1,
                     "check_in_datetime": cls.early_check_in + timedelta(days=10),
                     "check_out_datetime": cls.late_check_out + timedelta(days=13),
-                    "extra_persons_amount": 1,
+                    "total_persons_amount": 3,
                 },
                 "expected_price": 58_500,
                 "expected_receipt": Receipt(
@@ -324,46 +325,13 @@ class PriceGenerationTest(TestCase):
                     "house": cls.house3,
                     "check_in_datetime": cls.default_check_in + timedelta(days=11),
                     "check_out_datetime": cls.late_check_out + timedelta(days=15),
-                    "extra_persons_amount": 3,
+                    "total_persons_amount": 5,
                 },
                 "expected_price": 300_000,
-                "expected_receipt": Receipt(
-                    extra_services=[
-                        ReceiptPosition(
-                            date=(cls.late_check_out + timedelta(days=15)).date(),
-                            time=(cls.late_check_out + timedelta(days=15)).time(),
-                            type="late_check_out",
-                            price=24_000
-                        ),
-                    ],
-                    nights=[
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=12)).date(),
-                            price=49_000
-                        ),
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=13)).date(),
-                            price=49_000
-                        ),
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=14)).date(),
-                            price=89_000
-                        ),
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=15)).date(),
-                            price=89_000
-                        ),
-                    ]
-                )
             },
         ]:
-            receipt = calculate_reservation_receipt(**test_parameters["reservation_parameters"])
-            self.assertEqual(receipt.total, test_parameters["expected_price"])
-            self.assertEqual(receipt,
-                             test_parameters["expected_receipt"],
-                             msg=f"\n{receipt}\n"
-                                 f"---------\n"
-                                 f"{test_parameters['expected_receipt']}")
+            total = light_calculate_reservation_price(**test_parameters["reservation_parameters"])
+            self.assertEqual(total, test_parameters["expected_price"])
 
             # reservation.delete() удалять бронирования не надо - они по замыслу не пересекаются
         event.delete()

@@ -1,4 +1,4 @@
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ModelValidationError
 from django.test import TestCase
 from clients.models import Client
 
@@ -32,7 +32,7 @@ class TaskModelTest(TestCase):
                 self.assertEqual(client._meta.get_field(field).verbose_name, expected_value)
 
     def test_unique_client_email(self):
-        with self.assertRaises(ValidationError, msg="Создано 2 клиента с одинаковыми почтами"):
+        with self.assertRaises(ModelValidationError, msg="Создано 2 клиента с одинаковыми почтами"):
             client1 = Client.objects.create(
                 email="unique_email@test.ru",
                 first_name="Иван",
@@ -46,7 +46,7 @@ class TaskModelTest(TestCase):
 
     def test_first_name_validators(self):
         for first_name_test_value in ["", "/\\+!@#$%^&*(){}[];:|`~\"\n\t"]:
-            with self.assertRaises(ValidationError, msg=f'Создан клиент с именем "{first_name_test_value}"'):
+            with self.assertRaises(ModelValidationError, msg=f'Создан клиент с именем "{first_name_test_value}"'):
                 client = Client.objects.create(
                     email="testuser1@test.ru",
                     first_name=first_name_test_value,
@@ -57,7 +57,7 @@ class TaskModelTest(TestCase):
 
     def test_last_name_validators(self):
         for last_name_test_value in ["", "/\\+!@#$%^&*(){}[];:|`~\"\n\t"]:
-            with self.assertRaises(ValidationError, msg=f'Создан клиент с фамилией "{last_name_test_value}"'):
+            with self.assertRaises(ModelValidationError, msg=f'Создан клиент с фамилией "{last_name_test_value}"'):
                 client = Client.objects.create(
                     email="testuser1@test.ru",
                     first_name="Иван",
