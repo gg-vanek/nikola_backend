@@ -73,7 +73,8 @@ class HouseReservation(models.Model):
         self.clean_total_persons_amount()
 
         # если все хорошо, то высчитать цену
-        self.bill = HouseReservationBill(reservation=self, promo_code=kwargs.get("promo_code"))
+        if not hasattr(self, "bill") or not self.bill:
+            self.bill = HouseReservationBill(reservation=self, promo_code=kwargs.get("promo_code"))
         self.bill.clean()
 
     def clean_total_persons_amount(self):

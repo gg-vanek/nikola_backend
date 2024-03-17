@@ -1,11 +1,13 @@
-import json
 from datetime import timedelta
 
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.timezone import now
 
+from billing.json_mappers import ChronologicalPositionsEncoder, ChronologicalPositionsDecoder
 from billing.services.price_calculators import calculate_house_price_by_day
+from billing.text_helpers import *
+from billing.validators import ChronologicalPositionsValidator
 from core.models import Pricing
 
 
@@ -90,8 +92,19 @@ class HouseReservationBill(models.Model):
 
     total = models.IntegerField("Итоговая стоимость", default=0)
 
-    chronological_positions = models.JSONField(verbose_name="Хронологически упорядоченные позиции", default=dict)
-    non_chronological_positions = models.JSONField(verbose_name="Хронологически неупорядоченные позиции", default=dict)
+    chronological_positions = models.JSONField(
+        verbose_name="Хронологически упорядоченные позиции",
+        default=dict, blank=True,
+        encoder=ChronologicalPositionsEncoder,
+        decoder=ChronologicalPositionsDecoder,
+        validators=[ChronologicalPositionsValidator()]
+    )
+    non_chronological_positions = models.JSONField(
+        verbose_name="Хронологически неупорядоченные позиции",
+        default=dict, blank=True,
+        encoder=ChronologicalPositionsEncoder,
+        decoder=ChronologicalPositionsDecoder,
+    )
 
     promo_code = models.ForeignKey(
         verbose_name="Промокод",
@@ -126,39 +139,40 @@ class HouseReservationBill(models.Model):
         date = check_in_date + timedelta(days=1)
         while date <= check_out_date:
             chronological_positions.append({
-                "type": "night",
-                "date": f"{(date - timedelta(days=1)).strftime('%d.%m')}-{date.strftime('%d.%m')}",
+                "type": NIGHT_POSITION,
+                "start_date": date - timedelta(days=1),
+                "end_date": date,
                 "price": calculate_house_price_by_day(house, date) +
                          extra_persons_amount * house.price_per_extra_person,
-                "description": f"Ночь {(date - timedelta(days=1)).strftime('%d.%m')}-{date.strftime('%d.%m')}"
+                "description": night_description(date - timedelta(days=1), date)
             })
             date = date + timedelta(days=1)
 
         # увеличение стоимости за ранний въезд и поздний выезд
         early_check_in = {
-            "type": "early_check_in",
-            "time": check_in_time.strftime('%H:%M'),
-            "date": check_in_date.strftime('%d.%m'),
+            "type": EARLY_CHECK_IN_POSITION,
+            "time": check_in_time,
+            "date": check_in_date,
             "price": Pricing.ALLOWED_CHECK_IN_TIMES.get(check_in_time, 0) *
                      calculate_house_price_by_day(house, check_in_date),
-            "description": f"Ранний въезд {check_in_date.strftime('%d.%m')} в {check_in_time.strftime('%H:%M')}"
+            "description": early_check_in_description(check_in_date, check_in_time)
         }
         if early_check_in["price"] != 0:
             chronological_positions.insert(0, early_check_in)
 
         late_check_out = {
-            'type': "late_check_out",
-            "time": check_out_time.strftime('%H:%M'),
-            "date": check_out_date.strftime('%d.%m'),
+            'type': LATE_CHECK_OUT_POSITION,
+            "time": check_out_time,
+            "date": check_out_date,
             "price": Pricing.ALLOWED_CHECK_OUT_TIMES.get(check_out_time, 0) *
                      calculate_house_price_by_day(house, check_out_date),
-            "description": f"Поздний выезд {check_out_date.strftime('%d.%m')} в {check_out_time.strftime('%H:%M')}"
+            "description": late_check_out_description(check_out_date, check_out_time)
         }
         if late_check_out["price"] != 0:
             chronological_positions.append(late_check_out)
 
-        self.chronological_positions = json.dumps(chronological_positions, ensure_ascii=False)
-        self.non_chronological_positions = json.dumps(non_chronological_positions, ensure_ascii=False)
+        self.chronological_positions = chronological_positions
+        self.non_chronological_positions = non_chronological_positions
 
         self.total = sum(
             [ch_p["price"] for ch_p in chronological_positions] + [g_p["price"] for g_p in non_chronological_positions])
@@ -172,8 +186,7 @@ class HouseReservationBill(models.Model):
     def clean(self):
         self.calculate_value()
 
-        # TODO validate schema
-        #  Validate sum
+        # TODO Validate sum
 
     def __str__(self):
         return f"Счет на оплату бронирования ({self.reservation.id})"

@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+from billing.json_mappers import ChronologicalPositionsEncoder
 from billing.models import HouseReservationBill, HouseReservationPromoCode
 
 import json
@@ -11,30 +13,18 @@ from django.utils.safestring import mark_safe
 
 class HouseReservationBillAdmin(admin.ModelAdmin):
     model = HouseReservationBill
-    readonly_fields = ('chronological_positions_prettified',
-                       'non_chronological_positions_prettified',)
+    readonly_fields = ('chronological_positions_prettified',)
     list_display = ('reservation',
                     'total',)
 
     def chronological_positions_prettified(self, instance):
-        response = json.dumps(json.loads(instance.chronological_positions), ensure_ascii=False, sort_keys=True,
-                              indent=2)
+        response = ChronologicalPositionsEncoder().encode(instance.chronological_positions)
         formatter = HtmlFormatter(style="emacs")
         response = highlight(response, JsonLexer(), formatter)
         style = "<style>" + formatter.get_style_defs() + "</style><br>"
         return mark_safe(style + response)
 
     chronological_positions_prettified.short_description = 'Читаемый список хронологически упорядоченных позиций'
-
-    def non_chronological_positions_prettified(self, instance):
-        response = json.dumps(json.loads(instance.non_chronological_positions), ensure_ascii=False, sort_keys=True,
-                              indent=2)
-        formatter = HtmlFormatter(style="emacs")
-        response = highlight(response, JsonLexer(), formatter)
-        style = "<style>" + formatter.get_style_defs() + "</style><br>"
-        return mark_safe(style + response)
-
-    non_chronological_positions_prettified.short_description = 'Читаемый список хронологически неупорядоченных позиций'
 
 
 class HouseReservationPromoCodeAdmin(admin.ModelAdmin):
