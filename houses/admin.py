@@ -1,6 +1,7 @@
 from django.contrib import admin
 from houses.models import House, HousePicture, HouseFeature
 
+
 class HousePictureAdminInline(admin.TabularInline):
     model = HousePicture
 
