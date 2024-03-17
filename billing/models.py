@@ -83,14 +83,16 @@ class HouseReservationPromoCode(models.Model):
 
 
 class HouseReservationBill(models.Model):
-    reservation = models.OneToOneField("house_reservations.HouseReservation", verbose_name="Счет на оплату бронирования домика",
-                                       on_delete=models.SET_NULL,
+    reservation = models.OneToOneField("house_reservations.HouseReservation",
+                                       verbose_name="Счет на оплату бронирования домика",
+                                       on_delete=models.CASCADE,
                                        null=True, blank=True, related_name='bill')
 
     total = models.IntegerField("Итоговая стоимость", default=0)
 
-    nights = models.JSONField(default=dict)
-    extra_services = models.JSONField(default=dict)
+    chronological_positions = models.JSONField(verbose_name="Хронологически упорядоченные позиции", default=dict)
+    non_chronological_positions = models.JSONField(verbose_name="Хронологически неупорядоченные позиции", default=dict)
+
     promo_code = models.ForeignKey(
         verbose_name="Промокод",
         to="HouseReservationPromoCode", on_delete=models.SET_NULL, related_name='bills',
@@ -116,8 +118,21 @@ class HouseReservationBill(models.Model):
         check_out_date = self.reservation.check_out_datetime.date()
         check_out_time = self.reservation.check_out_datetime.time()
 
-        extra_services = []
-        nights = []
+        non_chronological_positions = []
+        chronological_positions = []
+
+        # NOTE: ночь идет перед днем
+        # иными словами множитель выходного дня применяется к ночам пт-сб и сб-вс, но не к вс-пн
+        date = check_in_date + timedelta(days=1)
+        while date <= check_out_date:
+            chronological_positions.append({
+                "type": "night",
+                "date": f"{(date - timedelta(days=1)).strftime('%d.%m')}-{date.strftime('%d.%m')}",
+                "price": calculate_house_price_by_day(house, date) +
+                         extra_persons_amount * house.price_per_extra_person,
+                "description": f"Ночь {(date - timedelta(days=1)).strftime('%d.%m')}-{date.strftime('%d.%m')}"
+            })
+            date = date + timedelta(days=1)
 
         # увеличение стоимости за ранний въезд и поздний выезд
         early_check_in = {
@@ -129,7 +144,8 @@ class HouseReservationBill(models.Model):
             "description": f"Ранний въезд {check_in_date.strftime('%d.%m')} в {check_in_time.strftime('%H:%M')}"
         }
         if early_check_in["price"] != 0:
-            extra_services.append(early_check_in)
+            chronological_positions.insert(0, early_check_in)
+
         late_check_out = {
             'type': "late_check_out",
             "time": check_out_time.strftime('%H:%M'),
@@ -139,25 +155,13 @@ class HouseReservationBill(models.Model):
             "description": f"Поздний выезд {check_out_date.strftime('%d.%m')} в {check_out_time.strftime('%H:%M')}"
         }
         if late_check_out["price"] != 0:
-            extra_services.append(late_check_out)
+            chronological_positions.append(late_check_out)
 
-        # NOTE: ночь идет перед днем
-        # иными словами множитель выходного дня применяется к ночам пт-сб и сб-вс, но не к вс-пн
-        date = check_in_date + timedelta(days=1)
-        while date <= check_out_date:
-            nights.append({
-                "type": "night",
-                "date": f"{(date - timedelta(days=1)).strftime('%d.%m')}-{date.strftime('%d.%m')}",
-                "price": calculate_house_price_by_day(house, date) +
-                         extra_persons_amount * house.price_per_extra_person,
-                "description": f"Ночь {(date - timedelta(days=1)).strftime('%d.%m')}-{date.strftime('%d.%m')}"
-            })
-            date = date + timedelta(days=1)
+        self.chronological_positions = json.dumps(chronological_positions, ensure_ascii=False)
+        self.non_chronological_positions = json.dumps(non_chronological_positions, ensure_ascii=False)
 
-        self.nights = json.dumps(nights, ensure_ascii=False)
-        self.extra_services = json.dumps(extra_services, ensure_ascii=False)
-
-        self.total = sum([n["price"] for n in nights] + [es["price"] for es in extra_services])
+        self.total = sum(
+            [ch_p["price"] for ch_p in chronological_positions] + [g_p["price"] for g_p in non_chronological_positions])
         if self.promo_code:
             self.total = self.promo_code.apply(self.total, self.reservation.client)
 
