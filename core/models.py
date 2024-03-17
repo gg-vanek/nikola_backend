@@ -39,7 +39,7 @@ class Pricing:
         times.sort()
         times = [t.strftime("%H:%M") for t in times]
 
-        return times
+        return {"default": d["default"].strftime("%H:%M"), "times": times}
 
     def __str__(self):
         return "Configuration"
