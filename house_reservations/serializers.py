@@ -5,6 +5,7 @@ from django.conf import settings
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from billing.models import HouseReservationPromoCode
 from core.models import Pricing
 from house_reservations.services.check_overlapping import check_if_house_free_by_period
 
@@ -21,13 +22,26 @@ class HouseReservationParametersSerializer(serializers.Serializer):
     total_persons_amount = serializers.IntegerField(validators=[
         MinValueValidator(0, message="В бронировании нельзя указывать отрицательное количество человек"),
     ], required=True)
+    promo_code = serializers.SerializerMethodField()
 
     class Meta:
         fields = ('id',
                   'check_in_datetime',
                   'check_out_datetime',
                   'total_persons_amount',
+                  'promo_code',
                   )
+
+    def get_promo_code(self) -> HouseReservationPromoCode | None:
+        requested_promo_code = self.context["request"].POST.get("promo_code")
+        promo_code = None
+        if requested_promo_code:
+            try:
+                promo_code = HouseReservationPromoCode.objects.get(code=requested_promo_code)
+            except HouseReservationPromoCode.DoesNotExist as e:
+                raise ValidationError(f'Промокод "{requested_promo_code}" не найден') from e
+
+        return promo_code
 
     def validate(self, attrs):
         house = self.instance

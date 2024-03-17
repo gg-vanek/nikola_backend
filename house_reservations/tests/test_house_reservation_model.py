@@ -10,7 +10,7 @@ from events.models import Event
 from houses.models import House
 from house_reservations.models import HouseReservation
 
-from billing.services.price_calculators import calculate_reservation_receipt
+from billing.services.price_calculators import light_calculate_reservation_price
 
 
 class HouseReservationModelTest(TestCase):
@@ -687,7 +687,7 @@ class HouseReservationModelTest(TestCase):
                 **test_params,
             )
             self.assertEqual(reservation.price,
-                             calculate_reservation_receipt(house=HouseReservationModelTest.house,
-                                                           **test_params).total)
+                             light_calculate_reservation_price(house=HouseReservationModelTest.house,
+                                                               **test_params))
             reservation.delete()
         event.delete()

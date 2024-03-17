@@ -2,10 +2,11 @@ from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators, RangeBoundary
 from django.core.exceptions import ValidationError
 
-from django.db import models
-from django.db.models import Q
+from django.db import models, transaction
+from django.db.models import Q, F
 from django.utils.timezone import now
 
+from billing.models import HouseReservationBill
 from core.models import Pricing
 
 from clients.models import Client
@@ -22,8 +23,6 @@ class HouseReservation(models.Model):
     check_out_datetime = models.DateTimeField("Дата и время выезда")
     total_persons_amount = models.IntegerField("Количество человек для проживания в домике")
 
-    price = models.IntegerField("Стоимость", blank=True)
-
     preferred_contact = models.CharField("Предпочтительный способ связи", max_length=255)
     comment = models.CharField("Комментарий", max_length=511)
 
@@ -31,8 +30,6 @@ class HouseReservation(models.Model):
 
     created_at = models.DateTimeField("Время создания бронирования", auto_now_add=True)
     updated_at = models.DateTimeField("Время последнего изменения бронирования", auto_now=True)
-
-    receipt = None
 
     class Meta:
         # https://runebook.dev/ru/docs/django/ref/contrib/postgres/constraints
@@ -54,15 +51,21 @@ class HouseReservation(models.Model):
         verbose_name = "Бронь домика"
         verbose_name_plural = 'Брони домиков'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def save(self, *args, **kwargs):
-        # TODO из-за того, что оно (check_datetime_fields) находится здесь (до full_clean) в админке
+        # TODO из-за того, что оно (check_datetime_fields) находится здесь (до full_clean) - в админке
         #  при создании неправильного бронирования вместо
         #  небольшой красной плашки вылетает желтая страница с ошибкой
         self.check_datetime_fields()
         # вызывать эту функцию выше следует именно до full_clean
         # Чтобы если она не проходит, возникала именно ValidationError, а не какая-то другая
         self.full_clean()
-        return super().save(*args, **kwargs)
+
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+            self.bill.save()
 
     def clean(self, *args, **kwargs):
         self.clean_check_in_datetime()
@@ -70,13 +73,8 @@ class HouseReservation(models.Model):
         self.clean_total_persons_amount()
 
         # если все хорошо, то высчитать цену
-        from billing.services.price_calculators import calculate_reservation_receipt
-        if not self.price:
-            self.receipt = calculate_reservation_receipt(house=self.house,
-                                                         check_in_datetime=self.check_in_datetime,
-                                                         check_out_datetime=self.check_out_datetime,
-                                                         total_persons_amount=self.total_persons_amount, )
-            self.price = self.receipt.total
+        self.bill = HouseReservationBill(reservation=self, promo_code=kwargs.get("promo_code"))
+        self.bill.clean()
 
     def clean_total_persons_amount(self):
         if self.total_persons_amount < 0:

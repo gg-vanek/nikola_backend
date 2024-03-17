@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from core.models import Pricing
 from houses.models import House, HouseFeature, HousePicture
-from billing.services.price_calculators import calculate_reservation_receipt
+from billing.services.price_calculators import light_calculate_reservation_price
 
 from datetime import datetime as Datetime
 
@@ -83,14 +83,9 @@ class HouseListSerializer(serializers.ModelSerializer):
         # if HouseReservation.objects.filter(house=house, check_in_date__lt=day, check_out_datetime__gt=day):
         # return None
 
-        check_in_datetime = Datetime.combine(
-            check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['default'], tzinfo=get_default_timezone())
-        check_out_datetime = Datetime.combine(
-            check_out_date, Pricing.ALLOWED_CHECK_OUT_TIMES['default'], tzinfo=get_default_timezone())
+        total_price = light_calculate_reservation_price(house=house,
+                                                        check_in_date=check_in_date,
+                                                        check_out_date=check_out_date,
+                                                        total_persons_amount=total_persons_amount)
 
-        receipt = calculate_reservation_receipt(house=house,
-                                                check_in_datetime=check_in_datetime,
-                                                check_out_datetime=check_out_datetime,
-                                                total_persons_amount=total_persons_amount)
-
-        return receipt.nights_total
+        return total_price

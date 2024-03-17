@@ -9,7 +9,7 @@ from events.models import Event
 from houses.models import House
 from house_reservations.models import HouseReservation
 
-from billing.services.price_calculators import calculate_reservation_receipt, Receipt, ReceiptPosition
+from billing.services.price_calculators import light_calculate_reservation_price, Receipt, ReceiptPosition
 
 
 class PriceGenerationTest(TestCase):
@@ -328,43 +328,10 @@ class PriceGenerationTest(TestCase):
                     "total_persons_amount": 5,
                 },
                 "expected_price": 300_000,
-                "expected_receipt": Receipt(
-                    extra_services=[
-                        ReceiptPosition(
-                            date=(cls.late_check_out + timedelta(days=15)).date(),
-                            time=(cls.late_check_out + timedelta(days=15)).time(),
-                            type="late_check_out",
-                            price=24_000
-                        ),
-                    ],
-                    nights=[
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=12)).date(),
-                            price=49_000
-                        ),
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=13)).date(),
-                            price=49_000
-                        ),
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=14)).date(),
-                            price=89_000
-                        ),
-                        ReceiptPosition(
-                            date=(cls.default_check_in + timedelta(days=15)).date(),
-                            price=89_000
-                        ),
-                    ]
-                )
             },
         ]:
-            receipt = calculate_reservation_receipt(**test_parameters["reservation_parameters"])
-            self.assertEqual(receipt.total, test_parameters["expected_price"])
-            self.assertEqual(receipt,
-                             test_parameters["expected_receipt"],
-                             msg=f"\n{receipt}\n"
-                                 f"---------\n"
-                                 f"{test_parameters['expected_receipt']}")
+            total = light_calculate_reservation_price(**test_parameters["reservation_parameters"])
+            self.assertEqual(total, test_parameters["expected_price"])
 
             # reservation.delete() удалять бронирования не надо - они по замыслу не пересекаются
         event.delete()

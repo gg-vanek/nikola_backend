@@ -1,76 +1,19 @@
 import calendar
-from dataclasses import dataclass, field
-from datetime import date as Date, datetime as Datetime, time as Time, timedelta
+from datetime import date as Date, timedelta
 
 import logging
 
 from core.errors import LogicError, IncorrectPeopleAmountInReservationException, \
-    IncorrectDatetimesException, IncorrectTimeException
-from core.models import Pricing
+    IncorrectDatetimesException
 from events.models import Event
 from houses.models import House
 
 logger = logging.getLogger(__name__)
 
 
-@dataclass()
-class ReceiptPosition:
-    price: int
-    date: Date
-    time: Time | None = None
-    type: str = "night"
-    name: str = field(init=False)
-
-    def __post_init__(self):
-        try:
-            self.price = int(round(self.price, -2))
-            if self.type == "night":
-                assert self.time is None
-                self.name = f"Ночь {(self.date - timedelta(days=1)).strftime('%d.%m')}-{self.date.strftime('%d.%m')}"
-            elif self.type == "early_check_in":
-                assert isinstance(self.time, Time)
-                self.name = f"Ранний въезд {self.date.strftime('%d.%m')} в {self.time.strftime('%H:%M')}"
-            elif self.type == "late_check_out":
-                assert isinstance(self.time, Time)
-                self.name = f"Поздний выезд {self.date.strftime('%d.%m')} в {self.time.strftime('%H:%M')}"
-            else:
-                assert False, f"unexpected self.type = {self.type}"
-        except AssertionError as e:
-            raise LogicError(str(e)) from e
-
-
-@dataclass
-class Receipt:
-    nights: list[ReceiptPosition] = field(default_factory=list)
-    extra_services: list[ReceiptPosition] = field(default_factory=list)
-    total: int = 0
-    nights_total: int = 0
-    extra_services_total: int = 0
-
-    def __post_init__(self):
-        for night in self.nights:
-            assert night.type == "night"
-            self.total += night.price
-            self.nights_total += night.price
-        for extra_service in self.extra_services:
-            assert extra_service.type != "night"
-            self.total += extra_service.price
-            self.extra_services_total += extra_service.price
-
-    def add_position(self, position: ReceiptPosition):
-        if position.price != 0:
-            if position.type == "night":
-                self.nights.append(position)
-                self.nights_total += position.price
-            else:
-                self.extra_services.append(position)
-                self.extra_services_total += position.price
-            self.total += position.price
-
-
-def calculate_reservation_receipt(house: House | int,
-                                  check_in_datetime: Datetime, check_out_datetime: Datetime,
-                                  total_persons_amount: int) -> Receipt:
+def light_calculate_reservation_price(house: House | int,
+                                      check_in_date: Date, check_out_date: Date,
+                                      total_persons_amount: int) -> int:
     if isinstance(house, int):
         try:
             house = House.objects.get(pk=house)
@@ -83,54 +26,22 @@ def calculate_reservation_receipt(house: House | int,
                                                           f"количества проживающих в домике по умолчанию ({house.base_persons_amount} чел.) "
                                                           f"до максимально допустимого количества проживающих "
                                                           f"в домике ({house.max_persons_amount} чел.)")
-    if check_in_datetime >= check_out_datetime:
+    if check_in_date >= check_out_date:
         raise IncorrectDatetimesException(
-            f"Некорректные дата и время въезда и выезда (въезд позже выезда): {check_in_datetime.strftime('%d-%m-%Y %H:%M')} >= {check_out_datetime.strftime('%d-%m-%Y')}")
-    if check_in_datetime.time() not in Pricing.ALLOWED_CHECK_IN_TIMES:
-        raise IncorrectTimeException(f"Некорректное время въезда: {check_in_datetime.time().strftime('%H:%M')}")
-    if check_out_datetime.time() not in Pricing.ALLOWED_CHECK_OUT_TIMES:
-        raise IncorrectTimeException(f"Некорректное время выезда: {check_in_datetime.time().strftime('%H:%M')}")
+            f"Некорректные даты въезда и выезда (въезд позже выезда): {check_in_date.strftime('%d-%m-%Y')} >= {check_out_date.strftime('%d-%m-%Y')}")
 
     extra_persons_amount = total_persons_amount - house.base_persons_amount
 
-    check_in_date = check_in_datetime.date()
-    check_in_time = check_in_datetime.time()
+    total_price = 0
 
-    check_out_date = check_out_datetime.date()
-    check_out_time = check_out_datetime.time()
-
-    receipt = Receipt()
-
-    # увеличение стоимости за ранний въезд
-    early_check_in = ReceiptPosition(
-        type="early_check_in",
-        time=check_in_time,
-        date=check_in_date,
-        price=Pricing.ALLOWED_CHECK_IN_TIMES.get(check_in_time, 0) *
-              calculate_house_price_by_day(house, check_in_date)
-    )
-    receipt.add_position(position=early_check_in)
-
-    late_check_out = ReceiptPosition(
-        type="late_check_out",
-        time=check_out_time,
-        date=check_out_date,
-        price=Pricing.ALLOWED_CHECK_OUT_TIMES.get(check_out_time, 0) *
-              calculate_house_price_by_day(house, check_out_date)
-    )
-    receipt.add_position(position=late_check_out)
-
-    # мы с мамой договорились, что "ночь идет перед днем"
+    # NOTE: ночь идет перед днем
     # иными словами множитель выходного дня применяется к ночам пт-сб и сб-вс, но не к вс-пн
     date = check_in_date + timedelta(days=1)
     while date <= check_out_date:
-        receipt.add_position(position=ReceiptPosition(
-            type="night", date=date,
-            price=calculate_house_price_by_day(house, date) +
-                  extra_persons_amount * house.price_per_extra_person))
+        total_price += calculate_house_price_by_day(house, date) + extra_persons_amount * house.price_per_extra_person
         date = date + timedelta(days=1)
 
-    return receipt
+    return total_price
 
 
 def calculate_house_price_by_day(house: House, day: Date) -> int:

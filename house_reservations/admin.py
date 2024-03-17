@@ -12,7 +12,7 @@ class HouseReservationAdmin(admin.ModelAdmin):
     model = HouseReservation
     list_display = ('house', 'client',
                     'check_in_datetime', 'check_out_datetime',
-                    'price', 'cancelled',
+                    'cancelled',
                     'created_at', 'updated_at',)
     ordering = ("house", "check_in_datetime")
 

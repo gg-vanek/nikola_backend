@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from billing.serializers import HouseReservationBillSerializer
 from clients.models import Client
 from clients.serializers import ClientSerializer
 from core.mixins import ByActionMixin
@@ -14,8 +15,6 @@ from house_reservations.models import HouseReservation
 from house_reservations.serializers import HouseReservationParametersSerializer
 
 from houses.models import House
-
-from billing.services.price_calculators import calculate_reservation_receipt
 
 
 class HouseReservationsViewSet(ByActionMixin,
@@ -45,12 +44,15 @@ class HouseReservationsViewSet(ByActionMixin,
     def reservation_price(self, request: Request, *args, **kwargs):
         # TODO добавить проверку доступности бронирования
         house = self.queryset.get(id=self.kwargs['pk'])
+
         reservation_parameters_serializer = self.get_serializer(house, data=request.data)
         reservation_parameters_serializer.is_valid(raise_exception=True)
-        receipt = calculate_reservation_receipt(house=house,
-                                                **reservation_parameters_serializer.validated_data)
-        return Response({"receipt": asdict(receipt),
-                         "total": receipt.total,
+
+        reservation = HouseReservation(house=house,
+                                       **reservation_parameters_serializer.validated_data)
+        reservation.clean()
+
+        return Response({"bill": HouseReservationBillSerializer(reservation.bill),
                          "house_id": self.kwargs['pk'],
                          **reservation_parameters_serializer.validated_data},
                         status=status.HTTP_200_OK)
@@ -62,7 +64,7 @@ class HouseReservationsViewSet(ByActionMixin,
         client_serializer = ClientSerializer(data=request.data)
         client_serializer.is_valid(raise_exception=True)
         try:
-            client = Client.objects.get(email=client_serializer.validated_data["email"])
+            client = Client.objects.get(email=client_serializer.validated_data["email"])  # TODO get_or_create
             if client.first_name != client_serializer.validated_data["first_name"] or \
                     client.last_name != client_serializer.validated_data["last_name"]:
                 pass  # TODO придумать что делать если у клиента та же почта, но другое имя
@@ -85,14 +87,12 @@ class HouseReservationsViewSet(ByActionMixin,
                                                       preferred_contact=preferred_contact,
                                                       comment=comment,
                                                       **reservation_parameters_serializer.validated_data)
-        receipt = reservation.receipt
 
         # TODO celery --- cancel if not approved payment
         # TODO telegram notification
         # TODO email notification (also via celery)
 
-        return Response({"receipt": asdict(receipt),
-                         "total": receipt.total,
+        return Response({"bill": HouseReservationBillSerializer(reservation.bill),
                          "house_id": self.kwargs['pk'],
                          **reservation_parameters_serializer.validated_data,
                          "preferred_contact": preferred_contact,
