@@ -181,16 +181,17 @@ class HouseReservationBill(models.Model):
         price_per_extra_person = house.price_per_extra_person
         nights_amount = (check_out_date - check_in_date).days
 
-        non_chronological_positions.append(
-            {
-                "type": EXTRA_PERSONS_POSITION,
-                "extra_persons_amount": extra_persons_amount,
-                "price_per_extra_person": price_per_extra_person,
-                "nights_amount": nights_amount,
-                "price": extra_persons_amount * price_per_extra_person * nights_amount,
-                "description": f"{extra_persons_amount} доп. гостей х {nights_amount} ночей",
-            }
-        )
+        if extra_persons_amount > 0:
+            non_chronological_positions.append(
+                {
+                    "type": EXTRA_PERSONS_POSITION,
+                    "extra_persons_amount": extra_persons_amount,
+                    "price_per_extra_person": price_per_extra_person,
+                    "nights_amount": nights_amount,
+                    "price": extra_persons_amount * price_per_extra_person * nights_amount,
+                    "description": f"{extra_persons_amount} доп. гостей х {nights_amount} ночей",
+                }
+            )
 
         if self.promo_code:
             old_price = self.total
