@@ -4,7 +4,7 @@ NIGHT_POSITION = 'night'
 EARLY_CHECK_IN_POSITION = 'early_check_in'
 LATE_CHECK_OUT_POSITION = 'late_check_out'
 PROMO_CODE_POSITION = 'promo_code'
-EXTRA_PERSONS_POSITION = 'promo_code'
+EXTRA_PERSONS_POSITION = 'extra_persons'
 
 NIGHT_POSITION_DESCRIPTION_TEMPLATE = "Ночь с {start} на {end}"
 EARLY_CHECK_IN_POSITION_DESCRIPTION_TEMPLATE = "Ранний въезд {date} в {time}"
