@@ -40,8 +40,8 @@ class HouseReservationsViewSet(ByActionMixin,
             "check_out_times": Pricing.serializable_times_dict(d=Pricing.ALLOWED_CHECK_OUT_TIMES),
         }, status=status.HTTP_200_OK)
 
-    @csrf_exempt
     @action(methods=['put'], url_path='price', detail=True)
+    @csrf_exempt
     def reservation_price(self, request: Request, *args, **kwargs):
         # TODO добавить проверку доступности бронирования
         house = self.queryset.get(id=self.kwargs['pk'])
@@ -61,8 +61,8 @@ class HouseReservationsViewSet(ByActionMixin,
             return Response({"detail": str(e.messages)},
                             status=status.HTTP_400_BAD_REQUEST)
 
-    @csrf_exempt
     @action(methods=['post'], url_path='new_reservation', detail=True)
+    @csrf_exempt
     def new_reservation(self, request: Request, *args, **kwargs):
         house = self.queryset.get(id=self.kwargs['pk'])
 
