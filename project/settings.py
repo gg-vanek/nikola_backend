@@ -98,6 +98,15 @@ CSRF_TRUSTED_ORIGINS = [
     'https://floppa.space',
 ]  # HARDCODE
 
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]  # HARDCODE
+
 ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
