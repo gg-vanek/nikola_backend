@@ -1,4 +1,6 @@
 from django.core.exceptions import ValidationError
+from django.views.decorators.csrf import csrf_exempt
+
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -39,6 +41,7 @@ class HouseReservationsViewSet(ByActionMixin,
         }, status=status.HTTP_200_OK)
 
     @action(methods=['put'], url_path='price', detail=True)
+    @csrf_exempt
     def reservation_price(self, request: Request, *args, **kwargs):
         # TODO добавить проверку доступности бронирования
         house = self.queryset.get(id=self.kwargs['pk'])
@@ -59,6 +62,7 @@ class HouseReservationsViewSet(ByActionMixin,
                             status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], url_path='new_reservation', detail=True)
+    @csrf_exempt
     def new_reservation(self, request: Request, *args, **kwargs):
         house = self.queryset.get(id=self.kwargs['pk'])
 
