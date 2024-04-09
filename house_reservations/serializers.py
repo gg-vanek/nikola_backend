@@ -86,11 +86,11 @@ class HouseReservationParametersSerializer(serializers.Serializer):
 
         try:
             total_persons_amount = int(attrs["total_persons_amount"])
-            assert house.base_persons_amount <= total_persons_amount <= house.max_persons_amount
+            assert 1 <= total_persons_amount <= house.max_persons_amount
         except (ValueError, AssertionError) as e:
             raise ValidationError("Некорректное значение total_persons_amount - "
                                   "это должно быть целое число в промежутке от "
-                                  f"количества проживающих в домике по умолчанию ({house.base_persons_amount} чел.) "
+                                  f"одного (1 чел.) "
                                   f"до максимально допустимого количества проживающих "
                                   f"в домике ({house.max_persons_amount} чел.)") from e
         except KeyError as e:

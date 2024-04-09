@@ -20,17 +20,17 @@ def light_calculate_reservation_price(house: House | int,
         except House.DoesNotExist as e:
             raise LogicError(f"Некорректный id домика = {house}") from e
 
-    if not (house.base_persons_amount <= total_persons_amount <= house.max_persons_amount):
+    if not (1 <= total_persons_amount <= house.max_persons_amount):
         raise IncorrectPeopleAmountInReservationException("Некорректное значение total_persons_amount - "
                                                           "это должно быть целое число в промежутке от "
-                                                          f"количества проживающих в домике по умолчанию ({house.base_persons_amount} чел.) "
+                                                          f"одного (1 чел.) "
                                                           f"до максимально допустимого количества проживающих "
                                                           f"в домике ({house.max_persons_amount} чел.)")
     if check_in_date >= check_out_date:
         raise IncorrectDatetimesException(
             f"Некорректные даты въезда и выезда (въезд позже выезда): {check_in_date.strftime('%d-%m-%Y')} >= {check_out_date.strftime('%d-%m-%Y')}")
 
-    extra_persons_amount = total_persons_amount - house.base_persons_amount
+    extra_persons_amount = max(1, total_persons_amount - house.base_persons_amount)
 
     total_price = 0
 

@@ -46,7 +46,7 @@ class HouseReservationPromoCode(models.Model):
         if self.issuance_datetime and now() < self.issuance_datetime:
             raise ValidationError(
                 f"Промокод можно будет активировать с {self.issuance_datetime.strftime('%d-%m-%Y %H:%M')}")
-        if self.expiration_datetime and now() > self.issuance_datetime:
+        if self.expiration_datetime and now() > self.expiration_datetime:
             raise ValidationError(f"Промокод истек {self.expiration_datetime.strftime('%d-%m-%Y %H:%M')}")
 
         # Check client
