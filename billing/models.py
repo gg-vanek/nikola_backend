@@ -177,7 +177,7 @@ class HouseReservationBill(models.Model):
             chronological_positions.append(late_check_out)
 
         # увеличение стоимости за дополнительных людей
-        extra_persons_amount = self.reservation.total_persons_amount - house.base_persons_amount
+        extra_persons_amount = max(0, self.reservation.total_persons_amount - house.base_persons_amount)
         price_per_extra_person = house.price_per_extra_person
         nights_amount = (check_out_date - check_in_date).days
 
