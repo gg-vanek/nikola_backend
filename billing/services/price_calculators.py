@@ -30,7 +30,7 @@ def light_calculate_reservation_price(house: House | int,
         raise IncorrectDatetimesException(
             f"Некорректные даты въезда и выезда (въезд позже выезда): {check_in_date.strftime('%d-%m-%Y')} >= {check_out_date.strftime('%d-%m-%Y')}")
 
-    extra_persons_amount = max(1, total_persons_amount - house.base_persons_amount)
+    extra_persons_amount = max(0, total_persons_amount - house.base_persons_amount)
 
     total_price = 0
 
