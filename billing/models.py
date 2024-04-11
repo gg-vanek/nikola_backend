@@ -194,9 +194,12 @@ class HouseReservationBill(models.Model):
             )
 
         if self.promo_code:
-            old_price = self.total
-            self.total = self.promo_code.apply(self.total, self.reservation.client, self.pk)
-            discount = self.total - old_price
+            old_price = sum(
+                [ch_p["price"] for ch_p in chronological_positions] +
+                [g_p["price"] for g_p in non_chronological_positions]
+            )
+            new_price = self.promo_code.apply(old_price, self.reservation.client, self.pk)
+            discount = new_price - old_price
 
             non_chronological_positions.append(
                 {
