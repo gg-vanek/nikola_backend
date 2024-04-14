@@ -85,7 +85,7 @@ class HouseReservation(models.Model):
     def clean_total_persons_amount(self):
         if self.total_persons_amount < 0:
             raise ValidationError("Невозможно заселить отрицательное количество человек в домик")
-        if not (self.house.base_persons_amount <= self.total_persons_amount <= self.house.max_persons_amount):
+        if not (1 <= self.total_persons_amount <= self.house.max_persons_amount):
             raise ValidationError(f"Невозможно заселить столько человек в домик: \n"
                                   f"Минимальное количество человек: {self.house.base_persons_amount}\n"
                                   f"Максимальное количество человек: {self.house.max_persons_amount}"
