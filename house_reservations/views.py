@@ -98,10 +98,19 @@ class HouseReservationsViewSet(ByActionMixin,
             # TODO telegram notification
             # TODO email notification (also via celery)
 
-            return Response({"reservation": HouseReservationSerializer(reservation).data},
-                            status=status.HTTP_200_OK)
+            return Response({"slug": reservation.slug}, status=status.HTTP_200_OK)
         # TODO обернуть ошибку нормально
         except ValidationError as e:
             return Response({"detail": str(e.messages)},
                             status=status.HTTP_400_BAD_REQUEST)
 
+
+    @action(methods=['get'], url_path='by_slug', detail=False)
+    @csrf_exempt
+    def retrieve_reservation_by_slug(self, request):
+        reservation = HouseReservation.objects.get(slug=request.GET.get('slug'))
+
+        if reservation:
+            return Response({"reservation": HouseReservationSerializer(reservation).data}, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)

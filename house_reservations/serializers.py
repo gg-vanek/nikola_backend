@@ -27,7 +27,7 @@ class HouseReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = HouseReservation
         fields = (
-            "house", "client", "bill",
+            "slug", "house", "client", "bill",
             'check_in_datetime', 'check_out_datetime',
             'total_persons_amount',
             'preferred_contact',

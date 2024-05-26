@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators, RangeBoundary
 from django.core.exceptions import ValidationError
@@ -14,6 +17,7 @@ from house_reservations.services.sql_functions import TsTzRange
 
 
 class HouseReservation(models.Model):
+    slug = models.CharField(verbose_name="Строковый идентификатор", max_length=64, default="")
     house = models.ForeignKey("houses.House", verbose_name="Домик", on_delete=models.SET_NULL,
                               null=True, related_name='reservations')
     client = models.ForeignKey(Client, verbose_name="Клиент", on_delete=models.SET_NULL,
@@ -62,6 +66,7 @@ class HouseReservation(models.Model):
             self.bill = HouseReservationBill(reservation=self, promo_code=promo_code)
 
     def save(self, *args, **kwargs):
+        self.update_slug()
         # TODO из-за того, что оно (check_datetime_fields) находится здесь (до full_clean) - в админке
         #  при создании неправильного бронирования вместо
         #  небольшой красной плашки вылетает желтая страница с ошибкой
@@ -81,6 +86,9 @@ class HouseReservation(models.Model):
 
         # если все хорошо, то высчитать цену
         self.bill.clean()
+
+    def update_slug(self):
+        self.slug = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))
 
     def clean_total_persons_amount(self):
         if self.total_persons_amount < 0:
