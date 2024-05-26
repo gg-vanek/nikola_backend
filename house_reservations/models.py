@@ -88,7 +88,8 @@ class HouseReservation(models.Model):
         self.bill.clean()
 
     def update_slug(self):
-        self.slug = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))
+        if not self.slug:
+            self.slug = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12))
 
     def clean_total_persons_amount(self):
         if self.total_persons_amount < 0:
