@@ -10,6 +10,7 @@ from billing.services.price_calculators import calculate_house_price_by_day, is_
 
 logger = logging.getLogger(__name__)
 
+# TODO опитимизировать количество запросов к бд - они летят на каждый день месяца
 
 def calculate_check_in_calendar(houses: QuerySet[House],
                                 year: int,

@@ -109,3 +109,21 @@ def check_if_house_free_by_period(house: House, check_in_datetime: Datetime, che
         ),
         overlapping_reservations=F("booked_total") - F("booked_before") - F("booked_after")
     ).exclude(overlapping_reservations=0).exists()
+
+
+# Пример как можно было бы писать через сырой SQL запрос
+#
+# def check_if_house_free_by_period(house: House, check_in_datetime: Datetime, check_out_datetime: Datetime) -> bool:
+#     sql_query = """
+#     SELECT 1 FROM house_reservations_housereservation
+#     WHERE house_id = %s AND cancelled = FALSE AND
+#           (
+#               check_in_datetime < %s AND check_out_datetime > %s
+#           )
+#     LIMIT 1
+#     """
+#     with connection.cursor() as cursor:
+#         cursor.execute(sql_query, [house.id, check_out_datetime, check_in_datetime])
+#         overlapping_reservations = cursor.fetchone()
+#
+#     return overlapping_reservations is None

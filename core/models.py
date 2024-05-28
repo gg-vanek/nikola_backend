@@ -26,8 +26,6 @@ class Pricing:
         Time(hour=13): 0.3,  # ранний въезд - доплата 30% от стоимости дневного проживания в день въезда
     }
 
-    ONE_ADULT_EQUAL_X_CHILDREN = 1.5
-
     @staticmethod
     def serializable_times_dict(d: dict):
         times = []

@@ -1,8 +1,5 @@
-from django.utils.timezone import get_default_timezone
-
 from rest_framework import serializers
 
-from core.models import Pricing
 from houses.models import House, HouseFeature, HousePicture
 from billing.services.price_calculators import light_calculate_reservation_price
 
@@ -73,15 +70,6 @@ class HouseListSerializer(serializers.ModelSerializer):
         except (ValueError, TypeError):
             # если total_persons_amount не конвертируется в int -> не можем посчитать суммарную стоимость
             return None
-
-        # Весь коммент ниже - перестраховка. Сюда не должны прийти такие дома
-        # Это перестраховка просто. Тут не должно оказаться такого домика
-        # if total_persons_amount >= house.max_persons_amount:
-        #     # с указанными параметрами фильтрации этот домик не удастся забронировать
-        #     return None
-        # Отсеять дома которые забронированы в один из интересующих
-        # if HouseReservation.objects.filter(house=house, check_in_date__lt=day, check_out_datetime__gt=day):
-        # return None
 
         total_price = light_calculate_reservation_price(house=house,
                                                         check_in_date=check_in_date,

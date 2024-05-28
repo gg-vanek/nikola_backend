@@ -1,6 +1,7 @@
 import os
 import logging
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MinValueValidator
 
@@ -8,16 +9,6 @@ from core.models import Pricing
 from clients.models import Client
 
 logger = logging.getLogger(__name__)
-
-
-def generate_house_picture_filename(instance, filename):
-    path = os.path.join('houses', 'pictures', str(instance.house.id), filename)
-    return path
-
-
-def generate_house_feature_icon_filename(instance, filename: str):
-    path = os.path.join('house_features', 'icons', str(instance.name) + '.' + filename.split('.')[-1])
-    return path
 
 
 class House(models.Model):
@@ -57,11 +48,20 @@ class House(models.Model):
         self.full_clean()
         super().save(*args, **kwargs)
 
+    def clean(self):
+        if self.max_persons_amount < self.base_persons_amount:
+            raise ValidationError("Max persons amount must be greater than or equal to base persons amount")
+
     def __str__(self):
         return f"({self.id}) {self.name}"
 
 
 class HousePicture(models.Model):
+    @staticmethod
+    def generate_house_picture_filename(instance, filename):
+        path = os.path.join('houses', 'pictures', str(instance.house.id), filename)
+        return path
+
     house = models.ForeignKey(House, verbose_name="Домик",
                               on_delete=models.SET_NULL,
                               null=True, related_name='pictures')
@@ -77,6 +77,11 @@ class HousePicture(models.Model):
 
 
 class HouseFeature(models.Model):
+    @staticmethod
+    def generate_house_feature_icon_filename(instance, filename: str):
+        path = os.path.join('house_features', 'icons', str(instance.name) + '.' + filename.split('.')[-1])
+        return path
+
     name = models.CharField("Название", max_length=127, unique=True)
     icon = models.ImageField("Иконка", upload_to=generate_house_feature_icon_filename)
 

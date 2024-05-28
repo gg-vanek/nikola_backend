@@ -43,7 +43,6 @@ class HouseReservationsViewSet(ByActionMixin,
     @action(methods=['put'], url_path='price', detail=True)
     @csrf_exempt
     def reservation_price(self, request: Request, *args, **kwargs):
-        # TODO добавить проверку доступности бронирования
         house = self.queryset.get(id=self.kwargs['pk'])
 
         reservation_parameters_serializer = self.get_serializer(house, data=request.data)
