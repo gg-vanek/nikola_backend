@@ -17,9 +17,9 @@ def night_description(start: Date, end: Date):
 
 def early_check_in_description(date: Date, time: Time):
     return EARLY_CHECK_IN_POSITION_DESCRIPTION_TEMPLATE.format(date=date.strftime("%d-%m"),
-                                                                   time=time.strftime("%H:%M"))
+                                                               time=time.strftime("%H:%M"))
 
 
 def late_check_out_description(date: Date, time: Time):
     return LATE_CHECK_OUT_POSITION_DESCRIPTION_TEMPLATE.format(date=date.strftime("%d-%m"),
-                                                                   time=time.strftime("%H:%M"))
+                                                               time=time.strftime("%H:%M"))

@@ -1,8 +1,9 @@
+import logging
+
 from rest_framework import serializers
 
-from billing.models import HouseReservationBill
-
-import logging
+from house_reservations.serializers import HouseReservationSerializer
+from .models import HouseReservationBill
 
 logger = logging.getLogger(__name__)
 
@@ -22,3 +23,10 @@ class HouseReservationBillSerializer(serializers.ModelSerializer):
     def get_promo_code(self, bill):
         if bill.promo_code:
             return bill.promo_code.code
+
+
+class HouseReservationWithBillSerializer(HouseReservationSerializer):
+    bill = HouseReservationBillSerializer()
+
+    class Meta:
+        fields = super().Meta.fields + ["bill", ]

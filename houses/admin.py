@@ -8,9 +8,12 @@ class HousePictureAdminInline(admin.TabularInline):
 
 class HouseAdmin(admin.ModelAdmin):
     model = House
-    list_display = ('name',
-                    'base_price', 'holidays_multiplier',
-                    'created_at',)
+    list_display = (
+        'name',
+        'base_price',
+        'holidays_multiplier',
+        'created_at',
+    )
     inlines = [HousePictureAdminInline, ]
 
 

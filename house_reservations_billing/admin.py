@@ -1,14 +1,11 @@
 from django.contrib import admin
-
-from billing.json_mappers import ChronologicalPositionsEncoder, NonChronologicalPositionsEncoder
-from billing.models import HouseReservationBill, HouseReservationPromoCode
-
-import json
-from django.contrib import admin
-from pygments import highlight
-from pygments.lexers.data import JsonLexer
-from pygments.formatters.html import HtmlFormatter
 from django.utils.safestring import mark_safe
+from pygments import highlight
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers.data import JsonLexer
+
+from .json_mappers import ChronologicalPositionsEncoder, NonChronologicalPositionsEncoder
+from .models import HouseReservationBill, HouseReservationPromoCode
 
 
 class HouseReservationBillAdmin(admin.ModelAdmin):
@@ -21,8 +18,10 @@ class HouseReservationBillAdmin(admin.ModelAdmin):
         'chronological_positions_prettified',
         'non_chronological_positions_prettified',
     )
-    list_display = ('reservation',
-                    'total',)
+    list_display = (
+        'reservation',
+        'total',
+    )
 
     def chronological_positions_prettified(self, instance):
         response = ChronologicalPositionsEncoder().encode(instance.chronological_positions)
@@ -45,14 +44,17 @@ class HouseReservationBillAdmin(admin.ModelAdmin):
 
 class HouseReservationPromoCodeAdmin(admin.ModelAdmin):
     model = HouseReservationPromoCode
-    list_display = ("id", "code",
-                    "enabled",
-                    "discount_type",
-                    "discount_value",
-                    "client",
-                    "max_use_times",
-                    "issuance_datetime",
-                    "expiration_datetime",)
+    list_display = (
+        "id",
+        "code",
+        "enabled",
+        "discount_type",
+        "discount_value",
+        "client",
+        "max_use_times",
+        "issuance_datetime",
+        "expiration_datetime",
+    )
 
 
 admin.site.register(HouseReservationBill, HouseReservationBillAdmin)

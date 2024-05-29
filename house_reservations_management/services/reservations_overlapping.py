@@ -24,12 +24,16 @@ def filter_for_available_houses_by_day(houses: QuerySet[House], day: Date) -> Qu
     # проверяем отсутствие пересечения с latest check_in и earliest check_out, потому что это тот кейс
     # который необходим для свободности домика в рассматриваемую ночь
     q = Q(
-        reservations__check_in_datetime__lte=
-        Datetime.combine(day - timedelta(days=1), Pricing.ALLOWED_CHECK_IN_TIMES['latest'],
-                         tzinfo=get_default_timezone()),
-        reservations__check_out_datetime__gte=
-        Datetime.combine(day, Pricing.ALLOWED_CHECK_OUT_TIMES['earliest'],
-                         tzinfo=get_default_timezone()),
+        reservations__check_in_datetime__lte=Datetime.combine(
+            day - timedelta(days=1),
+            Pricing.ALLOWED_CHECK_IN_TIMES['latest'],
+            tzinfo=get_default_timezone(),
+        ),
+        reservations__check_out_datetime__gte=Datetime.combine(
+            day,
+            Pricing.ALLOWED_CHECK_OUT_TIMES['earliest'],
+            tzinfo=get_default_timezone(),
+        ),
         reservations__cancelled=False,
     )
 
@@ -40,7 +44,8 @@ def filter_for_available_houses_by_day(houses: QuerySet[House], day: Date) -> Qu
             Sum("reservations", filter=q, distinct=True),
             Value(0),
             output_field=IntegerField()
-        )).filter(overlapping_reservations=0)
+        ),
+    ).filter(overlapping_reservations=0)
     # TODO дальнейшая оптимизация - .values("id", "base_price", "holidays_multiplier")
     #  или глянуть какой запрос летит в бд и кидать его самому
 
@@ -50,16 +55,24 @@ def filter_for_available_houses_by_day(houses: QuerySet[House], day: Date) -> Qu
 def filter_for_available_houses_by_period(
         houses: QuerySet[House],
         check_in_date: Date,
-        check_out_date: Date) -> QuerySet[House]:
+        check_out_date: Date,
+) -> QuerySet[House]:
     booked_before_query = Q(
-        reservations__check_out_datetime__lt=Datetime.combine(check_in_date, Pricing.ALLOWED_CHECK_IN_TIMES['latest'],
-                                                              tzinfo=get_default_timezone()),
-        reservations__cancelled=False)
+        reservations__check_out_datetime__lt=Datetime.combine(
+            check_in_date,
+            Pricing.ALLOWED_CHECK_IN_TIMES['latest'],
+            tzinfo=get_default_timezone(),
+        ),
+        reservations__cancelled=False,
+    )
     booked_after_query = Q(
-        reservations__check_in_datetime__gt=Datetime.combine(check_out_date,
-                                                             Pricing.ALLOWED_CHECK_OUT_TIMES['earliest'],
-                                                             tzinfo=get_default_timezone()),
-        reservations__cancelled=False)
+        reservations__check_in_datetime__gt=Datetime.combine(
+            check_out_date,
+            Pricing.ALLOWED_CHECK_OUT_TIMES['earliest'],
+            tzinfo=get_default_timezone(),
+        ),
+        reservations__cancelled=False,
+    )
     # два условия выше - условия, что очередное бронирование не пересекается с выбранными датами
     # нам нужно выбрать те домики, для которых суммарное количество таких бронирований
     # не равно общему количеству бронирований
@@ -109,7 +122,6 @@ def check_if_house_free_by_period(house: House, check_in_datetime: Datetime, che
         ),
         overlapping_reservations=F("booked_total") - F("booked_before") - F("booked_after")
     ).exclude(overlapping_reservations=0).exists()
-
 
 # Пример как можно было бы писать через сырой SQL запрос
 #

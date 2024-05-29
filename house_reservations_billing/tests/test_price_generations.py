@@ -9,7 +9,7 @@ from events.models import Event
 from houses.models import House
 from house_reservations.models import HouseReservation
 
-from billing.services.price_calculators import light_calculate_reservation_price, Receipt, ReceiptPosition
+from house_reservations_management.billing.price_calculators import light_calculate_reservation_price, Receipt, ReceiptPosition
 
 
 class PriceGenerationTest(TestCase):

@@ -10,11 +10,19 @@ class HouseReservationAdmin(admin.ModelAdmin):
         ('house', RelatedDropdownFilter),
     )
     model = HouseReservation
-    list_display = ('house', 'client',
-                    'check_in_datetime', 'check_out_datetime',
-                    'cancelled',
-                    'created_at', 'updated_at',)
-    ordering = ("house", "check_in_datetime")
+    list_display = (
+        'house',
+        'client',
+        'check_in_datetime',
+        'check_out_datetime',
+        'cancelled',
+        'created_at',
+        'updated_at',
+    )
+    ordering = (
+        "house",
+        "check_in_datetime",
+    )
 
 
 admin.site.register(HouseReservation, HouseReservationAdmin)
