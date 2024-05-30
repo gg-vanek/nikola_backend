@@ -8,5 +8,4 @@ router.register(r'', HouseViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('reservations/', include('house_reservations.urls')),
 ]

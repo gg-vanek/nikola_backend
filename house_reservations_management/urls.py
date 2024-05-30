@@ -8,7 +8,7 @@ from house_reservations_management.views.houses import HouseListingViewSet
 router = routers.SimpleRouter()
 router.register(r'calendars', CalendarsViewSet)
 router.register(r'', HouseReservationsManagementViewSet)
-router.register(r'houses_list', HouseListingViewSet)
+router.register(r'houses', HouseListingViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

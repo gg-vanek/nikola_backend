@@ -30,7 +30,8 @@ class CalendarsViewSet(
         # TODO HousesWithFeaturesFilter,
     ]
 
-    def get_month_and_year(self, request: Request) -> tuple[int, int] | Response:
+    @staticmethod
+    def get_month_and_year(request: Request) -> tuple[int, int] | Response:
         try:
             month = int(request.query_params.get("month"))
             assert 1 <= month <= 12

@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, status
 from rest_framework.decorators import action
@@ -7,17 +6,12 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from clients.models import Client
-from clients.serializers import ClientSerializer
 from core.mixins import ByActionMixin
 from core.models import Pricing
-from house_reservations.models import HouseReservation
-from house_reservations_billing.models import HouseReservationBill
 from house_reservations_billing.serializers import HouseReservationWithBillSerializer
-from house_reservations_billing.services.bill import initialize_bill
+from houses.models import House
 from services import upsert_client
 from .house_reservation_parameters_serializers import HouseReservationParametersSerializer
-from houses.models import House
 from ..services.create_house_reservation import create_reservation, calculate_reservation
 
 

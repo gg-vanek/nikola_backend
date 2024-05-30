@@ -1,14 +1,14 @@
 import logging
 
-from billing.models import HouseReservationPromoCode
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.utils.timezone import now
-from house_reservations.services.check_overlapping import check_if_house_free_by_period
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from core.models import Pricing
+from house_reservations_billing.models import HouseReservationPromoCode
+from house_reservations_management.services.reservations_overlapping import check_if_house_free_by_period
 
 logger = logging.getLogger(__name__)
 
