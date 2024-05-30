@@ -8,7 +8,7 @@ from houses.models import House
 from .houses_serializers import HouseListWithTotalPriceSerializer
 
 
-class HouseViewSet(
+class HouseListingViewSet(
     ByActionMixin,
     mixins.ListModelMixin,
     GenericViewSet,

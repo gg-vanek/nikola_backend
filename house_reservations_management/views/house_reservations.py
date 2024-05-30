@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
-
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -13,18 +12,19 @@ from clients.serializers import ClientSerializer
 from core.mixins import ByActionMixin
 from core.models import Pricing
 from house_reservations.models import HouseReservation
-from house_reservations.serializers import HouseReservationParametersSerializer, HouseReservationSerializer
 from house_reservations_billing.models import HouseReservationBill
 from house_reservations_billing.serializers import HouseReservationWithBillSerializer
 from house_reservations_billing.services.bill import initialize_bill
-
+from services import upsert_client
+from .house_reservation_parameters_serializers import HouseReservationParametersSerializer
 from houses.models import House
+from ..services.create_house_reservation import create_reservation, calculate_reservation
 
 
-class HouseReservationsViewSet(ByActionMixin,
-                               mixins.RetrieveModelMixin,
-                               mixins.ListModelMixin,
-                               GenericViewSet):
+class HouseReservationsManagementViewSet(ByActionMixin,
+                                         mixins.RetrieveModelMixin,
+                                         mixins.ListModelMixin,
+                                         GenericViewSet):
     serializer_classes_by_action = {
         "default": None,
         "reservation_price": HouseReservationParametersSerializer,
@@ -52,14 +52,7 @@ class HouseReservationsViewSet(ByActionMixin,
         reservation_parameters_serializer = self.get_serializer(house, data=request.data)
         reservation_parameters_serializer.is_valid(raise_exception=True)
 
-        promo_code = reservation_parameters_serializer.validated_data.pop("promo_code")
-        reservation = HouseReservation(house=house,
-                                       **reservation_parameters_serializer.validated_data)
-        bill = HouseReservationBill(
-            reservation=reservation,
-            promo_code=promo_code,
-        )
-        initialize_bill(bill)
+        reservation = calculate_reservation(reservation_parameters_serializer.validated_data)
 
         try:
             reservation.clean()
@@ -76,44 +69,27 @@ class HouseReservationsViewSet(ByActionMixin,
     def new_reservation(self, request: Request, *args, **kwargs):
         house = self.queryset.get(id=self.kwargs['pk'])
 
-        client_serializer = ClientSerializer(data=request.data)
-        client_serializer.is_valid(raise_exception=True)
-        try:
-            client = Client.objects.get(email=client_serializer.validated_data["email"])  # TODO get_or_create
-            if client.first_name != client_serializer.validated_data["first_name"] or \
-                    client.last_name != client_serializer.validated_data["last_name"]:
-                pass  # TODO придумать что делать если у клиента та же почта, но другое имя
-        except Client.DoesNotExist:
-            client = client_serializer.create(client_serializer.validated_data)
-            client.save()
+        client = upsert_client(request.data)
 
         reservation_parameters_serializer = self.get_serializer(house, data=request.data)
         reservation_parameters_serializer.is_valid(raise_exception=True)
 
         try:
+            reservation_data = reservation_parameters_serializer.validated_data
             preferred_contact = request.data["preferred_contact"]
             comment = request.data.get("comment", ' ')
+            reservation_data.update({
+                "client": client,
+                "house": house,
+                "preferred_contact": preferred_contact,
+                "comment": comment
+            })
         except KeyError:
             return Response({"error": "Поле preferred_contact не должно быть пустым"},
                             status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            promo_code = reservation_parameters_serializer.validated_data.pop("promo_code")
-            reservation = HouseReservation(client=client,
-                                           house=house,
-                                           preferred_contact=preferred_contact,
-                                           comment=comment,
-                                           **reservation_parameters_serializer.validated_data)
-            bill = HouseReservationBill(
-                reservation=reservation,
-                promo_code=promo_code,
-            )
-
-            initialize_bill(bill)
-
-            with transaction.atomic():
-                reservation.save()
-                bill.save()
+            reservation = create_reservation(reservation_data)
 
             # TODO celery --- cancel if not approved payment
             # TODO telegram notification
