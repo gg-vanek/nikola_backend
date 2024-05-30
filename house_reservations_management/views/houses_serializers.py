@@ -21,7 +21,7 @@ class HouseListWithTotalPriceSerializer(HouseDetailSerializer):
 
     class Meta:
         model = House
-        fields = super().Meta.fields + ["total_price"]
+        fields = HouseDetailSerializer.Meta.fields + ["total_price"]
 
     def validate_query_params(self) -> tuple[Datetime, Datetime, int] | None:
         query_params = self.context["request"].query_params

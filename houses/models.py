@@ -1,11 +1,11 @@
-import os
 import logging
 
 from django.core.exceptions import ValidationError
-from django.db import models
 from django.core.validators import MinValueValidator
+from django.db import models
 
 from core.models import Pricing
+from houses.filepath_generators import generate_house_picture_filename, generate_house_feature_icon_filename
 
 logger = logging.getLogger(__name__)
 
@@ -56,11 +56,6 @@ class House(models.Model):
 
 
 class HousePicture(models.Model):
-    @staticmethod
-    def generate_house_picture_filename(instance, filename):
-        path = os.path.join('houses', 'pictures', str(instance.house.id), filename)
-        return path
-
     house = models.ForeignKey(House, verbose_name="Домик",
                               on_delete=models.SET_NULL,
                               null=True, related_name='pictures')
@@ -75,11 +70,8 @@ class HousePicture(models.Model):
         return self.picture.name
 
 
+
 class HouseFeature(models.Model):
-    @staticmethod
-    def generate_house_feature_icon_filename(instance, filename: str):
-        path = os.path.join('house_features', 'icons', str(instance.name) + '.' + filename.split('.')[-1])
-        return path
 
     name = models.CharField("Название", max_length=127, unique=True)
     icon = models.ImageField("Иконка", upload_to=generate_house_feature_icon_filename)

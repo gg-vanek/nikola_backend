@@ -7,6 +7,7 @@ from house_reservations_billing.json_mappers import (
     NonChronologicalPositionsEncoder,
     NonChronologicalPositionsDecoder,
 )
+from house_reservations_billing.services.bill import initialize_bill
 
 
 class HouseReservationBill(models.Model):
@@ -51,6 +52,10 @@ class HouseReservationBill(models.Model):
     class Meta:
         verbose_name = "Счет на оплату бронирования домика"
         verbose_name_plural = 'Счета на оплату бронирования домиков'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        initialize_bill(self)
 
     def save(self, *args, **kwargs):
         self.full_clean()

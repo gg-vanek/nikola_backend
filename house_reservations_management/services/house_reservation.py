@@ -9,7 +9,6 @@ def calculate_reservation(data) -> HouseReservation:
     promo_code = data.pop("promo_code")
     reservation = HouseReservation(**data)
     bill = HouseReservationBill(reservation=reservation, promo_code=promo_code)
-    initialize_bill(bill)
 
     return reservation
 

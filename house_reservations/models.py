@@ -15,7 +15,7 @@ from house_reservations.validators import (
 
 
 class HouseReservation(models.Model):
-    slug = models.CharField(verbose_name="Строковый идентификатор", max_length=64, default=slug_generator(12))
+    slug = models.CharField(verbose_name="Строковый идентификатор", max_length=64, default=slug_generator)
     house = models.ForeignKey("houses.House", verbose_name="Домик", on_delete=models.SET_NULL,
                               null=True, related_name='reservations')
     client = models.ForeignKey(Client, verbose_name="Клиент", on_delete=models.SET_NULL,
@@ -54,6 +54,9 @@ class HouseReservation(models.Model):
         verbose_name_plural = 'Брони домиков'
 
     def save(self, *args, **kwargs):
+        # Note: При обновлении бронирования через админку чек не обновится автоматически
+        # Нужно будет зайти в админку чека и нажать в ней сохранить - тогда пересчитается
+        
         # TODO из-за того, что оно (check_datetime_fields) находится здесь (до full_clean) - в админке
         #  при создании неправильного бронирования вместо
         #  небольшой красной плашки вылетает желтая страница с ошибкой

@@ -2,6 +2,7 @@ import logging
 
 from rest_framework import serializers
 
+from house_reservations.models import HouseReservation
 from house_reservations.serializers import HouseReservationSerializer
 from .models import HouseReservationBill
 
@@ -29,4 +30,5 @@ class HouseReservationWithBillSerializer(HouseReservationSerializer):
     bill = HouseReservationBillSerializer()
 
     class Meta:
-        fields = super().Meta.fields + ["bill", ]
+        model = HouseReservation
+        fields = HouseReservationSerializer.Meta.fields + ["bill", ]

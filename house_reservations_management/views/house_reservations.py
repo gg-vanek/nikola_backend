@@ -10,7 +10,7 @@ from core.mixins import ByActionMixin
 from core.models import Pricing
 from house_reservations_billing.serializers import HouseReservationWithBillSerializer
 from houses.models import House
-from services import upsert_client
+from clients.services import upsert_client
 from .house_reservation_parameters_serializers import HouseReservationParametersSerializer
 from ..services.create_house_reservation import create_reservation, calculate_reservation
 

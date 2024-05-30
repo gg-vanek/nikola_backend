@@ -6,8 +6,8 @@ from django.utils.timezone import now
 from core.models import Pricing
 from houses.models import House
 
-IncorrectPeopleAmountInReservationException
-IncorrectDatetimesException
+# TODO IncorrectPeopleAmountInReservationException
+# TODO IncorrectDatetimesException
 
 def clean_total_persons_amount(total_persons_amount: int, house: House):
     if total_persons_amount < 0:
