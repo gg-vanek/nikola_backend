@@ -6,10 +6,7 @@ from .serializers import ClientSerializer
 logger = logging.getLogger(__name__)
 
 
-def upsert_client(data) -> Client:
-    client_serializer = ClientSerializer(data=data)
-    client_serializer.is_valid(raise_exception=True)
-
+def upsert_client(client_serializer) -> Client:
     try:
         client = Client.objects.get(email=client_serializer.validated_data["email"])
         if client.first_name != client_serializer.validated_data["first_name"]:
