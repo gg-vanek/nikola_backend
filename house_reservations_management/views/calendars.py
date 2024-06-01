@@ -1,4 +1,4 @@
-from datetime import datetime as Datetime
+from datetime import datetime as Datetime, date as Date
 
 from django.db.models import QuerySet
 from rest_framework.decorators import action
@@ -29,9 +29,8 @@ class CalendarsViewSet(
         # TODO HousesWithFeaturesFilter,
     ]
 
-    def get_calendar(self, houses: QuerySet[House], year: int, month: int, check_in_date: str | None) -> dict:
+    def get_calendar(self, houses: QuerySet[House], year: int, month: int, check_in_date: Date | None) -> dict:
         if check_in_date:
-            check_in_date = Datetime.strptime(check_in_date, "%d-%m-%Y").date()
             return calculate_check_out_calendar(houses=houses, check_in_date=check_in_date, year=year, month=month)
         else:
             return calculate_check_in_calendar(houses=houses, year=year, month=month)
