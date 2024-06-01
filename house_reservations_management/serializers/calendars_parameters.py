@@ -15,8 +15,8 @@ class CalendarsParametersSerializer(serializers.Serializer):
         )
 
     def validate_check_in_date(self, date):
-        if date < now().date():
-            raise serializers.ValidationError("chosen_check_in_date не может быть меньше сегодняшнего дня.")
+        if date <= now().date():
+            raise serializers.ValidationError("chosen_check_in_date должна быть позже сегодняшнего дня.")
 
         return date
 

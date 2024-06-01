@@ -80,3 +80,8 @@ class HouseReservationParametersSerializer(serializers.Serializer):
         attrs["promo_code"] = self.promo_code
 
         return attrs
+
+
+class AdditionalReservationParametersSerializer(serializers.Serializer):
+    preferred_contact = serializers.CharField(required=True)
+    comment = serializers.CharField(required=False, allow_blank=True)

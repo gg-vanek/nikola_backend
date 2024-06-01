@@ -2,10 +2,10 @@ from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
 from core.mixins import ByActionMixin
-from house_reservations_management.views.houses_filters import HousesAvailableByDateFilter
+from house_reservations_management.filters.houses import HousesAvailableByDateFilter
 from houses.filters import HousesMaxPersonsAmountFilter
 from houses.models import House
-from .houses_serializers import HouseListWithTotalPriceSerializer
+from house_reservations_management.serializers.houses import HouseListWithTotalPriceSerializer
 
 
 class HouseListingViewSet(
