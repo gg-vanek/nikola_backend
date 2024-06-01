@@ -3,7 +3,7 @@
 import django.contrib.postgres.constraints
 import django.contrib.postgres.fields.ranges
 import django.db.models.deletion
-import house_reservations.services.sql_functions
+import house_reservations.sql_functions
 from django.db import migrations, models
 
 
@@ -39,6 +39,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='housereservation',
-            constraint=django.contrib.postgres.constraints.ExclusionConstraint(condition=models.Q(('cancelled', False), ('house', None), _connector='OR'), expressions=[(house_reservations.services.sql_functions.TsTzRange('check_in_datetime', 'check_out_datetime', django.contrib.postgres.fields.ranges.RangeBoundary()), '&&'), ('house', '=')], name='exclude_reservations_overlapping'),
+            constraint=django.contrib.postgres.constraints.ExclusionConstraint(condition=models.Q(('cancelled', False), ('house', None), _connector='OR'), expressions=[(
+                                                                                                                                                                        house_reservations.sql_functions.TsTzRange('check_in_datetime', 'check_out_datetime', django.contrib.postgres.fields.ranges.RangeBoundary()), '&&'), ('house', '=')], name='exclude_reservations_overlapping'),
         ),
     ]

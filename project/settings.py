@@ -52,12 +52,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # local
-    'billing',
-    'core',
-    'houses',
-    'house_reservations',
     'clients',
+    'core',
     'events',
+    'house_reservations',
+    'house_reservations_billing',
+    'house_reservations_management',
+    'houses',
 
     # 3-rd party
     'corsheaders',
