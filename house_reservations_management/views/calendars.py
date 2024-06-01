@@ -42,11 +42,11 @@ class CalendarsViewSet(
 
         month = calendar_parameters_serializer.validated_data["month"]
         year = calendar_parameters_serializer.validated_data["year"]
-        check_in_date = calendar_parameters_serializer.validated_data.get("check_in_date")
+        chosen_check_in_date = calendar_parameters_serializer.validated_data.get("chosen_check_in_date")
 
         houses = self.filter_queryset(self.get_queryset())
 
-        calendar_data = self.get_calendar(houses, year, month, check_in_date)
+        calendar_data = self.get_calendar(houses, year, month, chosen_check_in_date)
         return Response({"calendar": calendar_data})
 
     @action(methods=['get'], url_path='calendar', detail=True)
@@ -56,9 +56,9 @@ class CalendarsViewSet(
 
         month = calendar_parameters_serializer.validated_data["month"]
         year = calendar_parameters_serializer.validated_data["year"]
-        check_in_date = calendar_parameters_serializer.validated_data.get("chosen_check_in_date")
+        chosen_check_in_date = calendar_parameters_serializer.validated_data.get("chosen_check_in_date")
 
         house = self.queryset.filter(id=self.kwargs['pk'])
 
-        calendar_data = self.get_calendar(house, year, month, check_in_date)
+        calendar_data = self.get_calendar(house, year, month, chosen_check_in_date)
         return Response({"calendar": calendar_data})

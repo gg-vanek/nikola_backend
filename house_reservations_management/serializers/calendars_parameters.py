@@ -6,15 +6,16 @@ from datetime import datetime as Datetime
 class CalendarsParametersSerializer(serializers.Serializer):
     month = serializers.IntegerField()
     year = serializers.IntegerField()
-    check_in_date = serializers.DateField(required=False, input_formats=['%d-%m-%Y'], source='chosen_check_in_date')
+    chosen_check_in_date = serializers.DateField(required=False, input_formats=['%d-%m-%Y'])
 
     class Meta:
         fields = (
             'month',
             'year',
+            'chosen_check_in_date',
         )
 
-    def validate_check_in_date(self, date):
+    def validate_chosen_check_in_date(self, date):
         if date <= now().date():
             raise serializers.ValidationError("chosen_check_in_date должна быть позже сегодняшнего дня.")
 
