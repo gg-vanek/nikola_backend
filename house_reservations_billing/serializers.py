@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from house_reservations.models import HouseReservation
 from house_reservations.serializers import HouseReservationSerializer
-from .models import HouseReservationBill
+from house_reservations_billing.models.bill import HouseReservationBill
 
 logger = logging.getLogger(__name__)
 

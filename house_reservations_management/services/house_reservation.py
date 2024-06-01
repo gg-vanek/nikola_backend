@@ -1,7 +1,7 @@
 from django.db import transaction
 
 from house_reservations.models import HouseReservation
-from house_reservations_billing.models import HouseReservationBill
+from house_reservations_billing.models.bill import HouseReservationBill
 
 
 def calculate_reservation(data) -> HouseReservation:

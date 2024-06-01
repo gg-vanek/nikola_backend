@@ -5,7 +5,7 @@ from django.db.models import QuerySet
 from django.utils.timezone import now
 
 from houses.models import House
-from .reservations_overlapping import (
+from house_reservations_management.services.reservations_overlapping import (
     filter_for_available_houses_by_day,
     filter_for_available_houses_by_period,
 )

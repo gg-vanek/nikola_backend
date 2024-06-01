@@ -2,7 +2,7 @@ from datetime import datetime as Datetime, timedelta
 
 from django.db.models import QuerySet
 from django.utils.timezone import now
-from ..services.reservations_overlapping import filter_for_available_houses_by_period
+from house_reservations_management.services.reservations_overlapping import filter_for_available_houses_by_period
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.request import Request
 

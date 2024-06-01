@@ -3,14 +3,13 @@ from django.utils.timezone import now
 
 from core.errors import LogicError
 from clients.models import Client
-from house_reservations_billing.models import (
-    HouseReservationPromoCode,
+from house_reservations_billing.models.constants import (
     FIXED_VALUE_DISCOUNT,
-    PERCENTAGE_DISCOUNT, HouseReservationBill,
+    PERCENTAGE_DISCOUNT,
 )
 
 
-def apply(promo_code: HouseReservationPromoCode, value: int) -> int:
+def apply(promo_code, value: int) -> int:
     if promo_code.discount_type == FIXED_VALUE_DISCOUNT:
         return max(
             100,
@@ -26,8 +25,8 @@ def apply(promo_code: HouseReservationPromoCode, value: int) -> int:
 
 
 def check_availability(
-        promo_code: HouseReservationPromoCode,
-        bill: HouseReservationBill,
+        promo_code,
+        bill,
         client: Client,
         value: int,
 ):

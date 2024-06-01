@@ -4,8 +4,9 @@ from pygments import highlight
 from pygments.formatters.html import HtmlFormatter
 from pygments.lexers.data import JsonLexer
 
-from .json_mappers import ChronologicalPositionsEncoder, NonChronologicalPositionsEncoder
-from .models import HouseReservationBill, HouseReservationPromoCode
+from house_reservations_billing.json_mappers import ChronologicalPositionsEncoder, NonChronologicalPositionsEncoder
+from house_reservations_billing.models.bill import HouseReservationBill
+from house_reservations_billing.models.promocode import HouseReservationPromoCode
 
 
 class HouseReservationBillAdmin(admin.ModelAdmin):

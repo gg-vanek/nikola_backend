@@ -1,9 +1,9 @@
 from datetime import timedelta
 
 from core.models import Pricing
-from .price_calculators import calculate_house_price_by_day
-from .promocode import apply, check_availability
-from .text_helpers import (
+from house_reservations_billing.services.price_calculators import calculate_house_price_by_day
+from house_reservations_billing.services.promocode import apply, check_availability
+from house_reservations_billing.services.text_helpers import (
     EARLY_CHECK_IN_POSITION,
     early_check_in_description,
     NIGHT_POSITION,
@@ -13,10 +13,9 @@ from .text_helpers import (
     EXTRA_PERSONS_POSITION,
     PROMO_CODE_POSITION,
 )
-from ..models import HouseReservationBill
 
 
-def initialize_bill(bill: HouseReservationBill):
+def initialize_bill(bill):
     house = bill.reservation.house
 
     check_in_date = bill.reservation.check_in_datetime.date()

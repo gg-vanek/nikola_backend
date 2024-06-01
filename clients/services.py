@@ -1,7 +1,6 @@
 import logging
 
-from .models import Client
-from .serializers import ClientSerializer
+from clients.models import Client
 
 logger = logging.getLogger(__name__)
 
