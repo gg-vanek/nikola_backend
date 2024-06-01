@@ -43,7 +43,7 @@ class CalendarsViewSet(
 
         month = calendar_parameters_serializer.validated_data["month"]
         year = calendar_parameters_serializer.validated_data["year"]
-        check_in_date = calendar_parameters_serializer.validated_data.get("chosen_check_in_date")
+        check_in_date = calendar_parameters_serializer.validated_data.get("check_in_date")
 
         houses = self.filter_queryset(self.get_queryset())
 
