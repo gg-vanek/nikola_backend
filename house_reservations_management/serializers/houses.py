@@ -33,7 +33,9 @@ class HouseListWithTotalPriceSerializer(HouseDetailSerializer):
             return None
 
         try:
-            total_persons_amount = query_params.get("total_persons_amount", house.base_persons_amount)
+            # max_persons_amount - значение из фильтра и должно называться именно так
+            # total_persons_amount - количество людей в бронировании и приравниваем его к max_persons_amount
+            total_persons_amount = query_params.get("max_persons_amount", house.base_persons_amount)
             total_persons_amount = int(total_persons_amount)
             total_persons_amount = max(total_persons_amount, house.base_persons_amount)
         except (ValueError, TypeError):
