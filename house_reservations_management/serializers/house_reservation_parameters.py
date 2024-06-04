@@ -9,11 +9,13 @@ from rest_framework.exceptions import ValidationError
 from core.models import Pricing
 from house_reservations_billing.models.promocode import HouseReservationPromoCode
 from house_reservations_management.services.reservations_overlapping import check_if_house_free_by_period
+from houses.models import House
 
 logger = logging.getLogger(__name__)
 
 
 class HouseReservationParametersSerializer(serializers.Serializer):
+    house = serializers.PrimaryKeyRelatedField(queryset=House.objects.all(), required=True)
     check_in_datetime = serializers.DateTimeField(input_formats=settings.DATETIME_INPUT_FORMATS,
                                                   format="%d-%m-%Y %H:%M", required=True)
     check_out_datetime = serializers.DateTimeField(input_formats=settings.DATETIME_INPUT_FORMATS,
@@ -25,26 +27,26 @@ class HouseReservationParametersSerializer(serializers.Serializer):
 
     class Meta:
         fields = (
-            'id',
+            'house',
             'check_in_datetime',
             'check_out_datetime',
             'total_persons_amount',
             'promo_code',
         )
 
-    def get_promo_code(self) -> HouseReservationPromoCode | None:
-        requested_promo_code = self.context["request"].data.get("promo_code")
+    def get_promo_code(self, obj) -> HouseReservationPromoCode | None:
+        requested_promo_code = self.initial_data.get("promo_code")
         promo_code = None
         if requested_promo_code:
             try:
                 promo_code = HouseReservationPromoCode.objects.get(code=requested_promo_code)
-            except HouseReservationPromoCode.DoesNotExist as e:
-                raise ValidationError(f'Промокод "{requested_promo_code}" не найден') from e
+            except HouseReservationPromoCode.DoesNotExist:
+                raise ValidationError(f'Промокод "{requested_promo_code}" не найден')
 
         return promo_code
 
     def validate(self, attrs):
-        house = self.instance
+        house = attrs["house"]
 
         check_in_datetime = attrs["check_in_datetime"]
         check_out_datetime = attrs["check_out_datetime"]
@@ -63,22 +65,15 @@ class HouseReservationParametersSerializer(serializers.Serializer):
                                   "Попробуйте поставить другое время заезда/выезда, "
                                   "если дни заезда и выезда в календаре отмечены, как свободные.", )
 
-        try:
-            total_persons_amount = int(attrs["total_persons_amount"])
-            assert 1 <= total_persons_amount <= house.max_persons_amount
-        except (ValueError, AssertionError) as e:
+        total_persons_amount = attrs["total_persons_amount"]
+        if not (1 <= total_persons_amount <= house.max_persons_amount):
             raise ValidationError("Некорректное значение total_persons_amount - "
                                   "это должно быть целое число в промежутке от "
                                   f"одного (1 чел.) "
                                   f"до максимально допустимого количества проживающих "
-                                  f"в домике ({house.max_persons_amount} чел.)") from e
-        except KeyError as e:
-            raise ValidationError("Отсутствует total_persons_amount") from e
+                                  f"в домике ({house.max_persons_amount} чел.)")
 
-        # TODO тут написано криво, нужно переписать
-        self.promo_code = self.get_promo_code()
-        attrs["promo_code"] = self.promo_code
-
+        attrs["promo_code"] = self.get_promo_code()
         return attrs
 
 

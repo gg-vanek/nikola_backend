@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from project.routers import houses_router, house_reservations_router, house_reservations_management_router
+from project.routers import houses_router
 
 urlpatterns = [
     path('backend/admin/', admin.site.urls),
@@ -27,7 +27,5 @@ urlpatterns = [
     # Строчка выше - группа url'ов необходимая для авторизации в браузерной версии апи.
     # То же самое с SessionAuthentication в настройках проекта
     path('backend/api/v1/houses/', include(houses_router.urls)),
-    path('backend/api/v1/house_reservations/', include(house_reservations_router.urls)),
-    path('backend/api/v1/house_reservations_management/', include(house_reservations_management_router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

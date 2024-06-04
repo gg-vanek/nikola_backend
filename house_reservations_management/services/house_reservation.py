@@ -14,7 +14,7 @@ def calculate_reservation(data) -> HouseReservation:
 
 
 def create_reservation(data):
-    reservation, bill = calculate_reservation(data)
+    reservation = calculate_reservation(data)
 
     with transaction.atomic():
         reservation.save()

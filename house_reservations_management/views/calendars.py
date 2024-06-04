@@ -20,6 +20,7 @@ class CalendarsViewSet(
     serializer_classes_by_action = {
         "default": None,
         "calendar": CalendarsParametersSerializer,
+        "single_house_calendar": CalendarsParametersSerializer,
     }
 
     queryset = House.objects.all()
