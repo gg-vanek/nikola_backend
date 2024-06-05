@@ -12,3 +12,9 @@ services:
       - .:/app
     env_file:
       - ../.env
+    networks:
+      - nikola-docker-network
+
+networks:
+  nikola-docker-network:
+    external: true
