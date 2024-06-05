@@ -34,7 +34,7 @@ class HouseReservationParametersSerializer(serializers.Serializer):
             'promo_code',
         )
 
-    def get_promo_code(self, obj) -> HouseReservationPromoCode | None:
+    def get_promo_code(self) -> HouseReservationPromoCode | None:
         requested_promo_code = self.initial_data.get("promo_code")
         promo_code = None
         if requested_promo_code:
