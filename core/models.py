@@ -1,5 +1,10 @@
 from datetime import time as Time
 
+import pytz
+from django.conf import settings
+
+timezone = pytz.timezone(settings.TIME_ZONE)
+
 
 class Pricing:
     MIN_HOUSE_BASE_PRICE = 5000
@@ -11,19 +16,19 @@ class Pricing:
     # f"Ты точно хочешь разрешить стравить множитель в выходные и праздничные дни меньше 1?"
 
     ALLOWED_CHECK_OUT_TIMES = {
-        'default': Time(hour=12),
-        'earliest': Time(hour=12),
-        'latest': Time(hour=15),
-        Time(hour=12): 0,
-        Time(hour=15): 0.3,  # поздний выезд - доплата 30% от стоимости дневного проживания в день выезда
+        'default': Time(hour=12, tzinfo=timezone),
+        'earliest': Time(hour=12, tzinfo=timezone),
+        'latest': Time(hour=15, tzinfo=timezone),
+        Time(hour=12, tzinfo=timezone): 0,
+        Time(hour=15, tzinfo=timezone): 0.3,  # поздний выезд - доплата 30% от стоимости дневного проживания в день выезда
     }
 
     ALLOWED_CHECK_IN_TIMES = {
-        'default': Time(hour=16),
-        'earliest': Time(hour=13),
-        'latest': Time(hour=16),
-        Time(hour=16): 0,
-        Time(hour=13): 0.3,  # ранний въезд - доплата 30% от стоимости дневного проживания в день въезда
+        'default': Time(hour=16, tzinfo=timezone),
+        'earliest': Time(hour=13, tzinfo=timezone),
+        'latest': Time(hour=16, tzinfo=timezone),
+        Time(hour=16, tzinfo=timezone): 0,
+        Time(hour=13, tzinfo=timezone): 0.3,  # ранний въезд - доплата 30% от стоимости дневного проживания в день въезда
     }
 
     @staticmethod

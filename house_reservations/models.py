@@ -2,6 +2,7 @@ from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import RangeOperators, RangeBoundary
 from django.db import models
 from django.db.models import Q
+from django.utils import timezone
 
 from clients.models import Client
 from core.generators import slug_generator
@@ -56,11 +57,11 @@ class HouseReservation(models.Model):
     def save(self, *args, **kwargs):
         # Note: При обновлении бронирования через админку чек не обновится автоматически
         # Нужно будет зайти в админку чека и нажать в ней сохранить - тогда пересчитается
-        
+
         # TODO из-за того, что оно (check_datetime_fields) находится здесь (до full_clean) - в админке
         #  при создании неправильного бронирования вместо
         #  небольшой красной плашки вылетает желтая страница с ошибкой
-        check_datetime_fields(self.check_in_datetime, self.check_out_datetime)
+        check_datetime_fields(self.local_check_in_datetime, self.local_check_out_datetime)
         # вызывать эту функцию выше следует именно до full_clean
         # Чтобы если она не проходит, возникала именно ValidationError, а не какая-то другая
         self.full_clean()
@@ -68,13 +69,23 @@ class HouseReservation(models.Model):
         super().save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
-        clean_check_in_datetime(self.check_in_datetime)
-        clean_check_out_datetime(self.check_out_datetime)
+        clean_check_in_datetime(self.local_check_in_datetime)
+        clean_check_out_datetime(self.local_check_out_datetime)
         clean_total_persons_amount(self.total_persons_amount, self.house)
+
+    @property
+    def local_check_in_datetime(self):
+        return timezone.localtime(self.check_in_datetime)
+
+    @property
+    def local_check_out_datetime(self):
+        return timezone.localtime(self.check_out_datetime)
 
     def __str__(self):
         if self.house:
-            return f'{self.house.name} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
-                   f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
-        return f'{self.house} ({self.check_in_datetime.strftime("%d.%m %H:%M")})' \
-               f'-({self.check_out_datetime.strftime("%d.%m %H:%M")})'
+            prefix = f'{self.house.name} '
+        else:
+            prefix = f'{self.house} '
+        return prefix \
+            + f'({self.local_check_in_datetime.strftime("%d.%m %H:%M")})' \
+            + f'-({self.local_check_out_datetime.strftime("%d.%m %H:%M")})'

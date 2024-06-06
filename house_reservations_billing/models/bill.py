@@ -55,12 +55,12 @@ class HouseReservationBill(models.Model):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.recalculate()
 
     def recalculate(self):
         initialize_bill(self)
 
     def save(self, *args, **kwargs):
+        self.recalculate()
         self.full_clean()
         super().save(*args, **kwargs)
 

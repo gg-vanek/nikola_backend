@@ -18,11 +18,11 @@ from house_reservations_billing.services.text_helpers import (
 def initialize_bill(bill):
     house = bill.reservation.house
 
-    check_in_date = bill.reservation.check_in_datetime.date()
-    check_in_time = bill.reservation.check_in_datetime.time()
+    check_in_date = bill.reservation.local_check_in_datetime.date()
+    check_in_time = bill.reservation.local_check_in_datetime.time()
 
-    check_out_date = bill.reservation.check_out_datetime.date()
-    check_out_time = bill.reservation.check_out_datetime.time()
+    check_out_date = bill.reservation.local_check_out_datetime.date()
+    check_out_time = bill.reservation.local_check_out_datetime.time()
 
     non_chronological_positions = []
     chronological_positions = []
