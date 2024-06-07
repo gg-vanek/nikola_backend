@@ -69,7 +69,6 @@ def _get_initial_accumulated_prices_starting_from_day(
 
     Возвращает словарь {House: int, ...} и обновленный список домиков (только те, которые свободны весь промежуток)
     """
-    accumulated_prices = {house: 0 for house in houses}
     if day <= check_in_date:
         # Если первый день вычисляемого календаря находится до даты въезда, то
         # первый день с not-None ценой - день следующий за днем въезда
@@ -77,12 +76,13 @@ def _get_initial_accumulated_prices_starting_from_day(
         # 2) если день въезда находится в рассматриваемом месяце - все дни до дня въезда включительно будут
         #    иметь None цену, а последующие до конца месяца - not-None цену
         # В любом случае - накопленная цена на домики "от дня въезда до текущего дня" равна нулю
-        return accumulated_prices
+        return {house: 0 for house in houses}, houses
 
     # Если день въезда расположен до первого дня вычисляемого календаря, то нам нужно выяснить,
     # какая цена накоплена у домиков за предыдущие месяцы (начиная со дня въезда)
     # При этом нас интересуют только те домики которые имеют весь промежуток от дня въезда до текущего дня свободным
     houses = filter_for_available_houses_by_period(houses, check_in_date, day)
+    accumulated_prices = {house: 0 for house in houses}
     day_iter = check_in_date + timedelta(days=1)
 
     # Для множества домиков, свободных весь период от даты заезда до
