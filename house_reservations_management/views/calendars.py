@@ -9,7 +9,7 @@ from rest_framework.viewsets import GenericViewSet
 from core.mixins import ByActionMixin
 from house_reservations_management.serializers.calendars_parameters import CalendarsParametersSerializer
 from house_reservations_management.services.calendars import calculate_check_in_calendar, calculate_check_out_calendar
-from houses.filters import HousesMaxPersonsAmountFilter
+from houses.filters import FilterHousesByMaxPersonsAmount
 from houses.models import House
 
 
@@ -26,7 +26,7 @@ class CalendarsViewSet(
     queryset = House.objects.all()
 
     filter_backends = [
-        HousesMaxPersonsAmountFilter,
+        FilterHousesByMaxPersonsAmount,
         # TODO HousesWithFeaturesFilter,
     ]
 

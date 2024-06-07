@@ -3,7 +3,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from core.mixins import ByActionMixin
 from house_reservations_management.filters.houses import HousesAvailableByDateFilter
-from houses.filters import HousesMaxPersonsAmountFilter
+from houses.filters import FilterHousesByMaxPersonsAmount
 from houses.models import House
 from house_reservations_management.serializers.houses import HouseListWithTotalPriceSerializer
 
@@ -20,7 +20,7 @@ class HouseListingViewSet(
 
     queryset = House.objects.all()
     filter_backends = [
-        HousesMaxPersonsAmountFilter,
+        FilterHousesByMaxPersonsAmount,
         # TODO HousesWithFeaturesFilter,
         HousesAvailableByDateFilter
     ]
