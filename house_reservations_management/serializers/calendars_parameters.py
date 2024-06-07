@@ -7,12 +7,14 @@ class CalendarsParametersSerializer(serializers.Serializer):
     month = serializers.IntegerField()
     year = serializers.IntegerField()
     chosen_check_in_date = serializers.DateField(required=False, input_formats=['%d-%m-%Y'])
+    total_persons_amount = serializers.IntegerField(min_value=1, default=1, required=False)
 
     class Meta:
         fields = (
             'month',
             'year',
             'chosen_check_in_date',
+            'total_persons_amount',
         )
 
     def validate_chosen_check_in_date(self, date):

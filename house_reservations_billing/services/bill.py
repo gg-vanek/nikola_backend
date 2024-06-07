@@ -1,7 +1,8 @@
 from datetime import timedelta
 
 from core.models import Pricing
-from house_reservations_billing.services.price_calculators import calculate_house_price_by_day
+from house_reservations_billing.services.price_calculators import calculate_house_price_by_day, \
+    calculate_extra_persons_price
 from house_reservations_billing.services.promocode import apply, check_availability
 from house_reservations_billing.services.text_helpers import (
     EARLY_CHECK_IN_POSITION,
@@ -75,7 +76,7 @@ def initialize_bill(bill):
                 "extra_persons_amount": extra_persons_amount,
                 "price_per_extra_person": price_per_extra_person,
                 "nights_amount": nights_amount,
-                "price": extra_persons_amount * price_per_extra_person * nights_amount,
+                "price": calculate_extra_persons_price(house, bill.reservation.house) * nights_amount,
                 "description": f"{extra_persons_amount} доп. гостей х {nights_amount} ночей",
             }
         )

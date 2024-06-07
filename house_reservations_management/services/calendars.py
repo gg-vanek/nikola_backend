@@ -10,6 +10,7 @@ from house_reservations_management.services.reservations_overlapping import (
 from house_reservations_billing.services.price_calculators import (
     calculate_house_price_by_day,
     is_holiday,
+    calculate_extra_persons_price,
 )
 
 logger = logging.getLogger(__name__)
@@ -56,7 +57,12 @@ def calculate_check_in_calendar(
     return calendar
 
 
-def _get_initial_accumulated_prices(houses: QuerySet[House], day: Date, check_in_date: Date) -> dict:
+def _get_initial_accumulated_prices(
+        houses: QuerySet[House],
+        total_persons_amount: int,
+        day: Date,
+        check_in_date: Date,
+) -> dict:
     accumulated_prices = {house: 0 for house in houses}
     if day <= check_in_date:
         # Если первый день вычисляемого календаря находится до даты въезда, то
@@ -77,27 +83,40 @@ def _get_initial_accumulated_prices(houses: QuerySet[House], day: Date, check_in
     # начала рассматриваемого месяца вычислим цену на начало этого месяца
     while day_iter < day:
         for house in houses:
-            accumulated_prices[house] += calculate_house_price_by_day(house, day_iter)
+            accumulated_prices[house] += calculate_house_price_by_day(house, day_iter) \
+                                         + calculate_extra_persons_price(house, total_persons_amount)
         day_iter += timedelta(days=1)
 
     return accumulated_prices
 
 
-def _update_accumulated_prices(accumulated_prices: dict, day: Date, houses: QuerySet[House]) -> dict:
+def _update_accumulated_prices(
+        accumulated_prices: dict,
+        total_persons_amount: int,
+        day: Date,
+        houses: QuerySet[House],
+) -> dict:
     available_houses = filter_for_available_houses_by_day(houses, day)
     for house in list(accumulated_prices.keys()):
         if house not in available_houses:
             del accumulated_prices[house]
         else:
-            accumulated_prices[house] += calculate_house_price_by_day(house, day)
+            accumulated_prices[house] += calculate_house_price_by_day(house, day) \
+                                         + calculate_extra_persons_price(house, total_persons_amount)
     return accumulated_prices
 
 
-def calculate_check_out_calendar(houses: QuerySet[House], check_in_date: Date, year: int, month: int) -> dict:
+def calculate_check_out_calendar(
+        houses: QuerySet[House],
+        total_persons_amount: int,
+        check_in_date: Date,
+        year: int,
+        month: int,
+) -> dict:
     day = Date(year=year, month=month, day=1)
     end_day = _get_calendar_end_day(year, month)
     calendar = {}
-    accumulated_prices = _get_initial_accumulated_prices(houses, day, check_in_date)
+    accumulated_prices = _get_initial_accumulated_prices(houses, total_persons_amount, day, check_in_date)
 
     while day < end_day:
         day_str = day.strftime("%d-%m-%Y")
@@ -110,7 +129,7 @@ def calculate_check_out_calendar(houses: QuerySet[House], check_in_date: Date, y
                 "reason (debug)": "Check-out should be after check-in",
             })
         else:
-            accumulated_prices = _update_accumulated_prices(accumulated_prices, day, houses)
+            accumulated_prices = _update_accumulated_prices(accumulated_prices, total_persons_amount, day, houses)
             day_prices = list(accumulated_prices.values())
             if day_prices:
                 calendar[day_str].update({

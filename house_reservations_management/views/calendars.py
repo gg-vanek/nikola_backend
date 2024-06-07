@@ -30,24 +30,37 @@ class CalendarsViewSet(
         # TODO HousesWithFeaturesFilter,
     ]
 
-    def get_calendar(self, houses: QuerySet[House], year: int, month: int, check_in_date: Date | None) -> dict:
-        if check_in_date:
-            return calculate_check_out_calendar(houses=houses, check_in_date=check_in_date, year=year, month=month)
+    def get_calendar(
+            self,
+            houses: QuerySet[House],
+            year: int,
+            month: int,
+            total_persons_amount: int = 1,
+            chosen_check_in_date: Date = None,
+    ) -> dict:
+        if chosen_check_in_date:
+            return calculate_check_out_calendar(
+                houses=houses,
+                total_persons_amount=total_persons_amount,
+                check_in_date=chosen_check_in_date,
+                year=year,
+                month=month,
+            )
         else:
-            return calculate_check_in_calendar(houses=houses, year=year, month=month)
+            return calculate_check_in_calendar(
+                houses=houses,
+                year=year,
+                month=month,
+            )
 
     @action(methods=['get'], url_path='calendar', detail=False)
     def calendar(self, request: Request, *args, **kwargs):
         calendar_parameters_serializer = self.get_serializer(data=request.query_params)
         calendar_parameters_serializer.is_valid(raise_exception=True)
 
-        month = calendar_parameters_serializer.validated_data["month"]
-        year = calendar_parameters_serializer.validated_data["year"]
-        chosen_check_in_date = calendar_parameters_serializer.validated_data.get("chosen_check_in_date")
-
         houses = self.filter_queryset(self.get_queryset())
 
-        calendar_data = self.get_calendar(houses, year, month, chosen_check_in_date)
+        calendar_data = self.get_calendar(houses, **calendar_parameters_serializer.validated_data)
         return Response({"calendar": calendar_data})
 
     @action(methods=['get'], url_path='calendar', detail=True)
@@ -55,11 +68,7 @@ class CalendarsViewSet(
         calendar_parameters_serializer = self.get_serializer(data=request.query_params)
         calendar_parameters_serializer.is_valid(raise_exception=True)
 
-        month = calendar_parameters_serializer.validated_data["month"]
-        year = calendar_parameters_serializer.validated_data["year"]
-        chosen_check_in_date = calendar_parameters_serializer.validated_data.get("chosen_check_in_date")
-
         house = self.queryset.filter(id=self.kwargs['pk'])
 
-        calendar_data = self.get_calendar(house, year, month, chosen_check_in_date)
+        calendar_data = self.get_calendar(house, **calendar_parameters_serializer.validated_data)
         return Response({"calendar": calendar_data})
