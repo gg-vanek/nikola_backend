@@ -57,12 +57,18 @@ def calculate_check_in_calendar(
     return calendar
 
 
-def _get_initial_accumulated_prices(
+def _get_initial_accumulated_prices_starting_from_day(
         houses: QuerySet[House],
         total_persons_amount: int,
-        day: Date,
         check_in_date: Date,
-) -> dict:
+        day: Date,
+) -> tuple[dict, QuerySet[House]]:
+    """
+    Эта функция рассчитывает суммарную стоимость для каждого домика,
+     который свободен в течение всего промежутка [check_in_date, day) за весь этот промежуток
+
+    Возвращает словарь {House: int, ...} и обновленный список домиков (только те, которые свободны весь промежуток)
+    """
     accumulated_prices = {house: 0 for house in houses}
     if day <= check_in_date:
         # Если первый день вычисляемого календаря находится до даты въезда, то
@@ -87,7 +93,7 @@ def _get_initial_accumulated_prices(
                                          + calculate_extra_persons_price(house, total_persons_amount)
         day_iter += timedelta(days=1)
 
-    return accumulated_prices
+    return accumulated_prices, houses
 
 
 def _update_accumulated_prices(
@@ -113,10 +119,17 @@ def calculate_check_out_calendar(
         year: int,
         month: int,
 ) -> dict:
-    day = Date(year=year, month=month, day=1)
+    first_month_day = Date(year=year, month=month, day=1)
     end_day = _get_calendar_end_day(year, month)
     calendar = {}
-    accumulated_prices = _get_initial_accumulated_prices(houses, total_persons_amount, day, check_in_date)
+    accumulated_prices, houses = _get_initial_accumulated_prices_starting_from_day(
+        houses,
+        total_persons_amount,
+        check_in_date,
+        first_month_day,
+    )
+
+    day = first_month_day
 
     while day < end_day:
         day_str = day.strftime("%d-%m-%Y")
