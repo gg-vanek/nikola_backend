@@ -76,7 +76,7 @@ def initialize_bill(bill):
                 "extra_persons_amount": extra_persons_amount,
                 "price_per_extra_person": price_per_extra_person,
                 "nights_amount": nights_amount,
-                "price": calculate_extra_persons_price(house, bill.reservation.house) * nights_amount,
+                "price": calculate_extra_persons_price(house, bill.reservation.total_persons_amount) * nights_amount,
                 "description": f"{extra_persons_amount} доп. гостей х {nights_amount} ночей",
             }
         )
