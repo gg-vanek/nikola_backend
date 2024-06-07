@@ -1,1 +1,316 @@
-[{"model": "houses.house", "pk": 1, "fields": {"name": "Скандинавия", "description": "Эстетичный дизайн, удобная планировка и качество — все об этом домике. Выполнен в лучших традициях Скандинавского стиля — использование натурального дерева в наружной и внутренней отделке, минимум лишних деталей.", "base_price": 15000, "holidays_multiplier": 1.5, "base_persons_amount": 2, "max_persons_amount": 6, "price_per_extra_person": 2000, "created_at": "2023-10-19T14:06:52.375Z", "updated_at": "2024-06-07T18:36:29.106Z", "features": [1, 5]}}, {"model": "houses.house", "pk": 2, "fields": {"name": "Нормандия", "description": "Подойдет для проживания всей семьей. Продумана каждая деталь: спальня, просторный зал, полноценная кухонная зона с обеденным столом, санузел и просторная терраса.", "base_price": 10000, "holidays_multiplier": 2.0, "base_persons_amount": 2, "max_persons_amount": 3, "price_per_extra_person": 2000, "created_at": "2023-10-25T13:28:46.011Z", "updated_at": "2024-06-07T20:48:36.856Z", "features": [1, 2, 3, 4, 5, 6, 7, 8]}}, {"model": "houses.housepicture", "pk": 11, "fields": {"house": 2, "picture": "houses/pictures/2/1.png"}}, {"model": "houses.housepicture", "pk": 12, "fields": {"house": 2, "picture": "houses/pictures/2/2.jpg"}}, {"model": "houses.housepicture", "pk": 13, "fields": {"house": 2, "picture": "houses/pictures/2/3.jpg"}}, {"model": "houses.housepicture", "pk": 14, "fields": {"house": 2, "picture": "houses/pictures/2/4.jpg"}}, {"model": "houses.housepicture", "pk": 15, "fields": {"house": 2, "picture": "houses/pictures/2/5.jpg"}}, {"model": "houses.housepicture", "pk": 16, "fields": {"house": 2, "picture": "houses/pictures/2/6.jpg"}}, {"model": "houses.housepicture", "pk": 17, "fields": {"house": 2, "picture": "houses/pictures/2/7.jpg"}}, {"model": "houses.housepicture", "pk": 18, "fields": {"house": 2, "picture": "houses/pictures/2/8.jpg"}}, {"model": "houses.housepicture", "pk": 19, "fields": {"house": 1, "picture": "houses/pictures/1/1.png"}}, {"model": "houses.housepicture", "pk": 20, "fields": {"house": 1, "picture": "houses/pictures/1/2.jpg"}}, {"model": "houses.housepicture", "pk": 21, "fields": {"house": 1, "picture": "houses/pictures/1/3.jpg"}}, {"model": "houses.housepicture", "pk": 22, "fields": {"house": 1, "picture": "houses/pictures/1/4.jpg"}}, {"model": "houses.housepicture", "pk": 23, "fields": {"house": 1, "picture": "houses/pictures/1/5.jpg"}}, {"model": "houses.housepicture", "pk": 24, "fields": {"house": 1, "picture": "houses/pictures/1/6.jpg"}}, {"model": "houses.housepicture", "pk": 25, "fields": {"house": 1, "picture": "houses/pictures/1/7.jpg"}}, {"model": "houses.housepicture", "pk": 26, "fields": {"house": 1, "picture": "houses/pictures/1/8.jpg"}}, {"model": "houses.housefeature", "pk": 1, "fields": {"name": "Кондиционер", "icon": "house_features/icons/Кондиционер.png"}}, {"model": "houses.housefeature", "pk": 2, "fields": {"name": "Обогреватель", "icon": "house_features/icons/Обогреватель.png"}}, {"model": "houses.housefeature", "pk": 3, "fields": {"name": "Камин", "icon": "house_features/icons/Камин.png"}}, {"model": "houses.housefeature", "pk": 4, "fields": {"name": "Теплый пол", "icon": "house_features/icons/Теплый_пол.png"}}, {"model": "houses.housefeature", "pk": 5, "fields": {"name": "Холодильник", "icon": "house_features/icons/Холодильник.png"}}, {"model": "houses.housefeature", "pk": 6, "fields": {"name": "Wi-Fi", "icon": "house_features/icons/Wi-Fi.png"}}, {"model": "houses.housefeature", "pk": 7, "fields": {"name": "Чайник", "icon": "house_features/icons/Чайник.png"}}, {"model": "houses.housefeature", "pk": 8, "fields": {"name": "Парковка", "icon": "house_features/icons/Парковка.png"}}, {"model": "clients.client", "pk": 1, "fields": {"email": "petr.petrov@mail.com", "first_name": "Петр", "last_name": "Петров", "created_at": "2024-03-17T14:38:30.417Z", "updated_at": "2024-03-17T14:40:37.361Z"}}, {"model": "clients.client", "pk": 2, "fields": {"email": "ivan.ivanov@gmail.com", "first_name": "Иван", "last_name": "Иванов", "created_at": "2024-03-17T14:40:53.896Z", "updated_at": "2024-03-17T14:40:53.896Z"}}, {"model": "clients.client", "pk": 3, "fields": {"email": "nikolai.nikolaev@gmail.com", "first_name": "Николай", "last_name": "Николаев", "created_at": "2024-03-17T14:41:37.013Z", "updated_at": "2024-03-17T14:41:37.013Z"}}, {"model": "clients.client", "pk": 10, "fields": {"email": "client1@mail.ru", "first_name": "aaa", "last_name": "aaa", "created_at": "2024-04-09T21:57:09.850Z", "updated_at": "2024-04-09T21:57:09.856Z"}}, {"model": "clients.client", "pk": 18, "fields": {"email": "georgiewden@yandex.ru", "first_name": "Георгиев", "last_name": "Денис", "created_at": "2024-06-05T22:11:48.383Z", "updated_at": "2024-06-05T22:11:48.386Z"}}, {"model": "clients.client", "pk": 20, "fields": {"email": "akaden2017@mail.ru", "first_name": "Георгиев", "last_name": "Денис", "created_at": "2024-06-05T22:41:43.546Z", "updated_at": "2024-06-05T22:41:43.550Z"}}, {"model": "events.event", "pk": 1, "fields": {"name": "Фестиваль", "start_date": "2024-01-11", "end_date": "2024-01-14", "multiplier": 4.0, "created_at": "2023-10-22T15:38:56.544Z", "updated_at": "2023-10-22T15:55:40.763Z"}}]
+[
+  {
+    "model": "houses.house",
+    "pk": 1,
+    "fields": {
+      "name": "Скандинавия",
+      "description": "Эстетичный дизайн, удобная планировка и качество — все об этом домике. Выполнен в лучших традициях Скандинавского стиля — использование натурального дерева в наружной и внутренней отделке, минимум лишних деталей.",
+      "base_price": 15000,
+      "holidays_multiplier": 1.5,
+      "base_persons_amount": 2,
+      "max_persons_amount": 6,
+      "price_per_extra_person": 2000,
+      "created_at": "2023-10-19T14:06:52.375Z",
+      "updated_at": "2024-06-07T18:36:29.106Z",
+      "features": [
+        1,
+        5
+      ]
+    }
+  },
+  {
+    "model": "houses.house",
+    "pk": 2,
+    "fields": {
+      "name": "Нормандия",
+      "description": "Подойдет для проживания всей семьей. Продумана каждая деталь: спальня, просторный зал, полноценная кухонная зона с обеденным столом, санузел и просторная терраса.",
+      "base_price": 10000,
+      "holidays_multiplier": 2.0,
+      "base_persons_amount": 2,
+      "max_persons_amount": 3,
+      "price_per_extra_person": 2000,
+      "created_at": "2023-10-25T13:28:46.011Z",
+      "updated_at": "2024-06-07T20:48:36.856Z",
+      "features": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 11,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/1.png"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 12,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/2.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 13,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/3.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 14,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/4.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 15,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/5.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 16,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/6.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 17,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/7.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 18,
+    "fields": {
+      "house": 2,
+      "picture": "houses/pictures/2/8.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 19,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/1.png"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 20,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/2.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 21,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/3.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 22,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/4.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 23,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/5.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 24,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/6.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 25,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/7.jpg"
+    }
+  },
+  {
+    "model": "houses.housepicture",
+    "pk": 26,
+    "fields": {
+      "house": 1,
+      "picture": "houses/pictures/1/8.jpg"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 1,
+    "fields": {
+      "name": "Кондиционер",
+      "icon": "house_features/icons/Кондиционер.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 2,
+    "fields": {
+      "name": "Обогреватель",
+      "icon": "house_features/icons/Обогреватель.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 3,
+    "fields": {
+      "name": "Камин",
+      "icon": "house_features/icons/Камин.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 4,
+    "fields": {
+      "name": "Теплый пол",
+      "icon": "house_features/icons/Теплый_пол.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 5,
+    "fields": {
+      "name": "Холодильник",
+      "icon": "house_features/icons/Холодильник.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 6,
+    "fields": {
+      "name": "Wi-Fi",
+      "icon": "house_features/icons/Wi-Fi.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 7,
+    "fields": {
+      "name": "Чайник",
+      "icon": "house_features/icons/Чайник.png"
+    }
+  },
+  {
+    "model": "houses.housefeature",
+    "pk": 8,
+    "fields": {
+      "name": "Парковка",
+      "icon": "house_features/icons/Парковка.png"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 1,
+    "fields": {
+      "email": "petr.petrov@mail.com",
+      "first_name": "Петр",
+      "last_name": "Петров",
+      "created_at": "2024-03-17T14:38:30.417Z",
+      "updated_at": "2024-03-17T14:40:37.361Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 2,
+    "fields": {
+      "email": "ivan.ivanov@gmail.com",
+      "first_name": "Иван",
+      "last_name": "Иванов",
+      "created_at": "2024-03-17T14:40:53.896Z",
+      "updated_at": "2024-03-17T14:40:53.896Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 3,
+    "fields": {
+      "email": "nikolai.nikolaev@gmail.com",
+      "first_name": "Николай",
+      "last_name": "Николаев",
+      "created_at": "2024-03-17T14:41:37.013Z",
+      "updated_at": "2024-03-17T14:41:37.013Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 10,
+    "fields": {
+      "email": "client1@mail.ru",
+      "first_name": "aaa",
+      "last_name": "aaa",
+      "created_at": "2024-04-09T21:57:09.850Z",
+      "updated_at": "2024-04-09T21:57:09.856Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 18,
+    "fields": {
+      "email": "georgiewden@yandex.ru",
+      "first_name": "Георгиев",
+      "last_name": "Денис",
+      "created_at": "2024-06-05T22:11:48.383Z",
+      "updated_at": "2024-06-05T22:11:48.386Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 20,
+    "fields": {
+      "email": "akaden2017@mail.ru",
+      "first_name": "Георгиев",
+      "last_name": "Денис",
+      "created_at": "2024-06-05T22:41:43.546Z",
+      "updated_at": "2024-06-05T22:41:43.550Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "name": "Фестиваль",
+      "start_date": "2024-01-11",
+      "end_date": "2024-01-14",
+      "multiplier": 4.0,
+      "created_at": "2023-10-22T15:38:56.544Z",
+      "updated_at": "2023-10-22T15:55:40.763Z"
+    }
+  }
+]
