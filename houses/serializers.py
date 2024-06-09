@@ -8,12 +8,16 @@ logger = logging.getLogger(__name__)
 
 
 class HousePictureListSerializer(serializers.ModelSerializer):
+    picture = serializers.CharField(read_only=True, source='icon.url')
+
     class Meta:
         model = HousePicture
         fields = ('picture',)
 
 
 class HouseFeatureListSerializer(serializers.ModelSerializer):
+    icon = serializers.CharField(read_only=True, source='icon.url')
+
     class Meta:
         model = HouseFeature
         fields = ('id', 'name', 'icon',)

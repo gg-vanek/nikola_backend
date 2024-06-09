@@ -2,18 +2,21 @@ version: '2'
 
 services:
   backend:
+    image: nikola/backend
     container_name: backend
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
       - '${BACKEND_PORT}:8000'
-    volumes:
-      - .:/app
     env_file:
       - ../.env
     networks:
       - nikola-docker-network
+    volumes:
+      - type: bind
+        source: .
+        target: /app
 
 networks:
   nikola-docker-network:
