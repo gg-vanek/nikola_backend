@@ -72,7 +72,6 @@ class HousePicture(models.Model):
 
 
 class HouseFeature(models.Model):
-
     name = models.CharField("Название", max_length=127, unique=True)
     icon = models.ImageField("Иконка", upload_to=generate_house_feature_icon_filename)
 
