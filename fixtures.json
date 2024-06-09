@@ -176,7 +176,7 @@
     "pk": 1,
     "fields": {
       "name": "Кондиционер",
-      "icon": "house_features/icons/Кондиционер.png"
+      "picture": "house_features/pictures/Кондиционер.png"
     }
   },
   {
@@ -184,7 +184,7 @@
     "pk": 2,
     "fields": {
       "name": "Обогреватель",
-      "icon": "house_features/icons/Обогреватель.png"
+      "picture": "house_features/pictures/Обогреватель.png"
     }
   },
   {
@@ -192,7 +192,7 @@
     "pk": 3,
     "fields": {
       "name": "Камин",
-      "icon": "house_features/icons/Камин.png"
+      "picture": "house_features/pictures/Камин.png"
     }
   },
   {
@@ -200,7 +200,7 @@
     "pk": 4,
     "fields": {
       "name": "Теплый пол",
-      "icon": "house_features/icons/Теплый_пол.png"
+      "picture": "house_features/pictures/Теплый_пол.png"
     }
   },
   {
@@ -208,7 +208,7 @@
     "pk": 5,
     "fields": {
       "name": "Холодильник",
-      "icon": "house_features/icons/Холодильник.png"
+      "picture": "house_features/pictures/Холодильник.png"
     }
   },
   {
@@ -216,7 +216,7 @@
     "pk": 6,
     "fields": {
       "name": "Wi-Fi",
-      "icon": "house_features/icons/Wi-Fi.png"
+      "picture": "house_features/pictures/Wi-Fi.png"
     }
   },
   {
@@ -224,7 +224,7 @@
     "pk": 7,
     "fields": {
       "name": "Чайник",
-      "icon": "house_features/icons/Чайник.png"
+      "picture": "house_features/pictures/Чайник.png"
     }
   },
   {
@@ -232,7 +232,7 @@
     "pk": 8,
     "fields": {
       "name": "Парковка",
-      "icon": "house_features/icons/Парковка.png"
+      "picture": "house_features/pictures/Парковка.png"
     }
   },
   {

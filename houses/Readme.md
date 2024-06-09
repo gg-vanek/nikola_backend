@@ -18,7 +18,7 @@
 ### HouseFeature
 
 * `name`
-* `icon`
+* `picture`
 
 ### HousePicture
 

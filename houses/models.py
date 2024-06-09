@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 from core.models import Pricing
-from houses.filepath_generators import generate_house_picture_filename, generate_house_feature_icon_filename
+from houses.filepath_generators import generate_house_picture_filename, generate_house_feature_picture_filename
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +73,7 @@ class HousePicture(models.Model):
 
 class HouseFeature(models.Model):
     name = models.CharField("Название", max_length=127, unique=True)
-    icon = models.ImageField("Иконка", upload_to=generate_house_feature_icon_filename)
+    picture = models.ImageField("Иконка", upload_to=generate_house_feature_picture_filename)
 
     class Meta:
         verbose_name = "Фича домика"

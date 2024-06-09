@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=127, unique=True, verbose_name='Название')),
-                ('icon', models.ImageField(upload_to=houses.models.generate_house_feature_icon_filename, verbose_name='Иконка')),
+                ('icon', models.ImageField(upload_to=houses.models.generate_house_feature_picture_filename, verbose_name='Иконка')),
             ],
             options={
                 'verbose_name': 'Фича домика',

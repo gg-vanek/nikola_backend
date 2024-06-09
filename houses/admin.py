@@ -19,7 +19,7 @@ class HouseAdmin(admin.ModelAdmin):
 
 class HouseFeatureAdmin(admin.ModelAdmin):
     model = HouseFeature
-    list_display = ('name', 'icon')
+    list_display = ('name', 'picture')
 
 
 admin.site.register(House, HouseAdmin)

@@ -18,13 +18,13 @@ class HousePictureListSerializer(serializers.ModelSerializer):
 
 
 class HouseFeatureListSerializer(serializers.ModelSerializer):
-    icon = serializers.CharField(read_only=True, source='icon.url')
-    width = serializers.IntegerField(read_only=True, source='icon.width')
-    height = serializers.IntegerField(read_only=True, source='icon.height')
+    picture = serializers.CharField(read_only=True, source='picture.url')
+    width = serializers.IntegerField(read_only=True, source='picture.width')
+    height = serializers.IntegerField(read_only=True, source='picture.height')
 
     class Meta:
         model = HouseFeature
-        fields = ('id', 'name', 'icon', 'width', 'height')
+        fields = ('id', 'name', 'picture', 'width', 'height')
 
 
 class HouseDetailSerializer(serializers.ModelSerializer):
