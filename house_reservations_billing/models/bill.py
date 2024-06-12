@@ -65,4 +65,4 @@ class HouseReservationBill(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Счет на оплату бронирования ({self.reservation.id})"
+        return f"Счет на оплату бронирования ({self.reservation.slug})"

@@ -82,10 +82,4 @@ class HouseReservation(models.Model):
         return timezone.localtime(self.check_out_datetime)
 
     def __str__(self):
-        if self.house:
-            prefix = f'{self.house.name} '
-        else:
-            prefix = f'{self.house} '
-        return prefix \
-            + f'({self.local_check_in_datetime.strftime("%d.%m %H:%M")})' \
-            + f'-({self.local_check_out_datetime.strftime("%d.%m %H:%M")})'
+        return f"Бронирование {self.slug}"
