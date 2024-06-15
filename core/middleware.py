@@ -3,6 +3,7 @@ import logging
 from django.http import JsonResponse
 from rest_framework import status
 
+from django.conf import settings
 from core.errors import LogicError
 
 logger = logging.getLogger(__name__)
@@ -13,12 +14,19 @@ class DebugMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        logger.error(request.META)
+        logger.error("---------------------------------------------------------------------------")
+        logger.error(f"ALLOWED_HOSTS: {settings.ALLOWED_HOSTS}")
+        logger.error(f"CORS_ALLOWED_ORIGINS: {settings.CORS_ALLOWED_ORIGINS}")
+        logger.error(f"CSRF_TRUSTED_ORIGINS: {settings.CSRF_TRUSTED_ORIGINS}")
+
+        logger.error(f"request.meta: {request.META}")
         response = self.get_response(request)
         try:
-            logger.error(response.content)
+            logger.error(f"response.content {response.content}")
         except Exception as e:
-            pass
+            logger.error(f"no response.content")
+
+        logger.error("---------------------------------------------------------------------------")
         return response
 
 

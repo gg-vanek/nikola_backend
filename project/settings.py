@@ -32,13 +32,12 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "django-insecure-va=jrmk350#&^7a$gan
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "51.250.115.72",  # HARDCODE
+    f"{os.getenv('FRONTEND_HOST')}", # only if backend and frontend are hosted on the same domain. FRONTEND_HOST here means "example.com"
     os.getenv('BACKEND_HOST'),
     "0.0.0.0",
     "127.0.0.1",
     "localhost",
     "backend",
-    "host.docker.internal",
 ]
 
 # Application definition
@@ -68,7 +67,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'core.middleware.DebugMiddleware',
+#    'core.middleware.DebugMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -81,7 +80,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://floppa.space",  # HARDCODE
+    f"https://{os.getenv('FRONTEND_HOST')}",
     f"http://{os.getenv('FRONTEND_HOST')}",
     f"http://{os.getenv('FRONTEND_HOST')}:80",
     f"http://{os.getenv('FRONTEND_HOST')}:3000",
@@ -97,8 +96,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://floppa.space',
-]  # HARDCODE
+    f"https://{os.getenv('FRONTEND_HOST')}",
+]
 
 CORS_ALLOW_METHODS = [
     "DELETE",
@@ -107,7 +106,7 @@ CORS_ALLOW_METHODS = [
     "PATCH",
     "POST",
     "PUT",
-]  # HARDCODE
+]
 
 ROOT_URLCONF = 'project.urls'
 
