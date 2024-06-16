@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from houses.models import House
-from house_reservations_billing.services.price_calculators import light_calculate_reservation_price
+from house_reservations_billing.services.price_calculators import light_calculate_reservation_price, calculate_extra_persons_price
 
 from datetime import datetime as Datetime
 
@@ -18,10 +18,11 @@ class HouseListWithTotalPriceSerializer(HouseDetailSerializer):
     # в остальных случаях высчитывается суммарная цена проживания в домике в указанные даты
 
     total_price = serializers.SerializerMethodField(read_only=True)
+    price_per_day = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = House
-        fields = HouseDetailSerializer.Meta.fields + ["total_price"]
+        fields = HouseDetailSerializer.Meta.fields + ["total_price", "price_per_day"]
 
     def get_total_price(self, house: House) -> int | None:
         query_params = self.context["request"].query_params
@@ -48,3 +49,15 @@ class HouseListWithTotalPriceSerializer(HouseDetailSerializer):
         )
 
         return total_price
+
+    def get_price_per_day(self, house: House) -> int | None:
+        query_params = self.context["request"].query_params
+
+        try:
+            total_persons_amount = query_params.get("total_persons_amount", house.base_persons_amount)
+            total_persons_amount = int(total_persons_amount)
+            total_persons_amount = max(total_persons_amount, house.base_persons_amount)
+        except (ValueError, TypeError):
+            return house.base_price
+
+        return house.base_price + calculate_extra_persons_price(house, total_persons_amount)
