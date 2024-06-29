@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'house_reservations_billing',
     'house_reservations_management',
     'houses',
+    'additional_services',
 
     # 3-rd party
     'corsheaders',

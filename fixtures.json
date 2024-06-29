@@ -1,5 +1,83 @@
 [
   {
+    "model": "clients.client",
+    "pk": 1,
+    "fields": {
+      "email": "petr.petrov@mail.com",
+      "first_name": "Петр",
+      "last_name": "Петров",
+      "created_at": "2024-03-17T14:38:30.417Z",
+      "updated_at": "2024-03-17T14:40:37.361Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 2,
+    "fields": {
+      "email": "ivan.ivanov@gmail.com",
+      "first_name": "Иван",
+      "last_name": "Иванов",
+      "created_at": "2024-03-17T14:40:53.896Z",
+      "updated_at": "2024-03-17T14:40:53.896Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 3,
+    "fields": {
+      "email": "nikolai.nikolaev@gmail.com",
+      "first_name": "Николай",
+      "last_name": "Николаев",
+      "created_at": "2024-03-17T14:41:37.013Z",
+      "updated_at": "2024-03-17T14:41:37.013Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 10,
+    "fields": {
+      "email": "client1@mail.ru",
+      "first_name": "aaa",
+      "last_name": "aaa",
+      "created_at": "2024-04-09T21:57:09.850Z",
+      "updated_at": "2024-04-09T21:57:09.856Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 18,
+    "fields": {
+      "email": "georgiewden@yandex.ru",
+      "first_name": "Георгиев",
+      "last_name": "Денис",
+      "created_at": "2024-06-05T22:11:48.383Z",
+      "updated_at": "2024-06-05T22:11:48.386Z"
+    }
+  },
+  {
+    "model": "clients.client",
+    "pk": 20,
+    "fields": {
+      "email": "akaden2017@mail.ru",
+      "first_name": "Георгиев",
+      "last_name": "Денис",
+      "created_at": "2024-06-05T22:41:43.546Z",
+      "updated_at": "2024-06-05T22:41:43.550Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "name": "Фестиваль",
+      "start_date": "2024-01-11",
+      "end_date": "2024-01-14",
+      "multiplier": 4.0,
+      "created_at": "2023-10-22T15:38:56.544Z",
+      "updated_at": "2023-10-22T15:55:40.763Z"
+    }
+  },
+  {
     "model": "houses.house",
     "pk": 1,
     "fields": {
@@ -236,81 +314,111 @@
     }
   },
   {
-    "model": "clients.client",
+    "model": "additional_services.additionalservice",
     "pk": 1,
     "fields": {
-      "email": "petr.petrov@mail.com",
-      "first_name": "Петр",
-      "last_name": "Петров",
-      "created_at": "2024-03-17T14:38:30.417Z",
-      "updated_at": "2024-03-17T14:40:37.361Z"
+      "name": "Русская баня",
+      "description": "Отдых в русской бане - это великолепное путешествие в мир, где встречаются вековые традиции и естественные методы оздоровления.\r\n\r\nЭто не просто место для процедур и расслабления, это истинное святилище, где каждый уголок наполнен атмосферой тепла, заботы и природной гармонии. В нашей русской бане вы ощутите, как древние традиции сливаются с современным комфортом.",
+      "telegram_contact_link": "https://t.me/vlad_i_lena_h",
+      "price_string": "5000 ₽/час",
+      "created_at": "2024-06-29T12:52:02.199Z",
+      "updated_at": "2024-06-29T12:52:02.199Z"
     }
   },
   {
-    "model": "clients.client",
+    "model": "additional_services.additionalservice",
     "pk": 2,
     "fields": {
-      "email": "ivan.ivanov@gmail.com",
-      "first_name": "Иван",
-      "last_name": "Иванов",
-      "created_at": "2024-03-17T14:40:53.896Z",
-      "updated_at": "2024-03-17T14:40:53.896Z"
+      "name": "Аренда сапбордов",
+      "description": "Аренда сапов - это увлекательное приключение на свежем воздухе, приносящее радость и вдохновение. Взять в аренду сапы - значит погрузиться в мир водных просторов и природной гармонии.\r\n\r\nЭто не просто способ провести время, а возможность познакомиться с водными путешествиями в новом формате. Здесь каждый может почувствовать себя исследователем, преодолевая водные просторы на доске.",
+      "telegram_contact_link": "https://t.me/vlad_i_lena_h",
+      "price_string": "3000 ₽/час",
+      "created_at": "2024-06-29T12:53:11.840Z",
+      "updated_at": "2024-06-29T12:53:11.840Z"
     }
   },
   {
-    "model": "clients.client",
+    "model": "additional_services.additionalservice",
     "pk": 3,
     "fields": {
-      "email": "nikolai.nikolaev@gmail.com",
-      "first_name": "Николай",
-      "last_name": "Николаев",
-      "created_at": "2024-03-17T14:41:37.013Z",
-      "updated_at": "2024-03-17T14:41:37.013Z"
+      "name": "Аренда мангалов",
+      "description": "Аренда мангалов - это возможность провести незабываемое время на природе в кругу семьи и друзей, наслаждаясь вкусом свежей пищи, ароматом дымка и теплом огня.\r\n\r\nЭто не просто аренда оборудования для приготовления барбекю, это создание атмосферы уюта и веселья на пикнике или празднике. Здесь каждый может почувствовать себя шеф-поваром и гриль-мастером, готовя вкусные блюда под открытым небом.",
+      "telegram_contact_link": "https://t.me/vlad_i_lena_h",
+      "price_string": "5000 ₽/день",
+      "created_at": "2024-06-29T12:53:58.538Z",
+      "updated_at": "2024-06-29T12:53:58.538Z"
     }
   },
   {
-    "model": "clients.client",
-    "pk": 10,
-    "fields": {
-      "email": "client1@mail.ru",
-      "first_name": "aaa",
-      "last_name": "aaa",
-      "created_at": "2024-04-09T21:57:09.850Z",
-      "updated_at": "2024-04-09T21:57:09.856Z"
-    }
-  },
-  {
-    "model": "clients.client",
-    "pk": 18,
-    "fields": {
-      "email": "georgiewden@yandex.ru",
-      "first_name": "Георгиев",
-      "last_name": "Денис",
-      "created_at": "2024-06-05T22:11:48.383Z",
-      "updated_at": "2024-06-05T22:11:48.386Z"
-    }
-  },
-  {
-    "model": "clients.client",
-    "pk": 20,
-    "fields": {
-      "email": "akaden2017@mail.ru",
-      "first_name": "Георгиев",
-      "last_name": "Денис",
-      "created_at": "2024-06-05T22:41:43.546Z",
-      "updated_at": "2024-06-05T22:41:43.550Z"
-    }
-  },
-  {
-    "model": "events.event",
+    "model": "additional_services.additionalservicepicture",
     "pk": 1,
     "fields": {
-      "name": "Фестиваль",
-      "start_date": "2024-01-11",
-      "end_date": "2024-01-14",
-      "multiplier": 4.0,
-      "created_at": "2023-10-22T15:38:56.544Z",
-      "updated_at": "2023-10-22T15:55:40.763Z"
+      "additional_service": 1,
+      "picture": "additional_services/pictures/1/1.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 2,
+    "fields": {
+      "additional_service": 1,
+      "picture": "additional_services/pictures/1/2.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 3,
+    "fields": {
+      "additional_service": 1,
+      "picture": "additional_services/pictures/1/3.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 4,
+    "fields": {
+      "additional_service": 2,
+      "picture": "additional_services/pictures/2/1.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 5,
+    "fields": {
+      "additional_service": 2,
+      "picture": "additional_services/pictures/2/2.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 6,
+    "fields": {
+      "additional_service": 2,
+      "picture": "additional_services/pictures/2/3.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 7,
+    "fields": {
+      "additional_service": 3,
+      "picture": "additional_services/pictures/3/1.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 8,
+    "fields": {
+      "additional_service": 3,
+      "picture": "additional_services/pictures/3/2.png"
+    }
+  },
+  {
+    "model": "additional_services.additionalservicepicture",
+    "pk": 9,
+    "fields": {
+      "additional_service": 3,
+      "picture": "additional_services/pictures/3/3.png"
     }
   }
 ]

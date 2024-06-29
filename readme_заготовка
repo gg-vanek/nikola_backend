@@ -11,7 +11,7 @@
     CREATE EXTENSION btree_gist;
 
 Дамп фикстур
-  - python manage.py dumpdata clients events houses > fixtures.json
+  - python manage.py dumpdata clients events houses additional_services > fixtures.json
 
 Провалиться в докер контейнер
   - docker ps

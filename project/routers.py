@@ -6,6 +6,8 @@ from house_reservations_management.views.house_reservations_management import Ho
 from house_reservations_management.views.houses import HouseListingViewSet
 from houses.views import HouseFeatureViewSet, HouseViewSet
 
+from additional_services.views import AdditionalServiceViewSet
+
 houses_router = routers.SimpleRouter()
 houses_router.register(r'features', HouseFeatureViewSet)
 # Note: this CalendarsViewSet is located in HouseReservationsManagement package to avoid dependency problems
@@ -18,3 +20,5 @@ houses_router.register(r'reservations', HouseReservationsViewSet)
 # Note: this HouseReservationsViewSet is located in HouseReservationsManagement package to avoid dependency problems
 houses_router.register(r'', HouseReservationsManagementViewSet)
 
+additional_services_router = routers.SimpleRouter()
+additional_services_router.register('', AdditionalServiceViewSet)
