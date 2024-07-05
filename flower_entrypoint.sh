@@ -14,4 +14,3 @@ python manage.py collectstatic --no-input
 
 echo "Run Flower"
 exec celery --app project flower --url_prefix='backend/flower'
-
