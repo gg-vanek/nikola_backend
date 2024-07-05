@@ -15,7 +15,7 @@ from clients.services import upsert_client
 from house_reservations_management.serializers.house_reservation_parameters import HouseReservationParametersSerializer, \
     AdditionalReservationParametersSerializer
 from house_reservations_management.services.house_reservation import create_reservation, calculate_reservation
-from house_reservations_management.tasks import send_telegram_notification, send_email_to_user
+from house_reservations_management.tasks import new_reservation_created_manager_notification, new_reservation_created_user_notification
 
 class HouseReservationsManagementViewSet(ByActionMixin,
                                          mixins.RetrieveModelMixin,
@@ -89,8 +89,8 @@ class HouseReservationsManagementViewSet(ByActionMixin,
             })
 
             # TODO celery - cancel if not approved payment
-            send_telegram_notification.delay(reservation.pk)
-            send_email_to_user.delay(reservation.pk)
+            new_reservation_created_manager_notification.delay(reservation.pk)
+            new_reservation_created_user_notification.delay(reservation.pk)
 
             return Response({"slug": reservation.slug}, status=status.HTTP_200_OK)
         # TODO обернуть ошибку нормально
