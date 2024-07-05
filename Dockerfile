@@ -19,8 +19,6 @@ RUN pip install -r requirements.txt
 # Копируем остальные файлы проекта в контейнер
 COPY . /app/
 
-# Даем права на выполнение файлу entrypoint.sh
-RUN chmod +x ./entrypoint.sh
-
-# Запускаем сервер при помощи скрипта entrypoint.sh
-ENTRYPOINT ["/bin/bash", "./entrypoint.sh"]
+RUN chmod +x ./backend_entrypoint.sh
+RUN chmod +x ./celery_entrypoint.sh
+RUN chmod +x ./flower_entrypoint.sh
