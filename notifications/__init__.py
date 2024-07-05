@@ -12,8 +12,8 @@ ManagerNotificationsService = ManagerNotificationsTelegram(
         map(
             int,
             os.getenv(
-                "TELEGRAM_API_KEY",
-                "7472374239:AAFXbVugGpCHbe13p-F4BNjO0brOsXLCOJc",
+                "TELEGRAM_MANAGER_CHATS",
+                "",
             ).split(","),
         )
     ),
