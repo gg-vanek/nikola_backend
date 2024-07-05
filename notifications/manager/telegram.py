@@ -1,0 +1,30 @@
+import logging
+
+from house_reservations.models import HouseReservation
+from notifications.manager.general import ManagerNotificationsBaseClass
+
+from django.conf import settings
+
+from notifications.manager.templates import NEW_RESERVATION_CREATED
+
+logger = logging.getLogger(__name__)
+
+
+class ManagerNotificationsTelegram(ManagerNotificationsBaseClass):
+    api_key: str
+
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+
+    def new_reservation_created(self, reservation: HouseReservation):
+        return NEW_RESERVATION_CREATED.format(
+            reservation_house_name=reservation.house.name,
+            reservation_check_in_datetime=reservation.check_in_datetime.strftime("%d-%m %H:%M"),
+            reservation_check_out_datetime=reservation.check_out_datetime.strftime("%d-%m %H:%M"),
+            reservation_slug=reservation.slug,
+            host=settings.ALLOWED_HOSTS[0],
+            reservation_id=reservation.id,
+        )
+
+    def there_are_some_unapproved_reservations(self, reservations: list[HouseReservation]):
+        pass
