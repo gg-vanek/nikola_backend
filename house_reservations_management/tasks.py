@@ -20,3 +20,9 @@ def new_reservation_created_user_notification(reservation_id: int):
 def remind_manager_about_unapproved_reservations():
     reservations = HouseReservation.objects.filter(id=1)  # TODO
     ManagerNotificationsService.there_are_some_unapproved_reservations(reservations)
+
+
+@shared_task
+def archive_outdated_reservations():
+    reservations = HouseReservation.objects.filter(id=1)  # TODO
+    ManagerNotificationsService.there_are_some_unapproved_reservations(reservations)

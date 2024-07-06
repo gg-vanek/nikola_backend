@@ -35,6 +35,10 @@ class ManagerNotificationsTelegram(ManagerNotificationsBaseClass):
                 reservation_slug=reservation.slug,
                 host=settings.ALLOWED_HOSTS[0],
                 reservation_id=reservation.id,
+                client_lastname=reservation.client.last_name,
+                client_firstname=reservation.client.first_name,
+                preferred_contact=reservation.preferred_contact,
+                reservation_comment=reservation.comment,
             )
         )
 
