@@ -41,7 +41,6 @@ class HouseReservationsManagementViewSet(ByActionMixin,
         }, status=status.HTTP_200_OK)
 
     @action(methods=['put'], url_path='reservations/price', detail=True)
-    @csrf_exempt
     def reservation_price(self, request: Request, *args, **kwargs):
         reservation_parameters_serializer = self.get_serializer(
             data={
@@ -63,7 +62,6 @@ class HouseReservationsManagementViewSet(ByActionMixin,
                             status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['post'], url_path='reservations', detail=True)
-    @csrf_exempt
     def new_reservation(self, request: Request, *args, **kwargs):
         client_serializer = ClientSerializer(data=request.data)
         client_serializer.is_valid(raise_exception=True)

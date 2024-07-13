@@ -1,4 +1,3 @@
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -24,7 +23,6 @@ class HouseReservationsViewSet(ByActionMixin,
     # TODO get reservation by slug (lookup field)
 
     @action(methods=['get'], url_path='by_slug', detail=False)
-    @csrf_exempt
     def retrieve_reservation_by_slug(self, request):
         reservation = HouseReservation.objects.get(slug=request.GET.get('slug'))
 
