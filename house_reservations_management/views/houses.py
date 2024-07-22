@@ -18,7 +18,7 @@ class HouseListingViewSet(
         "list": HouseListWithTotalPriceSerializer,
     }
 
-    queryset = House.objects.all()
+    queryset = House.objects.filter(active=True)
     filter_backends = [
         FilterHousesByMaxPersonsAmount,
         # TODO HousesWithFeaturesFilter,

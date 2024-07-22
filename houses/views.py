@@ -15,7 +15,7 @@ class HouseViewSet(
         "default": None,
         "retrieve": HouseDetailSerializer,
     }
-    queryset = House.objects.all()
+    queryset = House.objects.filter(active=True)
 
 
 class HouseFeatureViewSet(

@@ -16,7 +16,7 @@ class HouseReservationsViewSet(ByActionMixin,
     serializer_classes_by_action = {
         "default": None,
     }
-    queryset = House.objects.all()
+    queryset = House.objects.filter(active=True)
 
     # TODO list reservations by period
     # TODO list reservations by house ???

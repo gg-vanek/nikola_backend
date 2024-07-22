@@ -10,6 +10,7 @@ class HouseAdmin(admin.ModelAdmin):
     model = House
     list_display = (
         'name',
+        'active',
         'base_price',
         'holidays_multiplier',
         'created_at',

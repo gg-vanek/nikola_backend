@@ -14,6 +14,7 @@
 * `preferred_contact`
 * `comment`
 * `cancelled`
+* `approved`
 * `created_at`
 * `updated_at`
 

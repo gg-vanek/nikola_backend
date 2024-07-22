@@ -17,6 +17,7 @@ from house_reservations_management.serializers.house_reservation_parameters impo
 from house_reservations_management.services.house_reservation import create_reservation, calculate_reservation
 from house_reservations_management.tasks import new_reservation_created_manager_notification, new_reservation_created_user_notification
 
+
 class HouseReservationsManagementViewSet(ByActionMixin,
                                          mixins.RetrieveModelMixin,
                                          mixins.ListModelMixin,
@@ -26,7 +27,7 @@ class HouseReservationsManagementViewSet(ByActionMixin,
         "reservation_price": HouseReservationParametersSerializer,
         "new_reservation": HouseReservationParametersSerializer,
     }
-    queryset = House.objects.all()
+    queryset = House.objects.filter(active=True)
 
     @action(methods=['get'], url_path='reservations/options', detail=True)
     def reservation_options(self, request: Request, *args, **kwargs):

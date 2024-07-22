@@ -7,6 +7,7 @@
 
 * `id`
 * `name`
+* `active`
 * `description`
 * `pictures` - ManyToMany с AdditionalServicePicture
 * `telegram_contact_link`

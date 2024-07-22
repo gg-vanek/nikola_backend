@@ -17,6 +17,7 @@ services:
       - type: bind
         source: .
         target: /app
+    entrypoint: ./backend_entrypoint.sh
 
 networks:
   nikola-docker-network:

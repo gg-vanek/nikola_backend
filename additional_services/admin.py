@@ -10,6 +10,7 @@ class AdditionalServiceAdmin(admin.ModelAdmin):
     model = AdditionalService
     list_display = (
         'name',
+        'active',
         'price_string',
         'created_at',
     )

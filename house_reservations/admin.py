@@ -15,6 +15,7 @@ class HouseReservationAdmin(admin.ModelAdmin):
         'client',
         'check_in_datetime',
         'check_out_datetime',
+        'approved',
         'cancelled',
         'created_at',
         'updated_at',

@@ -15,4 +15,4 @@ class AdditionalServiceViewSet(
         "default": None,
         "list": AdditionalServiceDetailSerializer,
     }
-    queryset = AdditionalService.objects.all()
+    queryset = AdditionalService.objects.filter(active=True)

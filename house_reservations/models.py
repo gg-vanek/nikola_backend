@@ -30,6 +30,7 @@ class HouseReservation(models.Model):
     comment = models.CharField("Комментарий", max_length=511)
 
     cancelled = models.BooleanField("Отменено?", default=False)
+    approved = models.BooleanField("Подтверждено менеджером?", default=False)
 
     created_at = models.DateTimeField("Время создания бронирования", auto_now_add=True)
     updated_at = models.DateTimeField("Время последнего изменения бронирования", auto_now=True)

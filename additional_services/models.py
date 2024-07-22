@@ -10,6 +10,8 @@ logger = logging.getLogger(__name__)
 class AdditionalService(models.Model):
     name = models.CharField("Название услуги", max_length=255, unique=True)
 
+    active = models.BooleanField("Услуга актуальна", default=True)
+
     description = models.TextField("Описание услуги")
 
     telegram_contact_link = models.CharField("Ссылка на телеграм для бронирования", max_length=127)

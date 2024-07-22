@@ -6,6 +6,7 @@
 ### House
 
 * `name`
+* `active`
 * `description`
 * `features` - ManyToMany с HouseFeature
 * `base_price`

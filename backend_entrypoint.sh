@@ -13,5 +13,5 @@ echo "Collect static files"
 python manage.py collectstatic --no-input
 
 echo "Run Gunicorn server"
-exec gunicorn project.wsgi:application -w 3 -b :8000 -k gthread
+exec gunicorn project.wsgi:application -w 3 -b :8000 -k gthread --access-logfile -
 

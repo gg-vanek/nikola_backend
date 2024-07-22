@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 class House(models.Model):
     name = models.CharField("Название домика", max_length=255, unique=True)
 
+    active = models.BooleanField("Домик в эксплуатации", default=True)
+
     description = models.TextField("Описание домика")
     features = models.ManyToManyField("HouseFeature", verbose_name="Плюшки", related_name='houses')
 
