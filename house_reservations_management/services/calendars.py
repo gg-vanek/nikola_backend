@@ -57,59 +57,16 @@ def calculate_check_in_calendar(
     return calendar
 
 
-def _get_initial_accumulated_prices_starting_from_day(
-        houses: QuerySet[House],
-        total_persons_amount: int,
-        check_in_date: Date,
-        day: Date,
-) -> tuple[dict, QuerySet[House]]:
-    """
-    Эта функция рассчитывает суммарную стоимость для каждого домика,
-     который свободен в течение всего промежутка [check_in_date, day) за весь этот промежуток
-
-    Возвращает словарь {House: int, ...} и обновленный список домиков (только те, которые свободны весь промежуток)
-    """
-    if day <= check_in_date:
-        # Если первый день вычисляемого календаря находится до даты въезда, то
-        # первый день с not-None ценой - день следующий за днем въезда
-        # 1) если день въезда находится в следующем месяце - все дни рассматриваемого месяца имеют None цену
-        # 2) если день въезда находится в рассматриваемом месяце - все дни до дня въезда включительно будут
-        #    иметь None цену, а последующие до конца месяца - not-None цену
-        # В любом случае - накопленная цена на домики "от дня въезда до текущего дня" равна нулю
-        return {house: 0 for house in houses}, houses
-
-    # Если день въезда расположен до первого дня вычисляемого календаря, то нам нужно выяснить,
-    # какая цена накоплена у домиков за предыдущие месяцы (начиная со дня въезда)
-    # При этом нас интересуют только те домики которые имеют весь промежуток от дня въезда до текущего дня свободным
-    houses = filter_for_available_houses_by_period(houses, check_in_date, day)
-    accumulated_prices = {house: 0 for house in houses}
-    day_iter = check_in_date + timedelta(days=1)
-
-    # Для множества домиков, свободных весь период от даты заезда до
-    # начала рассматриваемого месяца вычислим цену на начало этого месяца
-    while day_iter < day:
-        for house in houses:
-            accumulated_prices[house] += calculate_house_price_by_day(house, day_iter) \
-                                         + calculate_extra_persons_price(house, total_persons_amount)
-        day_iter += timedelta(days=1)
-
-    return accumulated_prices, houses
-
-
-def _update_accumulated_prices(
-        accumulated_prices: dict,
+def _get_day_prices(
         total_persons_amount: int,
         day: Date,
         houses: QuerySet[House],
 ) -> dict:
-    available_houses = filter_for_available_houses_by_day(houses, day)
-    for house in list(accumulated_prices.keys()):
-        if house not in available_houses:
-            del accumulated_prices[house]
-        else:
-            accumulated_prices[house] += calculate_house_price_by_day(house, day) \
-                                         + calculate_extra_persons_price(house, total_persons_amount)
-    return accumulated_prices
+    day_prices = {}
+    for house in houses:
+        day_prices[house] = calculate_house_price_by_day(house, day) \
+                            + calculate_extra_persons_price(house, total_persons_amount)
+    return day_prices
 
 
 def calculate_check_out_calendar(
@@ -122,12 +79,8 @@ def calculate_check_out_calendar(
     first_month_day = Date(year=year, month=month, day=1)
     end_day = _get_calendar_end_day(year, month)
     calendar = {}
-    accumulated_prices, houses = _get_initial_accumulated_prices_starting_from_day(
-        houses,
-        total_persons_amount,
-        check_in_date,
-        first_month_day,
-    )
+    if first_month_day >= check_in_date:
+        houses = filter_for_available_houses_by_period(houses, check_in_date, first_month_day)
 
     day = first_month_day
 
@@ -142,11 +95,12 @@ def calculate_check_out_calendar(
                 "reason (debug)": "Check-out should be after check-in",
             })
         else:
-            accumulated_prices = _update_accumulated_prices(accumulated_prices, total_persons_amount, day, houses)
-            day_prices = list(accumulated_prices.values())
+            houses = filter_for_available_houses_by_day(houses, day)
+            day_prices = _get_day_prices(total_persons_amount, day, houses)
+
             if day_prices:
                 calendar[day_str].update({
-                    "price": min(day_prices),
+                    "price": min(day_prices.values()),
                     "check_out_is_available": True,
                 })
             else:
