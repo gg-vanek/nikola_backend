@@ -1,11 +1,10 @@
 import logging
 import smtplib
 
-from house_reservations.models import HouseReservation
-from notifications.user.general import UserNotificationsBaseClass
-
 from django.conf import settings
 
+from house_reservations.models import HouseReservation
+from notifications.user.general import UserNotificationsBaseClass
 from notifications.user.templates import NEW_RESERVATION_CREATED
 
 logger = logging.getLogger(__name__)

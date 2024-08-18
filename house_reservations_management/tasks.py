@@ -1,6 +1,6 @@
 from celery import shared_task
-from house_reservations.models import HouseReservation
 
+from house_reservations.models import HouseReservation
 from notifications import UserNotificationService, ManagerNotificationsService
 
 

@@ -1,9 +1,9 @@
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 
-from core.mixins import ByActionMixin
 from additional_services.models import AdditionalService
 from additional_services.serializers import AdditionalServiceDetailSerializer
+from core.mixins import ByActionMixin
 
 
 class AdditionalServiceViewSet(

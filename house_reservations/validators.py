@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from core.models import Pricing
 from houses.models import House
 
+
 # TODO IncorrectPeopleAmountInReservationException
 # TODO IncorrectDatetimesException
 

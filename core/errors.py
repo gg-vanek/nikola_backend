@@ -1,19 +1,9 @@
-class LogicError(Exception):
+from rest_framework import exceptions
+
+
+class BaseLogicError(exceptions.APIException):
     pass
 
 
-class IncorrectDatesException(LogicError):
+class UnexpectedCaseError(BaseLogicError):
     pass
-
-
-class IncorrectDatetimesException(LogicError):
-    pass
-
-
-class IncorrectTimeException(LogicError):
-    pass
-
-
-class IncorrectPeopleAmountInReservationException(LogicError):
-    pass
-

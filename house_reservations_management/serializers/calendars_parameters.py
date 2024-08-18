@@ -1,6 +1,5 @@
-from rest_framework import serializers
 from django.utils.timezone import now
-from datetime import datetime as Datetime
+from rest_framework import serializers
 
 
 class CalendarsParametersSerializer(serializers.Serializer):

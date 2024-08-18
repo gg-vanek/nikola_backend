@@ -1,5 +1,4 @@
 import random
-
 from datetime import timedelta, datetime as Datetime
 
 from django.core.management.base import BaseCommand
@@ -7,7 +6,8 @@ from django.utils.timezone import now
 
 from clients.models import Client
 from core.models import Pricing
-from houses.models import House, HouseReservation
+from houses.models import House
+from house_reservations.models import HouseReservation
 
 
 class Command(BaseCommand):

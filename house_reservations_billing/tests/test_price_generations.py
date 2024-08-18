@@ -1,15 +1,15 @@
+from datetime import datetime as Datetime
 from datetime import timedelta
 
-from datetime import datetime as Datetime
 from django.test import TestCase
 from django.utils.timezone import now
+from house_reservations_management.billing.price_calculators import light_calculate_reservation_price, Receipt, \
+    ReceiptPosition
 
 from clients.models import Client
 from events.models import Event
-from houses.models import House
 from house_reservations.models import HouseReservation
-
-from house_reservations_management.billing.price_calculators import light_calculate_reservation_price, Receipt, ReceiptPosition
+from houses.models import House
 
 
 class PriceGenerationTest(TestCase):

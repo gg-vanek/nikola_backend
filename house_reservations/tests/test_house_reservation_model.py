@@ -1,16 +1,15 @@
+from datetime import datetime as Datetime
 from datetime import timedelta
 
-from datetime import datetime as Datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils.timezone import now
+from house_reservations_management.billing.price_calculators import light_calculate_reservation_price
 
 from clients.models import Client
 from events.models import Event
-from houses.models import House
 from house_reservations.models import HouseReservation
-
-from house_reservations_management.billing.price_calculators import light_calculate_reservation_price
+from houses.models import House
 
 
 class HouseReservationModelTest(TestCase):

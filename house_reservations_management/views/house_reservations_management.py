@@ -1,5 +1,3 @@
-from django.core.exceptions import ValidationError
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -7,15 +5,16 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from clients.serializers import ClientSerializer
+from clients.services import upsert_client
 from core.mixins import ByActionMixin
 from core.models import Pricing
 from house_reservations_billing.serializers import HouseReservationWithBillSerializer
-from houses.models import House
-from clients.services import upsert_client
 from house_reservations_management.serializers.house_reservation_parameters import HouseReservationParametersSerializer, \
     AdditionalReservationParametersSerializer
 from house_reservations_management.services.house_reservation import create_reservation, calculate_reservation
-from house_reservations_management.tasks import new_reservation_created_manager_notification, new_reservation_created_user_notification
+from house_reservations_management.tasks import new_reservation_created_manager_notification, \
+    new_reservation_created_user_notification
+from houses.models import House
 
 
 class HouseReservationsManagementViewSet(ByActionMixin,
@@ -51,16 +50,11 @@ class HouseReservationsManagementViewSet(ByActionMixin,
         )
         reservation_parameters_serializer.is_valid(raise_exception=True)
 
-        try:
-            reservation = calculate_reservation(reservation_parameters_serializer.validated_data)
-            reservation.clean()
+        reservation = calculate_reservation(reservation_parameters_serializer.validated_data)
+        reservation.clean()
 
-            return Response({"reservation": HouseReservationWithBillSerializer(reservation).data},
-                            status=status.HTTP_200_OK)
-        except ValidationError as e:
-            # TODO обернуть ошибку нормально
-            return Response({"detail": str(e.messages)},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response({"reservation": HouseReservationWithBillSerializer(reservation).data},
+                        status=status.HTTP_200_OK)
 
     @action(methods=['post'], url_path='reservations', detail=True)
     def new_reservation(self, request: Request, *args, **kwargs):
@@ -79,20 +73,15 @@ class HouseReservationsManagementViewSet(ByActionMixin,
         additional_reservation_parameters_serializer = AdditionalReservationParametersSerializer(data=request.data)
         additional_reservation_parameters_serializer.is_valid(raise_exception=True)
 
-        try:
-            # TODO проверить нужен ли этот try-except - где оно вообще может упасть?
-            reservation = create_reservation({
-                **reservation_parameters_serializer.validated_data,
-                **additional_reservation_parameters_serializer.validated_data,
-                **{"client": client},
-            })
+        # TODO проверить нужен ли этот try-except - где оно вообще может упасть?
+        reservation = create_reservation({
+            **reservation_parameters_serializer.validated_data,
+            **additional_reservation_parameters_serializer.validated_data,
+            **{"client": client},
+        })
 
-            # TODO celery - cancel if not approved payment
-            new_reservation_created_manager_notification.delay(reservation.pk)
-            new_reservation_created_user_notification.delay(reservation.pk)
+        # TODO celery - cancel if not approved payment
+        new_reservation_created_manager_notification.delay(reservation.pk)
+        new_reservation_created_user_notification.delay(reservation.pk)
 
-            return Response({"slug": reservation.slug}, status=status.HTTP_200_OK)
-        # TODO обернуть ошибку нормально
-        except ValidationError as e:
-            return Response({"detail": str(e.messages)},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response({"slug": reservation.slug}, status=status.HTTP_200_OK)

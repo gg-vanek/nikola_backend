@@ -1,12 +1,11 @@
-from rest_framework import serializers
-
-from houses.models import House
-from house_reservations_billing.services.price_calculators import light_calculate_reservation_price, calculate_extra_persons_price
-
+import logging
 from datetime import datetime as Datetime
 
-import logging
+from rest_framework import serializers
 
+from house_reservations_billing.services.price_calculators import light_calculate_reservation_price, \
+    calculate_extra_persons_price
+from houses.models import House
 from houses.serializers import HouseDetailSerializer
 
 logger = logging.getLogger(__name__)

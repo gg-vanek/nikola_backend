@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
-from houses.models import HouseReservation
+
+from house_reservations.models import HouseReservation
 
 
 class Command(BaseCommand):

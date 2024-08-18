@@ -1,13 +1,12 @@
+import logging
+from datetime import datetime as Datetime, date as Date, timedelta
+
 from django.db.models import QuerySet, Q, IntegerField, Value, Sum, Count, F
 from django.db.models.functions import Coalesce
 from django.utils.timezone import get_default_timezone
 
-from datetime import datetime as Datetime, date as Date, timedelta
-
 from core.models import Pricing
 from houses.models import House
-
-import logging
 
 logger = logging.getLogger(__name__)
 

@@ -1,13 +1,11 @@
 import logging
 
-from house_reservations.models import HouseReservation
-from notifications.manager.general import ManagerNotificationsBaseClass
-
+import telebot
 from django.conf import settings
 
+from house_reservations.models import HouseReservation
+from notifications.manager.general import ManagerNotificationsBaseClass
 from notifications.manager.templates import NEW_RESERVATION_CREATED
-
-import telebot
 
 logger = logging.getLogger(__name__)
 

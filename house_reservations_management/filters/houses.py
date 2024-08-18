@@ -2,11 +2,11 @@ from datetime import datetime as Datetime, timedelta
 
 from django.db.models import QuerySet
 from django.utils.timezone import now
-from house_reservations_management.services.reservations_overlapping import filter_for_available_houses_by_period
+from rest_framework import exceptions
 from rest_framework.filters import BaseFilterBackend
 from rest_framework.request import Request
 
-from core.errors import IncorrectDatesException
+from house_reservations_management.services.reservations_overlapping import filter_for_available_houses_by_period
 
 
 class HousesAvailableByDateFilter(BaseFilterBackend):
@@ -23,7 +23,7 @@ class HousesAvailableByDateFilter(BaseFilterBackend):
             if not now().date() < check_in_date < check_out_date:
                 # если прилетели неправильные даты check_in и check_out или
                 # если пытаются забронировать что-то на прошедшую дату
-                raise IncorrectDatesException("Некорректные даты бронирования. "
+                raise exceptions.ValidationError("Некорректные даты бронирования. "
                                               "Не выполнено неравенство now < check_in_date < check_out_date: "
                                               f"{now().date().strftime('%d-%m-%Y')} < "
                                               f"{check_in_date.strftime('%d-%m-%Y')} < "
