@@ -73,7 +73,6 @@ class HouseReservationsManagementViewSet(ByActionMixin,
         additional_reservation_parameters_serializer = AdditionalReservationParametersSerializer(data=request.data)
         additional_reservation_parameters_serializer.is_valid(raise_exception=True)
 
-        # TODO проверить нужен ли этот try-except - где оно вообще может упасть?
         reservation = create_reservation({
             **reservation_parameters_serializer.validated_data,
             **additional_reservation_parameters_serializer.validated_data,
