@@ -41,7 +41,7 @@ def custom_exceptions_handler(exc, context):
             'error': {
                 'code': 'VALIDATION_ERROR',
                 'message': 'Invalid input data',
-                'details': exc.message_dict
+                'details': exc.error_dict
             }
         }
 
