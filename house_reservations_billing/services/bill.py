@@ -5,12 +5,14 @@ from house_reservations_billing.services.price_calculators import calculate_hous
     calculate_extra_persons_price
 from house_reservations_billing.services.promocode import apply, check_availability
 from house_reservations_billing.services.text_helpers import (
-    EARLY_CHECK_IN_POSITION,
     early_check_in_description,
-    NIGHT_POSITION,
     night_description,
-    LATE_CHECK_OUT_POSITION,
     late_check_out_description,
+)
+from house_reservations_billing.models.constants import (
+    EARLY_CHECK_IN_POSITION,
+    NIGHT_POSITION,
+    LATE_CHECK_OUT_POSITION,
     EXTRA_PERSONS_POSITION,
     PROMO_CODE_POSITION,
 )
