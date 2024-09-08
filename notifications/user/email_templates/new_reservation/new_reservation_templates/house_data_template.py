@@ -8,7 +8,7 @@ HOUSE_DATA_TEMPLATE = """<table width="100%" cellpadding="0" cellspacing="0" bor
   <tr><td colspan="2" style="line-height: 0; height: 10px;">&nbsp;</td></tr>
   <tr>
     <td style="vertical-align: middle;">
-      <img width="21px" height="21px" src="https://cdn-icons-png.flaticon.com/512/5192/5192571.png" style="display: inline-block; vertical-align: middle;"/>
+      <img width="21px" height="21px" src="{house_location_icon}" style="display: inline-block; vertical-align: middle;"/>
       <p style="margin: 0; display: inline-block; vertical-align: middle;">Адрес:</p>
     </td>
   </tr>

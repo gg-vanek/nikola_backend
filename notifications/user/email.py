@@ -53,12 +53,7 @@ class UserNotificationsEmail(UserNotificationsBaseClass):
                     image_part = MIMEImage(img_data)
                     image_part.add_header('Content-ID', image.cid)
                     msg.attach(image_part)
-                elif image.media_type == email_media.SVG:
-                    svg_part = MIMEBase('image', 'svg+xml', name=f'{image.cid}.svg')
-                    svg_part.set_payload(img_data)
-                    encoders.encode_base64(svg_part)
-                    svg_part.add_header('Content-ID', f'{image.cid}>')
-                    svg_part.add_header('Content-Disposition', 'inline', filename=f'{image.cid}.svg')
-                    msg.attach(svg_part)
+                else:
+                    pass
 
         self.send_email(msg)

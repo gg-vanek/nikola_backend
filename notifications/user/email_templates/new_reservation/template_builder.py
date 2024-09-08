@@ -4,8 +4,7 @@ from django.conf import settings
 
 from house_reservations.models import HouseReservation
 from .new_reservation_templates import *
-from ..common import EmailMedia
-
+from ..common import EmailMedia, IMAGE
 
 HOUSE_LOCATION_LINK = "https://yandex.ru/maps/?ll=35.599293%2C54.748715&mode=whatshere&whatshere%5Bpoint%5D=35.599179" \
                       "%2C54.748626&whatshere%5Bzoom%5D=17.871925&z=17"
@@ -35,13 +34,14 @@ class NewReservationTemplateBuilder:
         house_image_path = reservation.house.pictures.first().picture.path
 
         house_data_html = HOUSE_DATA_TEMPLATE.format(
+            house_location_icon="https://cdn-icons-png.flaticon.com/512/5192/5192571.png",
             house_image="cid:house_image",
             house_location_link=HOUSE_LOCATION_LINK,
             house_location_text=HOUSE_LOCATION_TEXT,
         )
 
         return house_data_html, [
-            EmailMedia(cid="house_image", path=house_image_path, media_type="image"),
+            EmailMedia(cid="house_image", path=house_image_path, media_type=IMAGE),
         ]
 
     def _build_reservation_data(self, reservation: HouseReservation) -> tuple[str, list[EmailMedia]]:
@@ -50,12 +50,12 @@ class NewReservationTemplateBuilder:
 
         reservation_data_html = HOUSE_RESERVATION_DATA_TEMPLATE.format(
             house_name=reservation.house.name,
-            check_in_day=reservation.check_in_datetime.day,
+            check_in_day=reservation.check_in_datetime.strftime('%d-%m-%Y'),
             check_in_datetime_icon="cid:check_in_datetime_icon",
-            check_in_time=reservation.check_in_datetime.hour,
-            check_out_day=reservation.check_out_datetime.day,
+            check_in_time=reservation.check_in_datetime.strftime('%H:%M'),
+            check_out_day=reservation.check_out_datetime.strftime('%d-%m-%Y'),
             check_out_datetime_icon="cid:check_out_datetime_icon",
-            check_out_time=reservation.check_out_datetime.hour,
+            check_out_time=reservation.check_out_datetime.strftime('%H:%M'),
             first_name=reservation.client.first_name,
             last_name=reservation.client.last_name,
             email=reservation.client.email,
@@ -66,8 +66,8 @@ class NewReservationTemplateBuilder:
         )
 
         return reservation_data_html, [
-            EmailMedia(cid="check_in_datetime_icon", path=check_in_datetime_icon_path, media_type="svg"),
-            EmailMedia(cid="check_out_datetime_icon", path=check_out_datetime_icon_path, media_type="svg"),
+            EmailMedia(cid="check_in_datetime_icon", path=check_in_datetime_icon_path, media_type=IMAGE),
+            EmailMedia(cid="check_out_datetime_icon", path=check_out_datetime_icon_path, media_type=IMAGE),
         ]
 
     def _build_comment_html(self, reservation: HouseReservation) -> str:
@@ -90,7 +90,7 @@ class NewReservationTemplateBuilder:
                 EmailMedia(
                     cid=position['type'],
                     path=BILL_POSITION_IMAGE_PATH[position["type"]],
-                    media_type="svg"
+                    media_type=IMAGE,
                 ),
             )
             bill_positions_html.append(

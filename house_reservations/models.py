@@ -27,7 +27,7 @@ class HouseReservation(models.Model):
     total_persons_amount = models.IntegerField("Количество человек для проживания в домике")
 
     preferred_contact = models.CharField("Предпочтительный способ связи", max_length=255)
-    comment = models.CharField("Комментарий", max_length=511)
+    comment = models.CharField("Комментарий", max_length=511, default="", blank=True)
 
     cancelled = models.BooleanField("Отменено?", default=False)
     approved = models.BooleanField("Подтверждено менеджером?", default=False)

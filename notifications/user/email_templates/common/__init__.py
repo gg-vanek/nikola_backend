@@ -1,1 +1,1 @@
-from .media import EmailMedia, IMAGE, SVG
+from .media import EmailMedia, IMAGE
