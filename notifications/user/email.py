@@ -7,7 +7,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from house_reservations.models import HouseReservation
-import notifications.user.email_templates.common.media as email_media
 from notifications.user.email_templates.new_reservation.template_builder import NewReservationTemplateBuilder
 from notifications.user.general import UserNotificationsBaseClass
 
@@ -37,7 +36,7 @@ class UserNotificationsEmail(UserNotificationsBaseClass):
         return smtp_object.send_message(msg=message)
 
     def new_reservation_created(self, reservation: HouseReservation):
-        new_reservation_html, images = self.new_reservation_template_builder.build(reservation)
+        new_reservation_html = self.new_reservation_template_builder.build(reservation)
 
         msg = MIMEMultipart('related')
         msg['Subject'] = f'Вы забронировали домик "{reservation.house.name}"'
@@ -45,15 +44,5 @@ class UserNotificationsEmail(UserNotificationsBaseClass):
         msg['To'] = reservation.client.email
 
         msg.attach(MIMEText(new_reservation_html, 'html'))
-
-        for image in images:
-            with open(image.path, 'rb') as img_file:
-                img_data = img_file.read()
-                if image.media_type == email_media.IMAGE:
-                    image_part = MIMEImage(img_data)
-                    image_part.add_header('Content-ID', image.cid)
-                    msg.attach(image_part)
-                else:
-                    pass
 
         self.send_email(msg)
