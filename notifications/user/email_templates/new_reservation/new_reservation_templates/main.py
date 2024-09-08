@@ -6,9 +6,7 @@ MAIN_TEMPLATE="""<!DOCTYPE html>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
   <title>Reservation Holder</title>
   <style>
-    * {
-      font-family: -apple-system, blinkmacsystemfont, 'segoe ui', roboto, helvetica, arial, sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
-    }
+    * {main_template_styles}
   </style>
 </head>
 <body>
@@ -23,3 +21,7 @@ MAIN_TEMPLATE="""<!DOCTYPE html>
   </div>
 </body>
 </html>"""
+
+MAIN_TEMPLATE_STYLES = """{
+      font-family: -apple-system, blinkmacsystemfont, 'segoe ui', roboto, helvetica, arial, sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
+}"""

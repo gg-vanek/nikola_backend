@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 
 from house_reservations.models import HouseReservation
@@ -9,6 +11,7 @@ HOUSE_LOCATION_LINK = "https://yandex.ru/maps/?ll=35.599293%2C54.748715&mode=wha
                       "%2C54.748626&whatshere%5Bzoom%5D=17.871925&z=17"
 HOUSE_LOCATION_TEXT = "Деревня Никола-Ленивец, 10, сельское поселение Угорское, Дзержинский район, Калужская область"
 
+logger = logging.getLogger(__name__)
 
 
 class NewReservationTemplateBuilder:
@@ -21,6 +24,7 @@ class NewReservationTemplateBuilder:
         all_images = list(set(house_images + reservation_images + bill_images))
 
         return MAIN_TEMPLATE.format(
+            main_template_styles=MAIN_TEMPLATE_STYLES,
             house_data=house_data_html,
             reservation_data=reservation_data_html,
             comment=reservation_comment_html,
@@ -28,7 +32,8 @@ class NewReservationTemplateBuilder:
         ), all_images
 
     def _build_house_data(self, reservation: HouseReservation) -> tuple[str, list[EmailMedia]]:
-        house_image_path = reservation.house.pictures[0].path
+        house_image_path = reservation.house.pictures.first().picture.path
+
         house_data_html = HOUSE_DATA_TEMPLATE.format(
             house_image="cid:house_image",
             house_location_link=HOUSE_LOCATION_LINK,
@@ -40,8 +45,8 @@ class NewReservationTemplateBuilder:
         ]
 
     def _build_reservation_data(self, reservation: HouseReservation) -> tuple[str, list[EmailMedia]]:
-        check_in_datetime_icon_path = RESERVATION_TIME_IMAGE_PATH[reservation.check_in_datetime]
-        check_out_datetime_icon_path = RESERVATION_TIME_IMAGE_PATH[reservation.check_out_datetime]
+        check_in_datetime_icon_path = RESERVATION_TIME_IMAGE_PATH[reservation.local_check_in_datetime.time()]
+        check_out_datetime_icon_path = RESERVATION_TIME_IMAGE_PATH[reservation.local_check_out_datetime.time()]
 
         reservation_data_html = HOUSE_RESERVATION_DATA_TEMPLATE.format(
             house_name=reservation.house.name,
