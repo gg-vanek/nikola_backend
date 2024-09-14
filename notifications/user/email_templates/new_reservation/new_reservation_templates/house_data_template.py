@@ -1,4 +1,4 @@
-HOUSE_DATA_TEMPLATE = """<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #F3F3F3; padding: 20px; border-radius: 15px; border: 2px dashed black; box-sizing: border-box; max-width: 500px; margin: 0 auto;">
+HOUSE_DATA_TEMPLATE = """<table width="100%" cellpadding="0" cellspacing="0" border="0" style="{style}">
   <tr style="padding-bottom: 100px; margin-bottom: 123px; ">
     <td colspan="2">
       <img width="100%" height="auto" src="{house_image}" style="border-radius: 15px;" />

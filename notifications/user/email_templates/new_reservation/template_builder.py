@@ -21,7 +21,7 @@ class NewReservationTemplateBuilder:
         bill_html = self._build_bill_html(reservation)
 
         return MAIN_TEMPLATE.format(
-            main_template_styles=MAIN_TEMPLATE_STYLES,
+            main_template_styles=MAIN_TEMPLATE_STYLE,
             house_data=house_data_html,
             reservation_data=reservation_data_html,
             comment=reservation_comment_html,
@@ -32,6 +32,7 @@ class NewReservationTemplateBuilder:
         house_image_path = reservation.house.pictures.first().picture.path
 
         house_data_html = HOUSE_DATA_TEMPLATE.format(
+            style=SINGLE_BLOCK_STYLE,
             house_location_icon="https://cdn-icons-png.flaticon.com/512/5192/5192571.png",
             house_image=media_url_by_path(house_image_path),
             house_location_link=HOUSE_LOCATION_LINK,
@@ -45,6 +46,7 @@ class NewReservationTemplateBuilder:
         check_out_datetime_icon_path = RESERVATION_TIME_IMAGE_PATH[reservation.local_check_out_datetime.time()]
 
         reservation_data_html = HOUSE_RESERVATION_DATA_TEMPLATE.format(
+            style=SINGLE_BLOCK_STYLE,
             house_name=reservation.house.name,
             check_in_day=reservation.check_in_datetime.strftime('%d-%m-%Y'),
             check_in_datetime_icon=media_url_by_path(check_in_datetime_icon_path),
@@ -67,6 +69,7 @@ class NewReservationTemplateBuilder:
         reservation_comment_html = ""
         if reservation.comment:
             reservation_comment_html = COMMENT_TEMPLATE.format(
+                style=SINGLE_BLOCK_STYLE,
                 reservation_comment=reservation.comment,
             )
 
@@ -87,6 +90,7 @@ class NewReservationTemplateBuilder:
             )
 
         bill_html = BILL_TEMPLATE.format(
+            style=SINGLE_BLOCK_STYLE,
             bill_positions="".join(bill_positions_html),
         )
 

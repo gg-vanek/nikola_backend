@@ -1,4 +1,4 @@
-MAIN_TEMPLATE="""<!DOCTYPE html>
+MAIN_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -21,7 +21,3 @@ MAIN_TEMPLATE="""<!DOCTYPE html>
   </div>
 </body>
 </html>"""
-
-MAIN_TEMPLATE_STYLES = """{
-      font-family: -apple-system, blinkmacsystemfont, 'segoe ui', roboto, helvetica, arial, sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
-}"""

@@ -1,4 +1,4 @@
-COMMENT_TEMPLATE = """<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #F3F3F3; padding: 20px; border-radius: 15px; border: 2px dashed black; box-sizing: border-box; max-width: 500px; margin: 0 auto;">
+COMMENT_TEMPLATE = """<table width="100%" cellpadding="0" cellspacing="0" border="0" style="{style}">
   <tr>
     <td colspan="2">
       <h3 style="margin: 0; padding: 0; width: 100%; font-weight: 500;">Комментарий:</h3>

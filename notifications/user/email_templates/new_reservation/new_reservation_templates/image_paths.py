@@ -9,7 +9,6 @@ from house_reservations_billing.models.constants import (
     PROMO_CODE_POSITION,
 )
 
-
 BILL_POSITION_IMAGE_PATH = {
     EARLY_CHECK_IN_POSITION: settings.MEDIA_ROOT + "/notifications/new_reservation/bill_position/early_check_in.png",
     NIGHT_POSITION: settings.MEDIA_ROOT + "/notifications/new_reservation/bill_position/night.png",
