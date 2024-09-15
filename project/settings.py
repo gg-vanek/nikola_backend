@@ -30,8 +30,7 @@ STATIC_URL = "/" + URL_PREFIX + '/static/'
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "django-insecure-va=jrmk350#&^7a$gan2&v5#(m8r8$5gp(0dx52g7%8h4cb51p")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = (os.getenv('DEBUG_BACKEND')=="true")
-DEBUG = True
+DEBUG = (os.getenv('DEBUG_BACKEND')=="true")
 
 ALLOWED_HOSTS = [
     f"{os.getenv('FRONTEND_HOST')}", # only if backend and frontend are hosted on the same domain. FRONTEND_HOST here means "example.com"
