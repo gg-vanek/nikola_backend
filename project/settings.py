@@ -146,6 +146,7 @@ DATABASES = {
         'PORT': os.getenv('POSTGRES_PORT', "5432"),
     }
 }
+_REDIS_URL=f"redis://{os.getenv('REDIS_USERNAME')}:{os.getenv('REDIS_PASSWORD')}@{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -183,7 +184,7 @@ CACHALOT_ENABLED = (os.getenv('ENABLE_CACHALOT') == "true")
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{os.getenv('REDIS_USERNAME')}:{os.getenv('REDIS_PASSWORD')}@{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}/0",
+        "LOCATION": f"{_REDIS_URL}/0",
     }
 }
 
@@ -278,5 +279,5 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 # CELERY_RESULT_BACKEND = 'django-db'
 # CELERY_CACHE_BACKEND = 'django-cache'
-CELERY_BROKER_URL = f"redis://{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}/1"
-CELERY_RESULT_BACKEND = f"redis://{os.getenv('REDIS_HOST', 'localhost')}:{os.getenv('REDIS_PORT', '6379')}/1"
+CELERY_BROKER_URL = f"{_REDIS_URL}/1"
+CELERY_RESULT_BACKEND = f"{_REDIS_URL}/1"
